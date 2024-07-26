@@ -23,4 +23,9 @@
     <PackageReference Update="SonarAnalyzer.CSharp" Version="9.29.0.95321" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>
