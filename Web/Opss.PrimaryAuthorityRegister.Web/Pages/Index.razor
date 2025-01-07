@@ -1,16 +1,32 @@
 ﻿@page "/"
 
+@inject ITestClientService TestClientService
+
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello, world! @data?.Id.ToString()</h1>
 
-<GdsInput Id="event-name"
-            Name="event-name"
-            Classes="@GdsInputModel.Width.Width20">
-    <LabelTemplate>
-        <GdsLabel For="event-name" Classes="@GdsLabelModel.Size.Large" IsPageHeading="true">What is the name of the event?</GdsLabel>
-    </LabelTemplate>
-    <HintTemplate>
-        <GdsHint>The event's name</GdsHint>
-    </HintTemplate>
-</GdsInput>
+<button 
+@onclick=@OnClick>
+    Try Post
+</button>
+
+@status?.ToString()
+
+@code {
+    private TestDataDto? data;
+    private System.Net.HttpStatusCode? status;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await TestClientService.GetTestData();
+        data = result.Result;
+    }
+
+    protected async void OnClick(){
+        var ok = await TestClientService.PostTestData(new TestDataCommand(data));
+        status = ok.StatusCode;
+
+        StateHasChanged();
+    }
+}

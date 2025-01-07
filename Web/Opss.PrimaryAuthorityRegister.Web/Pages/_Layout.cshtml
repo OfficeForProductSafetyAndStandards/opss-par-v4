@@ -11,7 +11,7 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="/_content/Opss.DesignSystem.Frontend.Blazor.Components/css/govuk.css" rel="stylesheet" />
 
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
 <body class="govuk-frontend-supported govuk-template__body">
     <script>
@@ -37,11 +37,9 @@
     </div>
 
     @RenderBody()
-
+    
+    <script src="/_content/Opss.DesignSystem.Frontend.Blazor.Components/js/init.js"></script>
     <script src="/_content/Opss.DesignSystem.Frontend.Blazor.Components/js/govuk.js"></script>
-    <script>
-        window.GOVUKFrontend.initAll()
-    </script>
 
     <script src="_framework/blazor.server.js"></script>
 </body>

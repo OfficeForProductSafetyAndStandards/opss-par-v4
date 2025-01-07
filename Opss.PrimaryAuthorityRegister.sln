@@ -35,6 +35,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opss.PrimaryAuthorityRegister.WebUnitTests", "Web\Opss.PrimaryAuthorityRegister.WebUnitTests\Opss.PrimaryAuthorityRegister.WebUnitTests.csproj", "{55BF7CB0-89F0-4B05-9C03-94FB94485CCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opss.PrimaryAuthorityRegister.Client", "Web\Opss.PrimaryAuthorityRegister.Client\Opss.PrimaryAuthorityRegister.Client.csproj", "{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{55BF7CB0-89F0-4B05-9C03-94FB94485CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55BF7CB0-89F0-4B05-9C03-94FB94485CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55BF7CB0-89F0-4B05-9C03-94FB94485CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{904A2F4E-8FA4-4665-B3C5-A8232574B792} = {F88A155A-2782-43EC-967A-F743E1AD0814}
 		{457CD213-4702-4FA9-B85B-208CA1C1FB73} = {41F6AD60-8817-49EC-A0FB-97831CEB0D1E}
 		{55BF7CB0-89F0-4B05-9C03-94FB94485CCA} = {F88A155A-2782-43EC-967A-F743E1AD0814}
+		{4CD29A20-B2D6-459E-AABB-B29FE2EAD7E9} = {F88A155A-2782-43EC-967A-F743E1AD0814}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D61354B-C24A-40CA-87D8-0319EA23227A}

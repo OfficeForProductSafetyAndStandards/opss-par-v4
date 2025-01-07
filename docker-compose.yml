@@ -1,3 +1,5 @@
+version: "3.0"
+
 services:
    web:
      image: ${DOCKER_REGISTRY-}web
@@ -6,6 +8,9 @@ services:
        dockerfile: Web/Opss.PrimaryAuthorityRegister.Web/Dockerfile
    api:
      image: ${DOCKER_REGISTRY-}api
+     hostname: api
+     ports: 
+      - 8080:8080
      build:
        context: .
        dockerfile: Api/Opss.PrimaryAuthorityRegister.Core.Api/Dockerfile

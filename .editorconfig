@@ -229,6 +229,12 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+csharp_prefer_system_threading_lock = true:suggestion
+dotnet_diagnostic.CA1515.severity = suggestion
+dotnet_diagnostic.S3925.severity = suggestion
+
+# CA1032: Implement standard exception constructors
+dotnet_diagnostic.CA1032.severity = suggestion
 
 [*.{cs,vb}]
 dotnet_style_coalesce_expression = true:suggestion
@@ -266,3 +272,4 @@ dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_property = false:silent
 dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_method = false:silent
+dotnet_diagnostic.CA1054.severity = warning
