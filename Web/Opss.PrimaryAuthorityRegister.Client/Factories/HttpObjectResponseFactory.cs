@@ -14,9 +14,9 @@ public static class HttpObjectResponseFactory
     {
         PropertyNameCaseInsensitive = true,
         Converters =
-    {
-        new JsonStringEnumConverter()
-    }
+                    {
+                        new JsonStringEnumConverter()
+                    }
     };
 
     public async static Task<HttpObjectResponse<T>> DetermineSuccess<T>(HttpResponseMessage httpResponseMessage) where T : class
@@ -53,7 +53,7 @@ public static class HttpObjectResponseFactory
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             var problem = TryRetrieveProblem(httpResponseMessage);
-            throw new HttpResponseException(httpResponseMessage.StatusCode, problem.Problem.Detail);
+            throw new HttpResponseException(httpResponseMessage.StatusCode, problem?.Problem?.Detail);
         }
 
         var json = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);

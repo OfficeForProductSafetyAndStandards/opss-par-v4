@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Core.Common.Commands;
-using Opss.PrimaryAuthorityRegister.Core.Common.Dtos;
+using Opss.PrimaryAuthorityRegister.Core.Common.Commands.TestCommands;
+using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos;
 using Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries;
 using System.Data;
 
@@ -27,7 +27,13 @@ public class TestController : ControllerBase
     }
 
     [HttpPost("data")]
-    public async Task<ActionResult> CalculateCreditsTestEndpoint([FromBody] TestDataCommand command, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> Create([FromBody] CreateTestDataCommand command, CancellationToken cancellationToken)
+    {
+        return await _mediator.Send(command, cancellationToken).ConfigureAwait(false);
+    }
+
+    [HttpPut("data")]
+    public async Task<ActionResult> Update([FromBody] UpdateTestDataCommand command, CancellationToken cancellationToken)
     {
         return await _mediator.Send(command, cancellationToken).ConfigureAwait(false);
     }

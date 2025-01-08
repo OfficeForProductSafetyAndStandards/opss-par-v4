@@ -1,14 +1,21 @@
 ﻿@page "/"
 
+@using Opss.PrimaryAuthorityRegister.Core.Common.Commands.TestCommands
+@using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos
+@using Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries
+
 @inject ITestClientService TestClientService
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world! @data?.Id.ToString()</h1>
 
-<button 
-@onclick=@OnClick>
+<button @onclick=@OnClick>
     Try Post
+</button>
+
+<button @onclick=@OnPutClick>
+    Try Put
 </button>
 
 @status?.ToString()
@@ -19,12 +26,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await TestClientService.GetTestData();
+        var result = await TestClientService.GetTestData(new GetTestDataQuery());
         data = result.Result;
     }
 
     protected async void OnClick(){
-        var ok = await TestClientService.PostTestData(new TestDataCommand(data));
+        ArgumentNullException.ThrowIfNull(data);
+
+        var ok = await TestClientService.CreateTestData(new CreateTestDataCommand(data.Id));
+        status = ok.StatusCode;
+
+        data.Id = ok.Result.Id;
+
+        StateHasChanged();
+    }
+
+    protected async void OnPutClick()
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var ok = await TestClientService.PutTestData(new UpdateTestDataCommand(data.Id));
         status = ok.StatusCode;
 
         StateHasChanged();

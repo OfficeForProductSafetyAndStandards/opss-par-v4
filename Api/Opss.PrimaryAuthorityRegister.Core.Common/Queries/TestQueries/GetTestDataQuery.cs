@@ -1,8 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Core.Common.Dtos;
+﻿using Opss.PrimaryAuthorityRegister.Core.Common.Cqrs;
+using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos;
 
 namespace Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries;
 
-public class GetTestDataQuery : IRequest<ActionResult<TestDataDto>>
+public class GetTestDataQuery : IQuery<TestDataDto>
 { }

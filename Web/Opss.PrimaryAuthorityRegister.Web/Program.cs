@@ -1,4 +1,5 @@
 using Opss.PrimaryAuthorityRegister.Client;
+using Opss.PrimaryAuthorityRegister.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

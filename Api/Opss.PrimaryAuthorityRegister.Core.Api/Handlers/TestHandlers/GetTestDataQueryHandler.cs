@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Core.Common.Dtos;
+using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos;
 using Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries;
 
 namespace Opss.PrimaryAuthorityRegister.Core.Api.Handlers.TestHandlers;

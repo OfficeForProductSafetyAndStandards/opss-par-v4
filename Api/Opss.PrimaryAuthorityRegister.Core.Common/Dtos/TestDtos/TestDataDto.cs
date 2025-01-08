@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Core.Common.Dtos;
+﻿namespace Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos;
 
 public class TestDataDto
 {
