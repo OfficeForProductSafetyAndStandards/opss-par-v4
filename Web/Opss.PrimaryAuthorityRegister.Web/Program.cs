@@ -1,16 +1,18 @@
-using Opss.PrimaryAuthorityRegister.Client;
-using Opss.PrimaryAuthorityRegister.Client.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<ITestClientService>(sp =>
+builder.Services.AddHttpClient();
+builder.Services.AddScoped(sp =>
 {
-    var httpClient = new HttpClient { BaseAddress = new Uri("http://api:8080/") };
-    return new TestClientService(httpClient);
+    var client = new HttpClient
+    {
+        BaseAddress = new Uri("http://api:8080/")
+    };
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    return client;
 });
 
 var app = builder.Build();

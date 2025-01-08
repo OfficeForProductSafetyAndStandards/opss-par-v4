@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Client.Exceptions;
 using Opss.PrimaryAuthorityRegister.Client.Factories;
 using Opss.PrimaryAuthorityRegister.Core.Common.Cqrs;
 using Opss.PrimaryAuthorityRegister.Core.Common.Mediator;
@@ -18,8 +17,8 @@ public static class HttpClientExtensions
     /// <param name="client">The HTTP Client</param>
     /// <param name="uri">Uri of the API endpoint</param>
     /// <returns></returns>
-    public static async Task<HttpObjectResponse<T>> GetAsync<Q, T>(this HttpClient client, Uri uri, Q query)
-        where Q : IQuery<T> where T : class => await HttpSendAsync<T>(client, uri, HttpMethod.Get, query).ConfigureAwait(false);
+    public static async Task<HttpObjectResponse<T>> GetAsync<Q, T>(this HttpClient client, Q query)
+        where Q : IQuery<T> where T : class => await HttpSendAsync<Q, T>(client, HttpMethod.Get, query).ConfigureAwait(false);
 
     /// <summary>
     /// Used to create entities
@@ -29,8 +28,8 @@ public static class HttpClientExtensions
     /// <param name="uri">Uri of the API endpoint</param>
     /// <param name="command">The command to execute</param>
     /// <returns></returns>
-    public static async Task<HttpObjectResponse<CreatedResponse>> PostAsync<C>(this HttpClient client, Uri uri, C command)
-        where C : ICommand<Guid> => await HttpSendAsync<CreatedResponse>(client, uri, HttpMethod.Post, command).ConfigureAwait(false);
+    public static async Task<HttpObjectResponse<CreatedResponse>> PostAsync<C>(this HttpClient client, C command)
+        where C : ICommand<Guid> => await HttpSendAsync<C, CreatedResponse>(client, HttpMethod.Post, command).ConfigureAwait(false);
 
     /// <summary>
     /// Used to execute a command that doesn't create anything (i.e. no Id to be returned)
@@ -40,15 +39,15 @@ public static class HttpClientExtensions
     /// <param name="uri">Uri of the API endpoint</param>
     /// <param name="command">The command to execute</param>
     /// <returns></returns>
-    public static async Task<HttpObjectResponse<NoContentResult>> PutAsync<C>(this HttpClient client, Uri uri, C command)
-        where C : ICommand => await HttpSendAsync<NoContentResult>(client, uri, HttpMethod.Put, command).ConfigureAwait(false);
+    public static async Task<HttpObjectResponse<NoContentResult>> PutAsync<C>(this HttpClient client, C command)
+        where C : ICommand => await HttpSendAsync<C, NoContentResult>(client, HttpMethod.Put, command).ConfigureAwait(false);
 
-    private static async Task<HttpObjectResponse<T>> HttpSendAsync<T>(this HttpClient client, Uri uri, HttpMethod method, object? data)
+    private static async Task<HttpObjectResponse<T>> HttpSendAsync<R, T>(this HttpClient client, HttpMethod method, object? data)
         where T : class
     {
         ArgumentNullException.ThrowIfNull(client);
-
-        using var request = new HttpRequestMessage(method, uri);
+        var name = typeof(R).Name;
+        using var request = new HttpRequestMessage(method, new Uri($"api?name={name}", UriKind.Relative));
 
         if (data != null)
         {

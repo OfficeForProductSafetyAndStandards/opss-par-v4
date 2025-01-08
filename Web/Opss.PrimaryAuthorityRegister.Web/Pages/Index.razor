@@ -4,7 +4,7 @@
 @using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos
 @using Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries
 
-@inject ITestClientService TestClientService
+@inject HttpClient _httpClient
 
 <PageTitle>Index</PageTitle>
 
@@ -26,14 +26,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await TestClientService.GetTestData(new GetTestDataQuery());
+        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery("Something"));
         data = result.Result;
     }
 
     protected async void OnClick(){
         ArgumentNullException.ThrowIfNull(data);
 
-        var ok = await TestClientService.CreateTestData(new CreateTestDataCommand(data.Id));
+        var ok = await _httpClient.PostAsync(new CreateTestDataCommand(data.Id));
         status = ok.StatusCode;
 
         data.Id = ok.Result.Id;
@@ -45,7 +45,7 @@
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var ok = await TestClientService.PutTestData(new UpdateTestDataCommand(data.Id));
+        var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(data.Id));
         status = ok.StatusCode;
 
         StateHasChanged();

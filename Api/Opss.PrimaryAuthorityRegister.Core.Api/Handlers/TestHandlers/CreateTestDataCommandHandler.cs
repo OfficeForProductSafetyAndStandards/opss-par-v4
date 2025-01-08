@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Core.Common.Commands.TestCommands;
-using Opss.PrimaryAuthorityRegister.Core.Common.Mediator;
 
-namespace Opss.PrimaryAuthorityRegister.Core.Api.Handlers.TestHandlers
+namespace Opss.PrimaryAuthorityRegister.Core.Api.Handlers.TestHandlers;
+
+internal class CreateTestDataCommandHandler : IRequestHandler<CreateTestDataCommand, Guid>
 {
-    public class CreateTestDataCommandHandler : BaseRequestHandler<CreateTestDataCommand, ActionResult<Guid>>
+    public CreateTestDataCommandHandler()
     {
-        public CreateTestDataCommandHandler(ILogger<CreateTestDataCommandHandler> logger) : base(logger)
-        {
-        }
+    }
 
-        public override async Task<ActionResult<Guid>> Handle(CreateTestDataCommand request, CancellationToken cancellationToken)
-        {
-            ArgumentNullException.ThrowIfNull(request);
+    public async Task<Guid> Handle(CreateTestDataCommand request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
 
-            return await Task.FromResult(Responses.Created(Guid.NewGuid())).ConfigureAwait(false);
-        }
+        var guid = Guid.NewGuid();
+
+        return guid;
     }
 }

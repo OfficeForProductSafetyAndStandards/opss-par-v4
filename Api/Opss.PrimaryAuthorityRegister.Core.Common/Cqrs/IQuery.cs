@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Opss.PrimaryAuthorityRegister.Core.Common.Cqrs;
 
@@ -7,5 +6,5 @@ namespace Opss.PrimaryAuthorityRegister.Core.Common.Cqrs;
 /// Defines a query
 /// </summary>
 /// <typeparam name="T">The return type of the query</typeparam>
-public interface IQuery<T> : IRequest<ActionResult<T>>
+public interface IQuery<T> : IRequest<T>
 { }

@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Core.Common.Dtos.TestDtos;
 using Opss.PrimaryAuthorityRegister.Core.Common.Queries.TestQueries;
 
 namespace Opss.PrimaryAuthorityRegister.Core.Api.Handlers.TestHandlers;
 
-internal class GetTestDataQueryHandler : BaseRequestHandler<GetTestDataQuery, ActionResult<TestDataDto>>
+internal class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
 {
-    public GetTestDataQueryHandler(ILogger<GetTestDataQueryHandler> logger) : base(logger)
+    public GetTestDataQueryHandler()
     {
     }
 
-    public override async Task<ActionResult<TestDataDto>> Handle(GetTestDataQuery request, CancellationToken cancellationToken)
+    public async Task<TestDataDto> Handle(GetTestDataQuery request, CancellationToken cancellationToken)
     {
-        return new TestDataDto();
+        ArgumentNullException.ThrowIfNull(request);
+
+        return await Task.FromResult(new TestDataDto()).ConfigureAwait(false);
     }
 }
