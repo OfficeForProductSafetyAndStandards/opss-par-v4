@@ -157,7 +157,7 @@ csharp_indent_block_contents = true
 csharp_indent_braces = false
 csharp_indent_case_contents = true
 csharp_indent_case_contents_when_block = true
-csharp_indent_labels = flush_left
+csharp_indent_labels = one_less_than_current
 csharp_indent_switch_labels = true
 
 # Space preferences
@@ -275,3 +275,4 @@ dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_diagnostic.CA1054.severity = warning
 dotnet_diagnostic.CA1040.severity = suggestion
+dotnet_diagnostic.CA1707.severity = none

@@ -13,4 +13,4 @@ services:
       - 8080:8080
      build:
        context: .
-       dockerfile: Api/Opss.PrimaryAuthorityRegister.Core.Api/Dockerfile
+       dockerfile: Api/Opss.PrimaryAuthorityRegister.Api/Dockerfile

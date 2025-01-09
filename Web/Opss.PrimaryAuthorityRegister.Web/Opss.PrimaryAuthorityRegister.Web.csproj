@@ -29,7 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Api\Opss.PrimaryAuthorityRegister.Core.Common\Opss.PrimaryAuthorityRegister.Core.Common.csproj" />
+
+    <ProjectReference Include="..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
+
     <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Client\Opss.PrimaryAuthorityRegister.Client.csproj" />
   </ItemGroup>
 

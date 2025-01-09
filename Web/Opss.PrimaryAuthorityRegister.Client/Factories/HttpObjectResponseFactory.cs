@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Globalization;
 using Opss.PrimaryAuthorityRegister.Client.Exceptions;
 using Opss.PrimaryAuthorityRegister.Client.Problem;
+using Opss.PrimaryAuthorityRegister.Client.Entities;
 
 namespace Opss.PrimaryAuthorityRegister.Client.Factories;
 

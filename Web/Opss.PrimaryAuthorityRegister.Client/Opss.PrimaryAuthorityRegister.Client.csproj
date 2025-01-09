@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Api\Opss.PrimaryAuthorityRegister.Core.Common\Opss.PrimaryAuthorityRegister.Core.Common.csproj" />
+    <ProjectReference Include="..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
   </ItemGroup>
 
 </Project>

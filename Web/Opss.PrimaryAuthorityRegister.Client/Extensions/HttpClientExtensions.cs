@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Opss.PrimaryAuthorityRegister.Client.Entities;
 using Opss.PrimaryAuthorityRegister.Client.Factories;
-using Opss.PrimaryAuthorityRegister.Core.Common.Cqrs;
-using Opss.PrimaryAuthorityRegister.Core.Common.Mediator;
+using Opss.PrimaryAuthorityRegister.Common.Cqrs;
+using Opss.PrimaryAuthorityRegister.Common.Mediator;
 using System.Text;
 using System.Text.Json;
 
@@ -21,7 +22,7 @@ public static class HttpClientExtensions
         where Q : IQuery<T> where T : class => await HttpSendAsync<Q, T>(client, HttpMethod.Get, query).ConfigureAwait(false);
 
     /// <summary>
-    /// Used to create entities
+    /// Used when a command will return a Guid
     /// </summary>
     /// <typeparam name="C">The type of the command being executed</typeparam>
     /// <param name="client">The HTTP Cient</param>
