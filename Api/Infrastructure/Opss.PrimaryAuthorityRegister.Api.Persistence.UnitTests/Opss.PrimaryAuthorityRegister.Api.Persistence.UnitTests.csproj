@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Opss.PrimayAuthorityRegister.Api.Persistence\Opss.PrimaryAuthorityRegister.Api.Persistence.csproj" />
+    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Persistence\Opss.PrimaryAuthorityRegister.Api.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
