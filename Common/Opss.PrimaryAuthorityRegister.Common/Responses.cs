@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Opss.PrimaryAuthorityRegister.Common.Mediator;
+namespace Opss.PrimaryAuthorityRegister.Common;
 
 public static class Responses
 {

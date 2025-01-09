@@ -4,12 +4,12 @@ using Moq.Protected;
 using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
 using Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Commands;
-using Opss.PrimaryAuthorityRegister.Common.Mediator;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Queries;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Queries.Dtos;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 using System.Net;
 using System.Text.Json;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
+using Opss.PrimaryAuthorityRegister.Common;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Extensions;
 

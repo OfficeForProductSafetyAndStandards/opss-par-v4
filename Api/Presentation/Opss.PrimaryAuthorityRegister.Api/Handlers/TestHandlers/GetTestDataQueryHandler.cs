@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Queries;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Queries.Dtos;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Handlers.TestHandlers;
 

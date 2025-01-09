@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 using Opss.PrimaryAuthorityRegister.Web.Application.Factories;
-using Opss.PrimaryAuthorityRegister.Common.Cqrs;
-using Opss.PrimaryAuthorityRegister.Common.Mediator;
 using System.Text;
 using System.Text.Json;
+using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Common;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
 

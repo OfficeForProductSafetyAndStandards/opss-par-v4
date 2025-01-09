@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Opss.PrimaryAuthorityRegister.Common.Cqrs;
+namespace Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 
 /// <summary>
 /// Defines a command that returns a value

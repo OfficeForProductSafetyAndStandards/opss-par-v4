@@ -1,6 +1,6 @@
-﻿using Opss.PrimaryAuthorityRegister.Common.Cqrs;
+﻿using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 
-namespace Opss.PrimaryAuthorityRegister.Common.Services.Test.Commands;
+namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 
 public class UpdateTestDataCommand : ICommand
 {

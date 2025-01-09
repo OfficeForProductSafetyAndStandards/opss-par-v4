@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Common.Services.Test.Queries.Dtos;
+﻿namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 
 public class TestDataDto
 {

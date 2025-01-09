@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Opss.PrimaryAuthorityRegister.Common.Services.Test.Commands;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Handlers.TestHandlers
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Common.Mediator;
+using Opss.PrimaryAuthorityRegister.Common;
 using System.Text.Json;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Controllers;
