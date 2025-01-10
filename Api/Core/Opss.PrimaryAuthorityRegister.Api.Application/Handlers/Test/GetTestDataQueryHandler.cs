@@ -1,0 +1,19 @@
+﻿using MediatR;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
+using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
+
+namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
+
+internal class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
+{
+    public GetTestDataQueryHandler()
+    {
+    }
+
+    public async Task<TestDataDto> Handle(GetTestDataQuery request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return await Task.FromResult(new TestDataDto()).ConfigureAwait(false);
+    }
+}

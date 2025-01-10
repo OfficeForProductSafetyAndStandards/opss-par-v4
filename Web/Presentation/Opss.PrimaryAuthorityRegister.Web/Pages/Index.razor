@@ -1,0 +1,53 @@
+﻿@page "/"
+
+@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands
+@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos
+@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
+
+@inject HttpClient _httpClient
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world! @data?.Id.ToString()</h1>
+
+<button @onclick=@OnClick>
+    Try Post
+</button>
+
+<button @onclick=@OnPutClick>
+    Try Put
+</button>
+
+@status?.ToString()
+
+@code {
+    private TestDataDto? data;
+    private System.Net.HttpStatusCode? status;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery("Something"));
+        data = result.Result;
+    }
+
+    protected async void OnClick(){
+        ArgumentNullException.ThrowIfNull(data);
+
+        var ok = await _httpClient.PostAsync(new CreateTestDataCommand(data.Id));
+        status = ok.StatusCode;
+
+        data.Id = ok.Result.Id;
+
+        StateHasChanged();
+    }
+
+    protected async void OnPutClick()
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(data.Id));
+        status = ok.StatusCode;
+
+        StateHasChanged();
+    }
+}
