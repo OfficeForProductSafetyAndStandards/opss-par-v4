@@ -1,4 +1,4 @@
-using Opss.PrimaryAuthorityRegister.Api;
+using Opss.PrimaryAuthorityRegister.Api.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApiMediatR();
+builder.Services.AddMediatR();
 
 var app = builder.Build();
 

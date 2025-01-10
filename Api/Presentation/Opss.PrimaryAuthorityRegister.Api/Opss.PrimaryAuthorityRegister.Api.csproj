@@ -10,19 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\**" />
+    <Compile Remove="Infrastructure\**" />
+    <Content Remove="Entities\**" />
+    <Content Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <None Remove="Entities\**" />
+    <None Remove="Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Infrastructure\EntityConfigurations\" />
-    <Folder Include="Infrastructure\Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
+    <ProjectReference Include="..\..\Core\Opss.PrimaryAuthorityRegister.Api.Application\Opss.PrimaryAuthorityRegister.Api.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

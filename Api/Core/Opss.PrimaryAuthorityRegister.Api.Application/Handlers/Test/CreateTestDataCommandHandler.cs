@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Handlers.TestHandlers;
+namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
 internal class CreateTestDataCommandHandler : IRequestHandler<CreateTestDataCommand, Guid>
 {

@@ -2,7 +2,7 @@
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Handlers.TestHandlers;
+namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
 internal class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
 {
