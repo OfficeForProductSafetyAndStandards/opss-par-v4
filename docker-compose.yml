@@ -3,6 +3,8 @@ version: "3.0"
 services:
    web:
      image: ${DOCKER_REGISTRY-}web
+     ports: 
+      - 9443:443
      build:
        context: .
        dockerfile: Web/Presentation/Opss.PrimaryAuthorityRegister.Web/Dockerfile
@@ -14,3 +16,15 @@ services:
      build:
        context: .
        dockerfile: Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Dockerfile
+   db:
+     image: postgres:latest
+     hostname: db
+     container_name: db
+     environment:
+      - POSTGRES_DB=par
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+     volumes: 
+      - ./.containers/par-db:/var/lib/postgresql/data
+     ports:
+      - 5432:5432

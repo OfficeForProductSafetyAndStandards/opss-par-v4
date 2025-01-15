@@ -50,7 +50,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri(_baseAddress)
         };
 
-        var query = new GetTestDataQuery("something");
+        var query = new GetTestDataQuery(Guid.NewGuid());
 
         // Act
         var response = await client.GetAsync<GetTestDataQuery, TestDataDto>(query).ConfigureAwait(true);
@@ -96,7 +96,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var query = new GetTestDataQuery("something");
+        var query = new GetTestDataQuery(Guid.NewGuid());
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.GetAsync<GetTestDataQuery, TestDataDto>(query)).ConfigureAwait(true);
@@ -136,7 +136,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new CreateTestDataCommand(Guid.NewGuid());
+        var command = new CreateTestDataCommand("Something");
 
         // Act
         var response = await client.PostAsync(command).ConfigureAwait(true);
@@ -182,7 +182,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new CreateTestDataCommand(Guid.NewGuid());
+        var command = new CreateTestDataCommand("Something");
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PostAsync(command)).ConfigureAwait(true);
@@ -222,7 +222,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new UpdateTestDataCommand(Guid.NewGuid());
+        var command = new UpdateTestDataCommand(Guid.NewGuid(), "Something");
 
         // Act
         var response = await client.PutAsync(command).ConfigureAwait(true);
@@ -268,7 +268,7 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new UpdateTestDataCommand(Guid.NewGuid());
+        var command = new UpdateTestDataCommand(Guid.NewGuid(), "Something");
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PutAsync(command)).ConfigureAwait(true);

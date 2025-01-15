@@ -10,12 +10,18 @@
 
 <h1>Hello, world! @data?.Id.ToString()</h1>
 
-<button @onclick=@OnClick>
+@data?.Data
+
+<button @onclick=@OnPostClick>
     Try Post
 </button>
 
 <button @onclick=@OnPutClick>
-    Try Put
+	Try Put
+</button>
+
+<button @onclick=@OnGetClick>
+    Try Get
 </button>
 
 @status?.ToString()
@@ -24,19 +30,25 @@
     private TestDataDto? data;
     private System.Net.HttpStatusCode? status;
 
-    protected override async Task OnInitializedAsync()
+    protected async void OnPostClick()
     {
-        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery("Something"));
-        data = result.Result;
-    }
-
-    protected async void OnClick(){
-        ArgumentNullException.ThrowIfNull(data);
-
-        var ok = await _httpClient.PostAsync(new CreateTestDataCommand(data.Id));
+        var ok = await _httpClient.PostAsync(new CreateTestDataCommand("Something"));
         status = ok.StatusCode;
 
-        data.Id = ok.Result.Id;
+        var id = ok.Result.Id;
+
+        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id));
+        data = result.Result;
+
+        StateHasChanged();
+    }
+
+    protected async void OnGetClick()
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(data.Id));
+        data = result.Result;
 
         StateHasChanged();
     }
@@ -45,7 +57,7 @@
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(data.Id));
+        var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(data.Id, "Something new"));
         status = ok.StatusCode;
 
         StateHasChanged();

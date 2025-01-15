@@ -4,9 +4,9 @@ namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 
 public class CreateTestDataCommand : ICommand<Guid>
 {
-    public CreateTestDataCommand(Guid id)
+    public CreateTestDataCommand(string data)
     {
-        Id = id;
+        Data = data;
     }
-    public Guid Id { get; set; }
+    public string Data { get; }
 }
