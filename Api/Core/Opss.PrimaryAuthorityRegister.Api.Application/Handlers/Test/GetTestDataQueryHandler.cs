@@ -3,7 +3,6 @@ using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
-using System.Data;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 

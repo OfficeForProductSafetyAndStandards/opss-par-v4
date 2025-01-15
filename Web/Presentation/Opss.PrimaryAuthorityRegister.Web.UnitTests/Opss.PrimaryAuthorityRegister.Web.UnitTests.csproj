@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Pages\**" />
+	  <Content Remove="Pages\**" />
+	  <EmbeddedResource Remove="Pages\**" />
+	  <None Remove="Pages\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="Bunit" />
@@ -31,10 +38,6 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		  </PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\" />
 	</ItemGroup>
 
 	<ItemGroup>
