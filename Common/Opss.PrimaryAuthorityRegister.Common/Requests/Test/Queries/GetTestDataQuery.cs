@@ -5,11 +5,10 @@ namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
 
 public class GetTestDataQuery : IQuery<TestDataDto>
 {
+    public Guid Id { get; set; }
 
     public GetTestDataQuery(Guid id)
     {
         Id = id;
     }
-
-    public Guid Id { get; set; }
 }

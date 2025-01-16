@@ -9,10 +9,6 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Repositories;
 
 public class UnitOfWorkTests
 {
-    private DbContextOptions<ApplicationDbContext> InMemoryOptions => new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
-
     [Fact]
     public void Constructor_ShouldThrowArgumentNullException_WhenDbContextIsNull()
     {
@@ -24,8 +20,7 @@ public class UnitOfWorkTests
     public void Repository_ShouldReturnGenericRepositoryInstance()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act
@@ -40,8 +35,7 @@ public class UnitOfWorkTests
     public void Repository_ShouldCacheRepositoryInstance()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act
@@ -56,8 +50,7 @@ public class UnitOfWorkTests
     public async Task Save_ShouldCommitChangesToDatabase()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         var entity = new TestData ("User1");
@@ -74,8 +67,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedAddChanges()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         var entity = new TestData("User1");
@@ -93,8 +85,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedUpdateChanges()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         var entity = new TestData("User1");
@@ -116,8 +107,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedDeleteChanges()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         var entity = new TestData("User1");
@@ -137,8 +127,7 @@ public class UnitOfWorkTests
     public void Dispose_ShouldDisposeDbContext()
     {
         // Arrange
-        var options = InMemoryOptions;
-        var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act
@@ -152,8 +141,7 @@ public class UnitOfWorkTests
     public void Dispose_ShouldBeIdempotent()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act

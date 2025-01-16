@@ -7,18 +7,18 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
 public class CreateTestDataCommandHandler : IRequestHandler<CreateTestDataCommand, Guid>
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateTestDataCommandHandler(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Guid> Handle(CreateTestDataCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var data = await unitOfWork.Repository<TestData>().AddAsync(new TestData(request.Data)).ConfigureAwait(false);
+        var data = await _unitOfWork.Repository<TestData>().AddAsync(new TestData(request.Data)).ConfigureAwait(false);
 
         return data.Id;
     }

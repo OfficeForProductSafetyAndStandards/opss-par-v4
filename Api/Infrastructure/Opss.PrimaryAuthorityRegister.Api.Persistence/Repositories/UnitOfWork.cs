@@ -8,40 +8,40 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationDbContext dbContext;
-    private Hashtable? repositories;
-    private bool disposed;
+    private readonly ApplicationDbContext _dbContext;
+    private Hashtable? _repositories;
+    private bool _disposed;
 
     public UnitOfWork(ApplicationDbContext dbContext)
     {
         ArgumentNullException.ThrowIfNull(dbContext);
 
-        this.dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity
     {
-        repositories ??= new Hashtable();
+        _repositories ??= new Hashtable();
 
         var type = typeof(T).Name;
 
-        if (!repositories.ContainsKey(type))
+        if (!_repositories.ContainsKey(type))
         {
             var repositoryType = typeof(GenericRepository<T>);
             
-            var repositoryInstance = Activator.CreateInstance(repositoryType, dbContext);
+            var repositoryInstance = Activator.CreateInstance(repositoryType, _dbContext);
 
-            repositories.Add(type, repositoryInstance);
+            _repositories.Add(type, repositoryInstance);
         }
 
-        var repository = (IGenericRepository<T>?)repositories[type];
+        var repository = (IGenericRepository<T>?)_repositories[type];
 
         return repository;
     }
 
     public Task Rollback()
     {
-        foreach (var entry in dbContext.ChangeTracker.Entries().ToList())
+        foreach (var entry in _dbContext.ChangeTracker.Entries().ToList())
         {
             switch (entry.State)
             {
@@ -61,7 +61,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<int> Save(CancellationToken cancellationToken)
     {
-        return await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public void Dispose()
@@ -72,11 +72,11 @@ public class UnitOfWork : IUnitOfWork
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposed && disposing)
+        if (!_disposed && disposing)
         {
-            dbContext.Dispose();
+            _dbContext.Dispose();
         }
 
-        disposed = true;
+        _disposed = true;
     }
 }

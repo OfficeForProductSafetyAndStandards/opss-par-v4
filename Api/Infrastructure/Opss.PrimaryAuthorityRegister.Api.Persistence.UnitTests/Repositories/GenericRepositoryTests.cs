@@ -6,16 +6,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
 public class GenericRepositoryTests
 {
-    private DbContextOptions<ApplicationDbContext> InMemoryOptions => new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
-
     [Fact]
     public async Task AddAsync_ShouldAddEntityToDbContext()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
         var entity = new TestData("Test");
@@ -33,8 +28,7 @@ public class GenericRepositoryTests
     public async Task DeleteAsync_ShouldRemoveEntityFromDbContext()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
         var entity = new TestData("User1");
@@ -53,8 +47,7 @@ public class GenericRepositoryTests
     public async Task DeleteByIdAsync_ShouldRemoveEntityFromDbContextById()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
         var entity = new TestData("User1");
@@ -73,8 +66,7 @@ public class GenericRepositoryTests
     public async Task GetByIdAsync_ShouldReturnEntityById()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
         var entity = new TestData("User1");
@@ -93,8 +85,7 @@ public class GenericRepositoryTests
     public async Task UpdateAsync_ShouldUpdateEntityInDbContext()
     {
         // Arrange
-        var options = InMemoryOptions;
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
         var entity = new TestData("User1");

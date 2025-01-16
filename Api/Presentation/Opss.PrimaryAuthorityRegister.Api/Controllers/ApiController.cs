@@ -22,6 +22,8 @@ public class ApiController : ControllerBase
 
         object? request = await GetRequest(name).ConfigureAwait(false);
 
+        if (request is BadRequestObjectResult) return request;
+
         var retVal = await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
         return Responses.Created((Guid)retVal);

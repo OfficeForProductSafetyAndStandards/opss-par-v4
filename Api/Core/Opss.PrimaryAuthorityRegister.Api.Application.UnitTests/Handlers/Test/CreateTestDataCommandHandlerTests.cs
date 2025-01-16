@@ -8,16 +8,16 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Test;
 
 public class CreateTestDataCommandHandlerTests
 {
-    private readonly Mock<IUnitOfWork> unitOfWorkMock;
-    private readonly Mock<IGenericRepository<TestData>> repositoryMock;
-    private readonly CreateTestDataCommandHandler handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IGenericRepository<TestData>> _repositoryMock;
+    private readonly CreateTestDataCommandHandler _handler;
 
     public CreateTestDataCommandHandlerTests()
     {
-        unitOfWorkMock = new Mock<IUnitOfWork>();
-        repositoryMock = new Mock<IGenericRepository<TestData>>();
-        unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(repositoryMock.Object);
-        handler = new CreateTestDataCommandHandler(unitOfWorkMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _repositoryMock = new Mock<IGenericRepository<TestData>>();
+        _unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(_repositoryMock.Object);
+        _handler = new CreateTestDataCommandHandler(_unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class CreateTestDataCommandHandlerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            handler.Handle(request, CancellationToken.None));
+            _handler.Handle(request, CancellationToken.None));
     }
 
     [Fact]
@@ -38,17 +38,17 @@ public class CreateTestDataCommandHandlerTests
         var testData = new TestData("Sample Data");
         var expectedId = Guid.NewGuid();
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<TestData>()))
             .ReturnsAsync(new TestData("Sample Data") { Id = expectedId });
 
         var request = new CreateTestDataCommand(testData.Data);
 
         // Act
-        var result = await handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        repositoryMock.Verify(repo => repo.AddAsync(It.Is<TestData>(d => d.Data == request.Data)), Times.Once);
+        _repositoryMock.Verify(repo => repo.AddAsync(It.Is<TestData>(d => d.Data == request.Data)), Times.Once);
         Assert.Equal(expectedId, result);
     }
 
@@ -59,14 +59,14 @@ public class CreateTestDataCommandHandlerTests
         var expectedId = Guid.NewGuid();
         var testData = new TestData("Sample Data") { Id = expectedId };
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<TestData>()))
             .ReturnsAsync(testData);
 
         var request = new CreateTestDataCommand("Sample Data");
 
         // Act
-        var result = await handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.Equal(expectedId, result);

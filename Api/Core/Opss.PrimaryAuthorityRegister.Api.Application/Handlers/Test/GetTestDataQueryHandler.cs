@@ -8,18 +8,18 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
 public class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public GetTestDataQueryHandler(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<TestDataDto> Handle(GetTestDataQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var data = await unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
+        var data = await _unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
 
         if (data == null)
         {

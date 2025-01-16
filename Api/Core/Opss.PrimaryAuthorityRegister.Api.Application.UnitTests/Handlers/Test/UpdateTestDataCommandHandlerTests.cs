@@ -8,16 +8,16 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Test;
 
 public class UpdateTestDataCommandHandlerTests
 {
-    private readonly Mock<IUnitOfWork> unitOfWorkMock;
-    private readonly Mock<IGenericRepository<TestData>> repositoryMock;
-    private readonly UpdateTestDataCommandHandler handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IGenericRepository<TestData>> _repositoryMock;
+    private readonly UpdateTestDataCommandHandler _handler;
 
     public UpdateTestDataCommandHandlerTests()
     {
-        unitOfWorkMock = new Mock<IUnitOfWork>();
-        repositoryMock = new Mock<IGenericRepository<TestData>>();
-        unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(repositoryMock.Object);
-        handler = new UpdateTestDataCommandHandler(unitOfWorkMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _repositoryMock = new Mock<IGenericRepository<TestData>>();
+        _unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(_repositoryMock.Object);
+        _handler = new UpdateTestDataCommandHandler(_unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class UpdateTestDataCommandHandlerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            handler.Handle(request, CancellationToken.None));
+            _handler.Handle(request, CancellationToken.None));
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class UpdateTestDataCommandHandlerTests
     {
         // Arrange
         var nonExistentId = Guid.NewGuid();
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(nonExistentId))
             .ReturnsAsync((TestData)null);
 
@@ -44,7 +44,7 @@ public class UpdateTestDataCommandHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            handler.Handle(request, CancellationToken.None));
+            _handler.Handle(request, CancellationToken.None));
         Assert.Equal($"No data found with Id {nonExistentId}", exception.Message);
     }
 
@@ -55,22 +55,22 @@ public class UpdateTestDataCommandHandlerTests
         var existingId = Guid.NewGuid();
         var existingData = new TestData("Existing Data") { Id = existingId };
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(existingId))
             .ReturnsAsync(existingData);
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.UpdateAsync(It.IsAny<TestData>()))
             .Returns(Task.CompletedTask);
 
         var request = new UpdateTestDataCommand(existingId, "Updated Data");
 
         // Act
-        await handler.Handle(request, CancellationToken.None);
+        await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        repositoryMock.Verify(repo => repo.GetByIdAsync(existingId), Times.Once);
-        repositoryMock.Verify(repo => repo.UpdateAsync(It.Is<TestData>(d => d.Id == existingId && d.Data == request.Data)), Times.Once);
+        _repositoryMock.Verify(repo => repo.GetByIdAsync(existingId), Times.Once);
+        _repositoryMock.Verify(repo => repo.UpdateAsync(It.Is<TestData>(d => d.Id == existingId && d.Data == request.Data)), Times.Once);
     }
 
     [Fact]
@@ -80,18 +80,18 @@ public class UpdateTestDataCommandHandlerTests
         var existingId = Guid.NewGuid();
         var existingData = new TestData("Old Data") { Id = existingId };
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(existingId))
             .ReturnsAsync(existingData);
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.UpdateAsync(It.IsAny<TestData>()))
             .Returns(Task.CompletedTask);
 
         var request = new UpdateTestDataCommand(existingId,"New Data");
 
         // Act
-        await handler.Handle(request, CancellationToken.None);
+        await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.Equal(request.Data, existingData.Data);

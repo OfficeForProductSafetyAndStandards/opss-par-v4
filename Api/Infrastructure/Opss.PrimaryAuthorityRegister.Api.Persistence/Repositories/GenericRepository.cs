@@ -6,22 +6,22 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditableEntity
 {
-    private readonly ApplicationDbContext dbContext;
+    private readonly ApplicationDbContext _dbContext;
 
     public GenericRepository(ApplicationDbContext dbContext)
     {
-        this.dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<T> AddAsync(T entity)
     {
-        await dbContext.Set<T>().AddAsync(entity).ConfigureAwait(false);
+        await _dbContext.Set<T>().AddAsync(entity).ConfigureAwait(false);
         return entity;
     }
 
     public Task DeleteAsync(T entity)
     {
-        dbContext.Set<T>().Remove(entity);
+        _dbContext.Set<T>().Remove(entity);
         return Task.CompletedTask;
     }
 
@@ -39,7 +39,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditabl
 
     public async Task<T?> GetByIdAsync(Guid Id)
     {
-        return await dbContext.Set<T>().FindAsync(Id).ConfigureAwait(false);
+        return await _dbContext.Set<T>().FindAsync(Id).ConfigureAwait(false);
     }
 
     public Task UpdateAsync(T entity)
@@ -50,7 +50,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditabl
 
         if (exist != null)
         {
-            dbContext.Entry(exist).CurrentValues.SetValues(entity);
+            _dbContext.Entry(exist).CurrentValues.SetValues(entity);
         }
 
         return Task.CompletedTask;

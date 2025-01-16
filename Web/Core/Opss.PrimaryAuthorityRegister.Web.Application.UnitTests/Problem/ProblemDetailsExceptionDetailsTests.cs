@@ -1,5 +1,4 @@
 ﻿using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
-using Xunit;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Problem;
 

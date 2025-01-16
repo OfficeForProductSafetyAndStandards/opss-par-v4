@@ -8,16 +8,16 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Test;
 
 public class GetTestDataQueryHandlerTests
 {
-    private readonly Mock<IUnitOfWork> unitOfWorkMock;
-    private readonly Mock<IGenericRepository<TestData>> repositoryMock;
-    private readonly GetTestDataQueryHandler handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IGenericRepository<TestData>> _repositoryMock;
+    private readonly GetTestDataQueryHandler _handler;
 
     public GetTestDataQueryHandlerTests()
     {
-        unitOfWorkMock = new Mock<IUnitOfWork>();
-        repositoryMock = new Mock<IGenericRepository<TestData>>();
-        unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(repositoryMock.Object);
-        handler = new GetTestDataQueryHandler(unitOfWorkMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _repositoryMock = new Mock<IGenericRepository<TestData>>();
+        _unitOfWorkMock.Setup(uow => uow.Repository<TestData>()).Returns(_repositoryMock.Object);
+        _handler = new GetTestDataQueryHandler(_unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class GetTestDataQueryHandlerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            handler.Handle(request, CancellationToken.None));
+            _handler.Handle(request, CancellationToken.None));
     }
 
     [Fact]
@@ -36,17 +36,17 @@ public class GetTestDataQueryHandlerTests
     {
         // Arrange
         var testData = new TestData("Sample Data") { Id = Guid.NewGuid() };
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(testData.Id))
             .ReturnsAsync(testData);
 
         var request = new GetTestDataQuery(testData.Id);
 
         // Act
-        var result = await handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        repositoryMock.Verify(repo => repo.GetByIdAsync(testData.Id), Times.Once);
+        _repositoryMock.Verify(repo => repo.GetByIdAsync(testData.Id), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(testData.Id, result.Id);
         Assert.Equal(testData.Data, result.Data);
@@ -60,14 +60,14 @@ public class GetTestDataQueryHandlerTests
         var expectedData = "Sample Data";
         var testData = new TestData(expectedData) { Id = expectedId };
 
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(expectedId))
             .ReturnsAsync(testData);
 
         var request = new GetTestDataQuery (expectedId);
 
         // Act
-        var result = await handler.Handle(request, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);
@@ -80,7 +80,7 @@ public class GetTestDataQueryHandlerTests
     {
         // Arrange
         var nonExistentId = Guid.NewGuid();
-        repositoryMock
+        _repositoryMock
             .Setup(repo => repo.GetByIdAsync(nonExistentId))
             .ReturnsAsync((TestData)null);
 
@@ -88,7 +88,7 @@ public class GetTestDataQueryHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            handler.Handle(request, CancellationToken.None));
+            _handler.Handle(request, CancellationToken.None));
         Assert.Equal($"No data found with Id {nonExistentId}", exception.Message);
     }
 }

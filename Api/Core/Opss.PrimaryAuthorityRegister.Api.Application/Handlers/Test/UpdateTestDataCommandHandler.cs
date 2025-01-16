@@ -7,18 +7,18 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
 public class UpdateTestDataCommandHandler : IRequestHandler<UpdateTestDataCommand>
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UpdateTestDataCommandHandler(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateTestDataCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var data = await unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
+        var data = await _unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
 
         if(data == null)
         {
@@ -27,6 +27,6 @@ public class UpdateTestDataCommandHandler : IRequestHandler<UpdateTestDataComman
 
         data.Data = request.Data;
 
-        await unitOfWork.Repository<TestData>().UpdateAsync(data).ConfigureAwait(false);
+        await _unitOfWork.Repository<TestData>().UpdateAsync(data).ConfigureAwait(false);
     }
 }

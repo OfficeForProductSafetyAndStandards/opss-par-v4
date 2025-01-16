@@ -11,11 +11,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Behaviour;
 /// <typeparam name="TResponse">The response type</typeparam>
 public class PersistBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : ICommandBase
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public PersistBehaviour(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
@@ -26,13 +26,13 @@ public class PersistBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         {
             var response = await next().ConfigureAwait(false);
 
-            await unitOfWork.Save(cancellationToken).ConfigureAwait(false);
+            await _unitOfWork.Save(cancellationToken).ConfigureAwait(false);
 
             return response;
         }
         catch
         {
-            await unitOfWork.Rollback().ConfigureAwait(false);
+            await _unitOfWork.Rollback().ConfigureAwait(false);
 
             throw;
         }

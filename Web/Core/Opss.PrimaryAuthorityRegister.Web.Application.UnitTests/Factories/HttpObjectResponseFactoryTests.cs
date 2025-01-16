@@ -1,10 +1,7 @@
-﻿using Moq;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
-using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
+﻿using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
 using Opss.PrimaryAuthorityRegister.Web.Application.Factories;
 using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Factories;

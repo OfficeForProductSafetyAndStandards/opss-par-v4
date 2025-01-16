@@ -2,12 +2,12 @@
 
 public class TestDataDto
 {
+    public Guid Id { get; set; }
+    public string Data { get; set; }
+
     public TestDataDto(Guid id, string data)
     {
         Id = id;
         Data = data;
     }
-
-    public Guid Id { get; set; }
-    public string Data { get; set; }
 }
