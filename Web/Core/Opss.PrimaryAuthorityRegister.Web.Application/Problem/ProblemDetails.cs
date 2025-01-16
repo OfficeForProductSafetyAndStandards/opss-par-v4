@@ -29,20 +29,3 @@ public class ProblemDetails
         throw exception;
     }
 }
-
-public class ProblemDetailsExceptionDetails
-{
-    public string? Message { get; set; }
-    public string? Type { get; set; }
-    public string? Raw { get; set; }
-}
-
-public class ProblemDetailsException : Exception
-{
-    public ProblemDetailsException() { }
-
-    public ProblemDetailsException(ProblemDetails problem)
-        : base(problem?.ExceptionDetails?.FirstOrDefault()?.Raw)
-    {
-    }
-}

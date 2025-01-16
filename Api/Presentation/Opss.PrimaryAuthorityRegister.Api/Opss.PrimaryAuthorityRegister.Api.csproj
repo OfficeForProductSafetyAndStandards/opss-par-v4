@@ -22,17 +22,23 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
     <ProjectReference Include="..\..\Core\Opss.PrimaryAuthorityRegister.Api.Application\Opss.PrimaryAuthorityRegister.Api.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Opss.PrimaryAuthorityRegister.Api.Persistence\Opss.PrimaryAuthorityRegister.Api.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.32.0.97167" />
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.5.0.109200" />
   </ItemGroup>
 
 </Project>

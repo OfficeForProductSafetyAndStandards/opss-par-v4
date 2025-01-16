@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Items", "!Solution Items", "{41F6AD60-8817-49EC-A0FB-97831CEB0D1E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		CodeCoverage.runsettings = CodeCoverage.runsettings
 		Directory.build.props = Directory.build.props
 		LICENSE = LICENSE
 		README.md = README.md

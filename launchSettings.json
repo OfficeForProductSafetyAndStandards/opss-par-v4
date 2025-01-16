@@ -8,7 +8,8 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
         "api": "StartDebugging",
-        "web": "StartDebugging"
+        "web": "StartDebugging",
+        "db": "StartWithoutDebugging"
       }
     }
   }

@@ -29,6 +29,26 @@ public class HttpObjectResponseFactoryTests
         Assert.Equal("Test", result.Result.Name);
         Assert.Equal(42, result.Result.Value);
     }
+    [Fact]
+    public async Task DetermineSuccess_Generic_SuccessfulResponse_ReturnsStringResponseWithResult()
+    {
+        // Arrange
+        var responseContent = "Content";
+        using var responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(responseContent)
+        };
+
+        // Act
+        var result = await HttpObjectResponseFactory.DetermineSuccess<string>(responseMessage).ConfigureAwait(true);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        Assert.True(result.IsSuccessStatusCode);
+        Assert.NotNull(result.Result);
+        Assert.Equal("Content", result.Result);
+    }
 
     [Fact]
     public async Task DetermineSuccess_Generic_ErrorResponse_ThrowsHttpResponseException()
@@ -47,6 +67,23 @@ public class HttpObjectResponseFactoryTests
 
         Assert.Equal(HttpStatusCode.BadRequest, exception.Response.StatusCode);
         Assert.Equal(problemDetails.Detail, exception.Message);
+    }
+
+    [Fact]
+    public async Task DetermineSuccess_Generic_ShouldThrowHttpResponseException_WhenJsonDeserializationFails()
+    {
+        // Arrange
+        using var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+        {
+            Content = new StringContent("{ Invalid JSON string"), // Simulate invalid JSON body
+        };
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<HttpResponseException>(async () =>
+            await HttpObjectResponseFactory.DetermineSuccess<TestObject>(httpResponseMessage).ConfigureAwait(true)).ConfigureAwait(true);
+
+        Assert.Equal(HttpStatusCode.InternalServerError, exception.Response.StatusCode);
+        Assert.Equal("Unknown error occurred", exception.Message);
     }
 
     [Fact]
@@ -84,6 +121,23 @@ public class HttpObjectResponseFactoryTests
 
         Assert.Equal(HttpStatusCode.InternalServerError, exception.Response.StatusCode);
         Assert.Equal(problemDetails.Detail, exception.Message);
+    }
+
+    [Fact]
+    public async Task DetermineSuccess_NonGeneric_ShouldThrowHttpResponseException_WhenJsonDeserializationFails()
+    {
+        // Arrange
+        using var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+        {
+            Content = new StringContent("{ Invalid JSON string"), // Simulate invalid JSON body
+        };
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<HttpResponseException>(async () =>
+            await HttpObjectResponseFactory.DetermineSuccess(httpResponseMessage).ConfigureAwait(true)).ConfigureAwait(true);
+
+        Assert.Equal(HttpStatusCode.InternalServerError, exception.Response.StatusCode);
+        Assert.Equal("Unknown error occurred", exception.Message);
     }
 
     [Fact]

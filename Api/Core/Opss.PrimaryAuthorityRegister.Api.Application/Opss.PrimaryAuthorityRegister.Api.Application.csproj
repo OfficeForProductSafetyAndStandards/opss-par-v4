@@ -11,7 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
+    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Domain\Opss.PrimaryAuthorityRegister.Api.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.5.0.109200" />
   </ItemGroup>
 
 </Project>

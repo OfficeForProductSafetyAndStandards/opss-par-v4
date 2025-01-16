@@ -210,3 +210,4 @@ Users.db
 *.db
 *.db-shm
 *.db-wal
+/.containers
