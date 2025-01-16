@@ -6,7 +6,7 @@ using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 
-internal class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
+public class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestDataDto>
 {
     private readonly IUnitOfWork unitOfWork;
 
@@ -20,6 +20,11 @@ internal class GetTestDataQueryHandler : IRequestHandler<GetTestDataQuery, TestD
         ArgumentNullException.ThrowIfNull(request);
 
         var data = await unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
+
+        if (data == null)
+        {
+            throw new InvalidOperationException($"No data found with Id {request.Id}");
+        }
 
         return new TestDataDto(data.Id, data.Data);
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
@@ -70,7 +71,7 @@ public class UnitOfWorkTests
     }
 
     [Fact]
-    public async Task Rollback_ShouldRevertUnsavedChanges()
+    public async Task Rollback_ShouldRevertUnsavedAddChanges()
     {
         // Arrange
         var options = InMemoryOptions;
@@ -86,6 +87,50 @@ public class UnitOfWorkTests
 
         // Assert
         Assert.Empty(trackedEntities); // No entities should be tracked
+    }
+
+    [Fact]
+    public async Task Rollback_ShouldRevertUnsavedUpdateChanges()
+    {
+        // Arrange
+        var options = InMemoryOptions;
+        using var context = new ApplicationDbContext(options);
+        using var unitOfWork = new UnitOfWork(context);
+
+        var entity = new TestData("User1");
+        await context.Set<TestData>().AddAsync(entity);
+        await unitOfWork.Save(CancellationToken.None);
+        entity.Data = "User2";
+        context.Set<TestData>().Update(entity);
+
+        // Act
+        await unitOfWork.Rollback();
+        var trackedEntities = context.ChangeTracker.Entries().ToList();
+
+        // Assert
+        entity.Data = "User1";
+        Assert.Contains(entity, trackedEntities.Select(i => i.Entity));
+    }
+
+    [Fact]
+    public async Task Rollback_ShouldRevertUnsavedDeleteChanges()
+    {
+        // Arrange
+        var options = InMemoryOptions;
+        using var context = new ApplicationDbContext(options);
+        using var unitOfWork = new UnitOfWork(context);
+
+        var entity = new TestData("User1");
+        await context.Set<TestData>().AddAsync(entity);
+        await unitOfWork.Save(CancellationToken.None);
+        context.Set<TestData>().Remove(entity);
+
+        // Act
+        await unitOfWork.Rollback();
+        var trackedEntities = context.ChangeTracker.Entries().ToList();
+
+        // Assert
+        Assert.Contains(entity, trackedEntities.Select(i => i.Entity));
     }
 
     [Fact]

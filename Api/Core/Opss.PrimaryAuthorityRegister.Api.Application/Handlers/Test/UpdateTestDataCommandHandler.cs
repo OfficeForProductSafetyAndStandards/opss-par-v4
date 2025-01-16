@@ -20,6 +20,11 @@ public class UpdateTestDataCommandHandler : IRequestHandler<UpdateTestDataComman
 
         var data = await unitOfWork.Repository<TestData>().GetByIdAsync(request.Id).ConfigureAwait(false);
 
+        if(data == null)
+        {
+            throw new InvalidOperationException($"No data found with Id {request.Id}");
+        }
+
         data.Data = request.Data;
 
         await unitOfWork.Repository<TestData>().UpdateAsync(data).ConfigureAwait(false);

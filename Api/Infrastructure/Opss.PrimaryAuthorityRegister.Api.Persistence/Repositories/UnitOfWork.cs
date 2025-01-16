@@ -36,11 +36,6 @@ public class UnitOfWork : IUnitOfWork
 
         var repository = (IGenericRepository<T>?)repositories[type];
 
-        if (repository == null)
-        {
-            throw new NotImplementedException($"Repository for {type} not found");
-        }
-
         return repository;
     }
 
