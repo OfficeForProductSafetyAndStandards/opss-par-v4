@@ -12,8 +12,3 @@ public interface ICommand<out T> : IRequest<T>, ICommandBase { }
 /// Defines a command that doesn't return a value
 /// </summary>
 public interface ICommand : IRequest, ICommandBase { }
-
-/// <summary>
-/// A common base for all commands
-/// </summary>
-public interface ICommandBase { }

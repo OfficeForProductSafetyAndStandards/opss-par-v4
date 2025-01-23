@@ -13,12 +13,12 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.
         {
             // Arrange
             var claim1 = new Claim(
-                    "http://www.example.com/Claim/Permissions/Read",
-                    "http://www.example.com/Claim/Resource/4",
+                    "Read",
+                    "Resource/4",
                     ClaimTypes.NameIdentifier);
             var claim2 = new Claim(
-                    "http://www.example.com/Claim/Permissions/Read",
-                    "http://www.example.com/Claim/Resource/4",
+                    "Read",
+                    "Resource/4",
                     ClaimTypes.NameIdentifier);
 
             var resourceClaimProvider = new FakeResourceClaimProvider();

@@ -1,6 +1,6 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
+namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation.ResourceKeyExpanders;
 
 public class MultiplePermissionResourceKeyExpander : IResourceKeyExpander
 {

@@ -35,7 +35,7 @@ public class ApiController : ControllerBase
         if (!ModelState.IsValid) throw new InvalidDataException();
 
         object? request = await GetRequest(name).ConfigureAwait(false);
-
+  
         _ = await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
         return Responses.NoContent();

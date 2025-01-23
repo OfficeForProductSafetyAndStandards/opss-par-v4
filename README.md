@@ -58,6 +58,7 @@ In Docker Desktop, go to Settings > General > Check "Use the WSL 2 based engine.
 After completing all the steps, restart your computer and try running Docker Compose with your volume.
 
 ## Database Migrations
-Set your starup project to `Opss.PrimaryAuthorityRegister.Api`. Then using the `Package Manager Console` set 
-the defaul tproject to `Api\Infrastructure\Opss.PrimaryAuthorityRegister.Persistance`.
-Finally run: `Add-Migration <Migration Name>`
+- Set your starup project to `Opss.PrimaryAuthorityRegister.Api`. 
+- Then using the `Package Manager Console` set the default project to `Api\Infrastructure\Opss.PrimaryAuthorityRegister.Persistance`.
+- Create the migration: `Add-Migration <Migration Name>`
+- Apply the migration `Update-Database`

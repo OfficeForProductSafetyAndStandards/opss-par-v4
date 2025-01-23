@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
+using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
@@ -9,7 +10,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 /// to perform the operation associated with the specified method, using a <see cref="IClaimChecker"/>
 /// instance to perform the actual authorisation.
 /// </summary>
-public class ClaimAuthorisationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest
+public class ClaimAuthorisationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequestBase
 {
     private readonly IClaimChecker claimChecker;
     private readonly ClaimsPrincipal claimsPrincipal;

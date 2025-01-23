@@ -13,7 +13,7 @@
 @data?.Data
 
 <button @onclick=@OnPostClick>
-    Try Post
+	Try Post
 </button>
 
 <button @onclick=@OnPutClick>
@@ -21,45 +21,48 @@
 </button>
 
 <button @onclick=@OnGetClick>
-    Try Get
+	Try Get
 </button>
 
 @status?.ToString()
 
+@Thread.CurrentPrincipal?.Identity?.Name
+
 @code {
-    private TestDataDto? data;
-    private System.Net.HttpStatusCode? status;
+	private TestDataDto? data;
+	private System.Net.HttpStatusCode? status;
+	private Guid ownerId = new Guid("E3E695CC-CA85-43D8-9ADD-AA004EEA5BE5");
 
-    protected async void OnPostClick()
-    {
-        var ok = await _httpClient.PostAsync(new CreateTestDataCommand("Something"));
-        status = ok.StatusCode;
+	protected async void OnPostClick()
+	{
+		var ok = await _httpClient.PostAsync(new CreateTestDataCommand(ownerId, "Something"));
+		status = ok.StatusCode;
 
-        var id = ok.Result.Id;
+		var id = ok.Result.Id;
 
-        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id));
-        data = result.Result;
+		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id));
+		data = result.Result;
 
-        StateHasChanged();
-    }
+		StateHasChanged();
+	}
 
-    protected async void OnGetClick()
-    {
-        ArgumentNullException.ThrowIfNull(data);
+	protected async void OnGetClick()
+	{
+		ArgumentNullException.ThrowIfNull(data);
 
-        var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(data.Id));
-        data = result.Result;
+		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(data.Id));
+		data = result.Result;
 
-        StateHasChanged();
-    }
+		StateHasChanged();
+	}
 
-    protected async void OnPutClick()
-    {
-        ArgumentNullException.ThrowIfNull(data);
+	protected async void OnPutClick()
+	{
+		ArgumentNullException.ThrowIfNull(data);
 
-        var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(data.Id, "Something new"));
-        status = ok.StatusCode;
+		var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(ownerId, data.Id, "Something new"));
+		status = ok.StatusCode;
 
-        StateHasChanged();
-    }
+		StateHasChanged();
+	}
 }

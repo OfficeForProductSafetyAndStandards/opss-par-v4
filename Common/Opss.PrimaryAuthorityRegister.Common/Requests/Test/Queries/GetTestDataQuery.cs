@@ -4,7 +4,7 @@ using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 
 namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
 
-[PermissionFor("Read", "TestData/{Id}", Group = "OPSS")]
+[PermissionFor("Read", "TestData/{Id}")]
 public class GetTestDataQuery : IQuery<TestDataDto>
 {
     public Guid Id { get; set; }

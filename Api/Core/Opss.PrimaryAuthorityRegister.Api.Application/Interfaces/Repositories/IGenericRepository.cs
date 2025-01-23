@@ -10,6 +10,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 public interface IGenericRepository<T> where T : class, IEntity
 {
     /// <summary>
+    /// Provide access to a queryable list of entities.
+    /// </summary>
+    IQueryable<T> Entities { get; }
+
+    /// <summary>
     /// Return an item by it's Id.
     /// </summary>
     /// <param name="Id">The item to find.</param>

@@ -47,6 +47,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>^Opss\.PrimaryAuthorityRegister\.Api\.Persistence\.Migrations\..*</Function>
 								<Function>^Opss\.PrimaryAuthorityRegister\.Web\.Pages\..*</Function>
 								<Function>^AspNetCoreGeneratedDocument.*</Function>
+								<Function>^Opss\.PrimaryAuthorityRegister\.Api\.Application\.Extensions\.IServiceCollectionExtensions\.GenerateTempIdentity</Function>
 							</Exclude>
 						</Functions>
 

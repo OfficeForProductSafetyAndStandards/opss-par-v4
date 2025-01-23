@@ -68,8 +68,6 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
     /// </param>
     public AttributeBasedResourceClaimProvider(IEnumerable<IResourceKeyExpander> resourceKeyExpanders)
     {
-
-
         this.resourceKeyExpanders = resourceKeyExpanders;
     }
 
