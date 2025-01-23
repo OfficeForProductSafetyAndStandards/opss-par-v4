@@ -3,7 +3,7 @@
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
 
 /// <summary>
-/// Given a resource (e.g. an <see cref="IMessage"/>) will get the claims that are being demanded
+/// Given a resource (e.g. an <see cref="IRequestBase"/>) will get the claims that are being demanded
 /// for authorisation purposes.
 /// </summary>
 public interface IResourceClaimProvider
@@ -17,4 +17,3 @@ public interface IResourceClaimProvider
     /// <returns>The claims demanded by the specified resource.</returns>
     DemandedClaims GetDemandedClaims(object resource);
 }
-

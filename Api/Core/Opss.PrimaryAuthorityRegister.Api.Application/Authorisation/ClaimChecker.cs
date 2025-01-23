@@ -50,6 +50,7 @@ public class ClaimChecker : IClaimChecker
         }
         
         var demandedClaims = _resourceClaimProvider.GetDemandedClaims(resource);
+        // TODO: Do we need to expand the user claims?
         var currentClaims = principal.Claims;
         
         demandedClaims.Demand(resource, currentClaims);

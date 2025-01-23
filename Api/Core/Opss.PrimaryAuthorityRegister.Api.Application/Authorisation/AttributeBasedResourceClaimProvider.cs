@@ -1,13 +1,7 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
 using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 

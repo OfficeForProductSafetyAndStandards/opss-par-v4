@@ -6,7 +6,7 @@ namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 /// <summary>
 /// Permission For Attribute: User must have write permissions on TestData with the given Id and belong to the OPSS group.
 /// </summary>
-[PermissionFor("Write", "TestData/Owner/{OwnerId}")]
+[PermissionFor("Write", "TestData/*")]
 public class UpdateTestDataCommand : ICommand
 {
     public Guid OwnerId { get; }
