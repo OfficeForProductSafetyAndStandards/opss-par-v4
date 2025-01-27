@@ -3,7 +3,7 @@ using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 
-[PermissionFor("Create", "TestData/Owner/{OwnerId}")]
+[PermissionFor("Create", "Owner/{OwnerId}")]
 public class CreateTestDataCommand : ICommand<Guid>
 {
     public Guid OwnerId { get; }
@@ -14,4 +14,4 @@ public class CreateTestDataCommand : ICommand<Guid>
         OwnerId = ownerId;
         Data = data;
     }
-}
+}   

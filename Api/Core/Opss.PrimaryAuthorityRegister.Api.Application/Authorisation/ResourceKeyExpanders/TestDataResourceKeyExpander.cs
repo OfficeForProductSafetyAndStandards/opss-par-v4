@@ -36,7 +36,7 @@ public class TestDataResourceKeyExpander : IResourceKeyExpander
 
             var allTestData = allItems
                  .Select(i => $"TestData/{i.Id}")
-                 .Concat(allItems.Select(i => $"TestData/Owner/{i.OwnerId}"))
+                 .Concat(allItems.Select(i => $"Owner/{i.OwnerId}"))
                  .Distinct()
                  .ToList();
 
@@ -50,6 +50,6 @@ public class TestDataResourceKeyExpander : IResourceKeyExpander
 
         if (ownedItems == null) return [];
 
-        return new List<string> { $"TestData/Owner/{ownedItems.OwnerId.ToString()}" };
+        return new List<string> { $"Owner/{ownedItems.OwnerId.ToString()}" };
     }
 }
