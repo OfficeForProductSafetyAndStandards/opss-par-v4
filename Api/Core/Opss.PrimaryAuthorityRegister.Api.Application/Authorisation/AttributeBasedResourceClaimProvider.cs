@@ -52,7 +52,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 /// </remarks>
 public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
 {
-    private readonly IEnumerable<IResourceKeyExpander> resourceKeyExpanders;
+    private readonly IEnumerable<IResourceKeyExpander> _resourceKeyExpanders;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AttributeBasedResourceClaimProvider"/> class.
