@@ -3,7 +3,7 @@
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 
 /// <summary>
-/// Interface definingin all the generic repository functions that 
+/// Interface definining all the generic repository functions that 
 /// will be provided by all repositories.
 /// </summary>
 /// <typeparam name="T">The domain model type the repository handles.</typeparam>
