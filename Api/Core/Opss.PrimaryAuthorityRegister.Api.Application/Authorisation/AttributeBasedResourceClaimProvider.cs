@@ -62,7 +62,7 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
     /// </param>
     public AttributeBasedResourceClaimProvider(IEnumerable<IResourceKeyExpander> resourceKeyExpanders)
     {
-        this.resourceKeyExpanders = resourceKeyExpanders;
+        _resourceKeyExpanders = resourceKeyExpanders;
     }
 
     /// <summary>
@@ -112,8 +112,8 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
 
     private IEnumerable<Claim> ExpandClaim(Claim claim)
     {
-        var expandedResourceKeyValues = resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.Value.ToString()));
-        var expandedResourceKeyValueTypes = resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.ValueType.ToString()));
+        var expandedResourceKeyValues = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.Value.ToString()));
+        var expandedResourceKeyValueTypes = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.ValueType.ToString()));
 
         List<Claim> expandedClaims = new List<Claim>();
 
