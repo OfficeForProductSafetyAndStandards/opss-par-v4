@@ -63,7 +63,7 @@ public class TestDataResourceKeyExpanderTests
         var expanded = expander.GetKeys($"TestData/{expectedItem.Id}");
 
         // Assert
-        var expectedResults = new[] { $"TestData/Owner/{ownerId}" };
+        var expectedResults = new[] { $"Owner/{ownerId}" };
 
         Assert.Equal(expectedResults, expanded);
     }
