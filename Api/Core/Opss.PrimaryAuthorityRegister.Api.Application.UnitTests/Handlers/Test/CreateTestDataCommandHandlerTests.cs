@@ -35,14 +35,15 @@ public class CreateTestDataCommandHandlerTests
     public async Task Handle_ShouldCallAddAsyncWithCorrectData_WhenRequestIsValid()
     {
         // Arrange
-        var testData = new TestData("Sample Data");
+        var ownerId = Guid.NewGuid();
+        var testData = new TestData(ownerId, "Sample Data");
         var expectedId = Guid.NewGuid();
 
         _repositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<TestData>()))
-            .ReturnsAsync(new TestData("Sample Data") { Id = expectedId });
+            .ReturnsAsync(new TestData(ownerId, "Sample Data") { Id = expectedId });
 
-        var request = new CreateTestDataCommand(testData.Data);
+        var request = new CreateTestDataCommand(ownerId, testData.Data);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -56,14 +57,15 @@ public class CreateTestDataCommandHandlerTests
     public async Task Handle_ShouldReturnGeneratedId_WhenRequestIsValid()
     {
         // Arrange
+        var ownerId = Guid.NewGuid();
         var expectedId = Guid.NewGuid();
-        var testData = new TestData("Sample Data") { Id = expectedId };
+        var testData = new TestData(ownerId, "Sample Data") { Id = expectedId };
 
         _repositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<TestData>()))
             .ReturnsAsync(testData);
 
-        var request = new CreateTestDataCommand("Sample Data");
+        var request = new CreateTestDataCommand(ownerId, "Sample Data");
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

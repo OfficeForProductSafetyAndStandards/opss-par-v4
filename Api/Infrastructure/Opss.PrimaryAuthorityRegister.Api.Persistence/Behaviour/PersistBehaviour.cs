@@ -15,9 +15,17 @@ public class PersistBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
 
     public PersistBehaviour(IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// When the request has compelted, the unitOfWork will be committed to the database.
+    /// If the request throws an exception, then the unit of work will be rolled back.
+    /// </summary>
+    /// <param name="request">The request being executed.</param>
+    /// <param name="next">The next behaviour to execute.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The request response.</returns>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(next);

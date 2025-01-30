@@ -13,6 +13,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditabl
         _dbContext = dbContext;
     }
 
+    public IQueryable<T> Entities => _dbContext.Set<T>();
+
     public async Task<T> AddAsync(T entity)
     {
         await _dbContext.Set<T>().AddAsync(entity).ConfigureAwait(false);

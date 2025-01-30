@@ -18,7 +18,7 @@ public class CreateTestDataCommandHandler : IRequestHandler<CreateTestDataComman
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var data = await _unitOfWork.Repository<TestData>().AddAsync(new TestData(request.Data)).ConfigureAwait(false);
+        var data = await _unitOfWork.Repository<TestData>().AddAsync(new TestData(request.OwnerId, request.Data)).ConfigureAwait(false);
 
         return data.Id;
     }

@@ -136,7 +136,8 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new CreateTestDataCommand("Something");
+        var ownerId = Guid.NewGuid();
+        var command = new CreateTestDataCommand(ownerId, "Something");
 
         // Act
         var response = await client.PostAsync(command).ConfigureAwait(true);
@@ -182,7 +183,8 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new CreateTestDataCommand("Something");
+        var ownerId = Guid.NewGuid();
+        var command = new CreateTestDataCommand(ownerId, "Something");
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PostAsync(command)).ConfigureAwait(true);
@@ -221,8 +223,9 @@ public class HttpClientExtensionsTests
         {
             BaseAddress = new Uri("http://api/")
         };
-
-        var command = new UpdateTestDataCommand(Guid.NewGuid(), "Something");
+        
+        var ownerId = Guid.NewGuid();
+        var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
 
         // Act
         var response = await client.PutAsync(command).ConfigureAwait(true);
@@ -268,7 +271,8 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var command = new UpdateTestDataCommand(Guid.NewGuid(), "Something");
+        var ownerId = Guid.NewGuid();
+        var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PutAsync(command)).ConfigureAwait(true);

@@ -40,7 +40,8 @@ public class UpdateTestDataCommandHandlerTests
             .Setup(repo => repo.GetByIdAsync(nonExistentId))
             .ReturnsAsync((TestData)null);
 
-        var request = new UpdateTestDataCommand(nonExistentId, "Updated Data");
+        var ownerId = Guid.NewGuid();
+        var request = new UpdateTestDataCommand(ownerId, nonExistentId, "Updated Data");
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
@@ -52,8 +53,9 @@ public class UpdateTestDataCommandHandlerTests
     public async Task Handle_ShouldCallUpdateAsyncWithUpdatedData_WhenRequestIsValid()
     {
         // Arrange
+        var ownerId = Guid.NewGuid();
         var existingId = Guid.NewGuid();
-        var existingData = new TestData("Existing Data") { Id = existingId };
+        var existingData = new TestData(ownerId, "Existing Data") { Id = existingId };
 
         _repositoryMock
             .Setup(repo => repo.GetByIdAsync(existingId))
@@ -63,7 +65,7 @@ public class UpdateTestDataCommandHandlerTests
             .Setup(repo => repo.UpdateAsync(It.IsAny<TestData>()))
             .Returns(Task.CompletedTask);
 
-        var request = new UpdateTestDataCommand(existingId, "Updated Data");
+        var request = new UpdateTestDataCommand(ownerId, existingId, "Updated Data");
 
         // Act
         await _handler.Handle(request, CancellationToken.None);
@@ -77,8 +79,9 @@ public class UpdateTestDataCommandHandlerTests
     public async Task Handle_ShouldUpdateDataCorrectly_WhenRequestIsValid()
     {
         // Arrange
+        var ownerId = Guid.NewGuid();
         var existingId = Guid.NewGuid();
-        var existingData = new TestData("Old Data") { Id = existingId };
+        var existingData = new TestData(ownerId, "Old Data") { Id = existingId };
 
         _repositoryMock
             .Setup(repo => repo.GetByIdAsync(existingId))
@@ -88,7 +91,7 @@ public class UpdateTestDataCommandHandlerTests
             .Setup(repo => repo.UpdateAsync(It.IsAny<TestData>()))
             .Returns(Task.CompletedTask);
 
-        var request = new UpdateTestDataCommand(existingId,"New Data");
+        var request = new UpdateTestDataCommand(ownerId, existingId,"New Data");
 
         // Act
         await _handler.Handle(request, CancellationToken.None);
