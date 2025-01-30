@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
+﻿using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
@@ -7,13 +6,34 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 public class GenericRepositoryTests
 {
     [Fact]
+    public async Task Entities_ShouldReturnDataset()
+    {
+        // Arrange
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        var repository = new GenericRepository<TestData>(context);
+
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
+        await context.Set<TestData>().AddAsync(entity);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = repository.Entities.SingleOrDefault();
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(entity.Id, result?.Id);
+    }
+
+    [Fact]
     public async Task AddAsync_ShouldAddEntityToDbContext()
     {
         // Arrange
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
-        var entity = new TestData("Test");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "Test");
 
         // Act
         var result = await repository.AddAsync(entity);
@@ -31,7 +51,8 @@ public class GenericRepositoryTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await context.SaveChangesAsync();
 
@@ -50,7 +71,8 @@ public class GenericRepositoryTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await context.SaveChangesAsync();
 
@@ -69,7 +91,8 @@ public class GenericRepositoryTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await context.SaveChangesAsync();
 
@@ -88,7 +111,8 @@ public class GenericRepositoryTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         var repository = new GenericRepository<TestData>(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await context.SaveChangesAsync();
 

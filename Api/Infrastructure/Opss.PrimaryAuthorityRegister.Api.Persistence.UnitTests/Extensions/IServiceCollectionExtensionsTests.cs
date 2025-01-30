@@ -46,7 +46,7 @@ public class IServiceCollectionExtensionsTests
         // Act & Assert
         var exception = Assert.Throws<InvalidOperationException>(() =>
             services.AddDbContext(configurationMock.Object));
-        Assert.Equal("Configuration missing valid for DefaultConnection connection string", exception.Message);
+        Assert.Equal("Configuration missing value for DefaultConnection connection string", exception.Message);
     }
 }
 

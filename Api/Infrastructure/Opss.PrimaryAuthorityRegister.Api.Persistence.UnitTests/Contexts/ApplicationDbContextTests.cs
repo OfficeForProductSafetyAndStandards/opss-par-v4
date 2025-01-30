@@ -49,7 +49,8 @@ public class ApplicationDbContextTests
         var options = GetInMemoryOptions();
         using var context = new ApplicationDbContext(options);
 
-        var testData = new TestData("Data");
+        var ownerId = Guid.NewGuid();
+        var testData = new TestData(ownerId, "Data");
         await context.TestData.AddAsync(testData);
 
         // Act
@@ -69,7 +70,8 @@ public class ApplicationDbContextTests
 
         var cancellationToken = tokenSource.Token;
 
-        var testData = new TestData("Data");
+        var ownerId = Guid.NewGuid();
+        var testData = new TestData(ownerId, "Data");
         await context.TestData.AddAsync(testData);
 
         // Act

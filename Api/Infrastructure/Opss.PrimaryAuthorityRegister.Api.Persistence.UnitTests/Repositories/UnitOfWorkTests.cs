@@ -53,7 +53,8 @@ public class UnitOfWorkTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
-        var entity = new TestData ("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData (ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
 
         // Act
@@ -70,7 +71,8 @@ public class UnitOfWorkTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
 
         // Act
@@ -88,7 +90,8 @@ public class UnitOfWorkTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await unitOfWork.Save(CancellationToken.None);
         entity.Data = "User2";
@@ -110,7 +113,8 @@ public class UnitOfWorkTests
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
 
-        var entity = new TestData("User1");
+        var ownerId = Guid.NewGuid();
+        var entity = new TestData(ownerId, "User1");
         await context.Set<TestData>().AddAsync(entity);
         await unitOfWork.Save(CancellationToken.None);
         context.Set<TestData>().Remove(entity);
@@ -129,12 +133,13 @@ public class UnitOfWorkTests
         // Arrange
         using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
         using var unitOfWork = new UnitOfWork(context);
+        var ownerId = Guid.NewGuid();
 
         // Act
         unitOfWork.Dispose();
 
         // Assert
-        Assert.Throws<ObjectDisposedException>(() => context.Set<TestData>().Add(new TestData("Data")));
+        Assert.Throws<ObjectDisposedException>(() => context.Set<TestData>().Add(new TestData(ownerId, "Data")));
     }
 
     [Fact]

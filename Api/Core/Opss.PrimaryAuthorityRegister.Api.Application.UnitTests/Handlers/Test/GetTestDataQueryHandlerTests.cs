@@ -35,7 +35,8 @@ public class GetTestDataQueryHandlerTests
     public async Task Handle_ShouldCallGetByIdAsyncWithCorrectId_WhenRequestIsValid()
     {
         // Arrange
-        var testData = new TestData("Sample Data") { Id = Guid.NewGuid() };
+        var ownerId = Guid.NewGuid();
+        var testData = new TestData(ownerId, "Sample Data") { Id = Guid.NewGuid() };
         _repositoryMock
             .Setup(repo => repo.GetByIdAsync(testData.Id))
             .ReturnsAsync(testData);
@@ -56,9 +57,10 @@ public class GetTestDataQueryHandlerTests
     public async Task Handle_ShouldReturnTestDataDto_WhenDataIsFound()
     {
         // Arrange
+        var ownerId = Guid.NewGuid();
         var expectedId = Guid.NewGuid();
         var expectedData = "Sample Data";
-        var testData = new TestData(expectedData) { Id = expectedId };
+        var testData = new TestData(ownerId, expectedData) { Id = expectedId };
 
         _repositoryMock
             .Setup(repo => repo.GetByIdAsync(expectedId))
