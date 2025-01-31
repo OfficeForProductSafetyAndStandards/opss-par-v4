@@ -43,8 +43,7 @@ jobs:
 
       # Remove 'empty' coverage files - they cause the CodeCoverageSummary action to fail
       - name: Remove empty coverage files
-        # run: find $COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f" && rm -f -- "$f"; done' _ {} +
-        run: find $COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f"; done' _ {} +
+        run: find $COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f" && rm -f -- "$f"; done' _ {} + || true
 
       # Code Coverage Report
       - name: Code Coverage Report
