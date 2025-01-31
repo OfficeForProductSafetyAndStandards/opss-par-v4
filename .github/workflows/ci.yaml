@@ -45,6 +45,10 @@ jobs:
       - name: Remove empty coverage files
         run: find $COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f" && rm -f -- "$f"; done' _ {} + || true
 
+      # check files
+      - name: Check files
+        run: find $COVERLET_PATH -type f
+
       # Code Coverage Report
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
