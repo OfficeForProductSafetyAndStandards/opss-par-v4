@@ -6,6 +6,7 @@ on:
       - develop
 env:
   SLN_PATH: ./Opss.PrimaryAuthorityRegister.sln
+  COVERLET_PATH: ./coverage
 
 jobs:
   build-and-test:
@@ -38,13 +39,17 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage"  --results-directory ./coverage
+        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage"  --results-directory $COVERLET_PATH
+
+      # Remove 'empty' coverage files - they cause the CodeCoverageSummary action to fail
+      - name: Remove empty coverage files
+        run: find $COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f" && rm -f -- "$f"; done' _ {} +
 
       # Code Coverage Report
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coverage/**/coverage.cobertura.xml
+          filename: $COVERLET_PATH/**/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
