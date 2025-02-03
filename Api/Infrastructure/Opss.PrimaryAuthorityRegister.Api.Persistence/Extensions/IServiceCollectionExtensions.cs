@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
@@ -15,6 +16,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddDbContext(configuration);
         services.AddRepositories();
+
         services.AddBehaviours();
     }
 
