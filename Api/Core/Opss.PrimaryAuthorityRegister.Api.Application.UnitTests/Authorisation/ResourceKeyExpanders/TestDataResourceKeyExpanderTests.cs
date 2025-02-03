@@ -1,12 +1,10 @@
 ﻿using Moq;
+using Moq.EntityFrameworkCore;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation.ResourceKeyExpanders;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+using Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Helpers;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.ResourceKeyExpanders;
 
@@ -25,6 +23,7 @@ public class TestDataResourceKeyExpanderTests
         // Assert
         Assert.Empty(expanded);
     }
+
     [Fact]
     public void When_ResoureceKey_Is_TestData_Without_Id_EmptyArray_IsReturned()
     {
@@ -66,5 +65,35 @@ public class TestDataResourceKeyExpanderTests
         var expectedResults = new[] { $"Owner/{ownerId}" };
 
         Assert.Equal(expectedResults, expanded);
+    }
+
+    [Fact]
+    public void When_ResourceKey_Is_TestData_Wildcard_ResourceKey_IsExpanded()
+    {
+        // Arrange
+        var ownerId = Guid.NewGuid();
+
+        var expectedItem = new TestData(ownerId, "Data");
+        var tableData = new List<TestData> { expectedItem };
+
+        var mockRepository = new Mock<IGenericRepository<TestData>>();
+        mockRepository
+            .Setup(repo => repo.Entities)
+            .Returns(tableData.AsAsyncQueryable());
+
+        var uow = new Mock<IUnitOfWork>();
+        uow
+            .Setup(i => i.Repository<TestData>())
+            .Returns(() => mockRepository.Object);
+
+        var expander = new TestDataResourceKeyExpander(uow.Object);
+
+        // Act
+        var expanded = expander.GetKeys($"TestData/*");
+
+        // Assert
+        var expectedResults = new[] { $"Owner/{ownerId}", $"TestData/{expectedItem.Id}" };
+
+        Assert.Equivalent(expectedResults, expanded);
     }
 }

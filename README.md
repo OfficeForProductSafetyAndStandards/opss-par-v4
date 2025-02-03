@@ -62,3 +62,5 @@ After completing all the steps, restart your computer and try running Docker Com
 - Then using the `Package Manager Console` set the default project to `Api\Infrastructure\Opss.PrimaryAuthorityRegister.Persistance`.
 - Create the migration: `Add-Migration <Migration Name>`
 - Apply the migration `Update-Database`
+
+See the README.md in `Opss.PrimaryAuthorityRegister.Api.Persistance\Migrations` for information on customising migrations.

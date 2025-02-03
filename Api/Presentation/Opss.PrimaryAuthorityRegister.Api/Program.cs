@@ -33,6 +33,8 @@ internal static class Program
 
         app.MapControllers();
 
+        app.MigrateDatabase();
+
         await app.RunAsync().ConfigureAwait(false);
     }
 }

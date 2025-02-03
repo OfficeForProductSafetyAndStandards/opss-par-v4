@@ -1,0 +1,1 @@
+﻿UPDATE "TestData" SET "DuplicatedData" = "Data"

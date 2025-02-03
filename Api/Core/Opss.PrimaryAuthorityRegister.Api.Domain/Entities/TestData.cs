@@ -8,8 +8,10 @@ public class TestData : BaseAuditableEntity
     {
         OwnerId = ownerId;
         Data = data;
+        DuplicatedData = data;
     }
 
     public Guid OwnerId { get; set; }
     public string Data { get; set; }
+    public string DuplicatedData { get; set; }
 }
