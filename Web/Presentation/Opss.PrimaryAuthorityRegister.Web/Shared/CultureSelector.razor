@@ -1,0 +1,46 @@
+﻿@using System.Globalization
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<GdsSelect Id="locale" Name="locale" ValueChanged="ApplySelectedCultureAsync">
+	<LabelTemplate>
+		<GdsLabel>Select your langugage:</GdsLabel>
+	</LabelTemplate>
+	<ChildContent>
+		@foreach (var culture in supportedCultures)
+		{
+			<GdsSelectOption Value=@culture.Name>@culture.DisplayName</GdsSelectOption>
+		}
+	</ChildContent>
+</GdsSelect>
+
+@code
+{
+	private CultureInfo[] supportedCultures = new[]
+	{
+		new CultureInfo("en"),
+		// new CultureInfo("cy"),
+	};
+
+	private CultureInfo? selectedCulture;
+
+	protected override void OnInitialized()
+	{
+		selectedCulture = CultureInfo.CurrentCulture;
+	}
+
+	private async Task ApplySelectedCultureAsync(string cultureName)
+	{
+		if (CultureInfo.CurrentCulture.Name != cultureName)
+		{
+			var uri = new Uri(Navigation.Uri)
+				.GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+			var cultureEscaped = Uri.EscapeDataString(cultureName);
+			var uriEscaped = Uri.EscapeDataString(uri);
+
+			Navigation.NavigateTo(
+				$"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+				forceLoad: true);
+		}
+	}
+}

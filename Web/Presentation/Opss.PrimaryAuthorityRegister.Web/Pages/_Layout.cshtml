@@ -9,13 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="~/" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="css/CultureSelector.css" rel="stylesheet" />
     <link href="/_content/Opss.DesignSystem.Frontend.Blazor.Components/css/govuk.css" rel="stylesheet" />
 
     <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
-<body class="govuk-frontend-supported govuk-template__body">
+<body class="govuk-template__body">
     <script>
-        document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+        document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
 
     <div id="blazor-error-ui" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
@@ -42,5 +43,11 @@
     <script src="/_content/Opss.DesignSystem.Frontend.Blazor.Components/js/govuk.js"></script>
 
     <script src="_framework/blazor.server.js"></script>
+    <script>
+        window.blazorCulture = {
+          get: () => window.localStorage['BlazorCulture'],
+          set: (value) => window.localStorage['BlazorCulture'] = value
+        };
+    </script>
 </body>
 </html>

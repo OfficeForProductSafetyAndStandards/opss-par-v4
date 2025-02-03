@@ -1,0 +1,59 @@
+﻿// Site search using Accessible autocomplete
+// below styles are based on the default accessible autocomplete stylesheet
+
+@function encode-hex($hex) {
+    // Turn colour into a string
+    $output: inspect($hex);
+    // Slice the '#' from the start of the string so we can add it back on encoded.
+    $output: str-slice($output, 2);
+    // Add the '#' back on the start, but as an encoded character for embedding.
+    @return "%23" + $output;
+}
+
+.app-site-culture-selector {
+    display: none;
+    position: relative;
+    width: 100%;
+    max-width: calc(100% - 75px);
+    margin-top: govuk-spacing(2);
+    margin-bottom: govuk-spacing(2);
+    float: left;
+
+    .govuk-frontend-supported & {
+        display: block;
+    }
+
+    @media (min-width: 40.0625em) {
+        width: 219px;
+        max-width: 100%;
+        float: none;
+    }
+
+    @media (min-width: 48.0625em) {
+        margin: 0;
+        margin-top: -5px; // negative margin to vertically align search in header
+        float: right;
+        text-align: right;
+
+        .govuk-frontend-supported & {
+            text-align: left;
+        }
+    }
+
+    @media (min-width: 40.0625em) {
+        display: block;
+    }
+}
+
+.app-site-culture-selector__wrapper {
+    display: block;
+    position: relative;
+
+    .govuk-form-group {
+        margin-bottom: 0 !important;
+    }
+
+    label {
+        color: white;
+    }
+}

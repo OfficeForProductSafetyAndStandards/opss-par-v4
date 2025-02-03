@@ -5,28 +5,27 @@
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
 
 @inject HttpClient _httpClient
+@inject IStringLocalizer<Index> Loc
 
-<PageTitle>Index</PageTitle>
+<PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<h1>Hello, world! @data?.Id.ToString()</h1>
+<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["Hello"] @data?.Id.ToString()</GdsHeading>
 
-@data?.Data
+<p class="govuk-body">@data?.Data</p>
 
-<button @onclick=@OnPostClick>
-	Try Post
-</button>
+<GdsButtonGroup>
+	<GdsButton @onclick=@OnPostClick Classes=@ButtonStyle.Secondary>
+		@Loc["Button_TryPost"]
+	</GdsButton>
 
-<button @onclick=@OnPutClick>
-	Try Put
-</button>
+	<GdsButton @onclick=@OnPutClick Classes=@ButtonStyle.Secondary>
+		@Loc["Button_TryPut"]
+	</GdsButton>
 
-<button @onclick=@OnGetClick>
-	Try Get
-</button>
-
-@status?.ToString()
-
-@Thread.CurrentPrincipal?.Identity?.Name
+	<GdsButton @onclick=@OnGetClick Classes=@ButtonStyle.Secondary>
+		@Loc["Button_TryGet"]
+	</GdsButton>
+</GdsButtonGroup>
 
 @code {
 	private TestDataDto? data;

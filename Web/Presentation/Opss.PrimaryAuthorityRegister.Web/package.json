@@ -1,0 +1,20 @@
+{
+  "name": "Opss.PrimaryAuthorityRegister.Web",
+  "version": "1.0.0",
+  "description": "Info from:\r - https://stackoverflow.com/questions/59355881/blazor-how-to-include-npm-dependencies-into-a-razor-class-library\r - https://brianlagunas.com/using-npm-packages-in-blazor/",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp build-fe"
+  },
+  "keywords": [],
+  "author": "Richard priddy",
+  "license": "ISC",
+  "devDependencies": {
+    "async": "^3.2.5",
+    "gulp": "^5.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-dart-sass": "^1.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}
