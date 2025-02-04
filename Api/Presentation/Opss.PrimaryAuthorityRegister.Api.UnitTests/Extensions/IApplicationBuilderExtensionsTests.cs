@@ -27,6 +27,14 @@ public class IApplicationBuilderExtensionsTests
                     }
     };
 
+    private T GenerateException<T>(string message) where T : Exception
+    {
+        T? ex = null;
+        try { throw (T)Activator.CreateInstance(typeof(T), message)!; }
+        catch (T execption) { ex = execption; }
+        return ex;
+    }
+
     [Fact]
     public async Task AddExceptionHandlers_ShouldReturnUnauthorized_WhenSecurityExceptionOccurs()
     {
@@ -37,13 +45,13 @@ public class IApplicationBuilderExtensionsTests
             {
                 if (context.Request.Query.ContainsKey("throw"))
                 {
-                    var feature = new ExceptionHandlerFeature { Error = new SecurityException("Unauthorized") };
+                    var feature = new ExceptionHandlerFeature { Error = GenerateException<SecurityException>("Unauthorised") };
                     context.Features.Set<IExceptionHandlerFeature>(feature);
                 }
                 await next().ConfigureAwait(false);
             });
 
-            app.AddExceptionHandlers();
+            app.AddExceptionHandlers(true);
         }));
 
         // Act
@@ -54,6 +62,7 @@ public class IApplicationBuilderExtensionsTests
         var content = await response.Content.ReadAsStringAsync();
         var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(content, _serializationOptions);
         Assert.Equal(HttpStatusCode.Unauthorized, problemDetails?.Status);
+        Assert.NotNull(problemDetails?.StackTrace);
     }
 
     [Fact]
@@ -66,13 +75,13 @@ public class IApplicationBuilderExtensionsTests
             {
                 if (context.Request.Query.ContainsKey("throw"))
                 {
-                    var feature = new ExceptionHandlerFeature { Error = new Exception("Internal Error") };
+                    var feature = new ExceptionHandlerFeature { Error = GenerateException<Exception>("Internal Error") };
                     context.Features.Set<IExceptionHandlerFeature>(feature);
                 }
                 await next().ConfigureAwait(false);
             });
 
-            app.AddExceptionHandlers();
+            app.AddExceptionHandlers(true);
         }));
 
         // Act
@@ -83,5 +92,36 @@ public class IApplicationBuilderExtensionsTests
         var content = await response.Content.ReadAsStringAsync();
         var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(content, _serializationOptions);
         Assert.Equal(HttpStatusCode.InternalServerError, problemDetails?.Status);
+        Assert.NotNull(problemDetails?.StackTrace);
+    }
+
+    [Fact]
+    public async Task AddExceptionHandlers_ShouldExcludeStacktrace_WhenNotInDevelopmentMode()
+    {
+        // Arrange
+        using var server = new TestServer(new WebHostBuilder().Configure(app =>
+        {
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Query.ContainsKey("throw"))
+                {
+                    var feature = new ExceptionHandlerFeature { Error = GenerateException<Exception>("Internal Error") };
+                    context.Features.Set<IExceptionHandlerFeature>(feature);
+                }
+                await next().ConfigureAwait(false);
+            });
+
+            app.AddExceptionHandlers(false);
+        }));
+
+        // Act
+        var response = await SendRequestWithException(server, new Exception());
+
+        // Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
+        var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(content, _serializationOptions);
+        Assert.Equal(HttpStatusCode.InternalServerError, problemDetails?.Status);
+        Assert.True(string.IsNullOrEmpty(problemDetails?.StackTrace));
     }
 }

@@ -10,11 +10,11 @@ public class ProblemDetails
     public string Detail { get; set; }
     public string? StackTrace { get; set; }
 
-    public ProblemDetails(HttpStatusCode status, Exception? exception)
+    public ProblemDetails(HttpStatusCode status, Exception? exception, bool isDevelopment = true)
     {
         Status = status;
         Detail = exception?.Message ?? "An error occured. Please try again later.";
-        StackTrace = exception?.StackTrace;
+        StackTrace = isDevelopment ? exception?.StackTrace : string.Empty;
         Type = exception?.GetType().Name;
     }
 

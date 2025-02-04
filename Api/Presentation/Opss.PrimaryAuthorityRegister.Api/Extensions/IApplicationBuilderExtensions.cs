@@ -7,7 +7,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Extensions;
 
 public static class IApplicationBuilderExtensions
 {
-    public static void AddExceptionHandlers(this IApplicationBuilder config)
+    public static void AddExceptionHandlers(this IApplicationBuilder config, bool isDevelopment)
     {
         config.Run(async context =>
         {
@@ -17,13 +17,13 @@ public static class IApplicationBuilderExtensions
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsJsonAsync(
-                    new ProblemDetails(HttpStatusCode.Unauthorized, exception)).ConfigureAwait(false);
+                    new ProblemDetails(HttpStatusCode.Unauthorized, exception, isDevelopment)).ConfigureAwait(false);
             }
             else
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsJsonAsync(
-                    new ProblemDetails(HttpStatusCode.InternalServerError, exception)).ConfigureAwait(false);
+                    new ProblemDetails(HttpStatusCode.InternalServerError, exception, isDevelopment)).ConfigureAwait(false);
             }
         });
     }

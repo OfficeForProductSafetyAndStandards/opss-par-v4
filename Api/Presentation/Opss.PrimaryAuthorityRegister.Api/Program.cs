@@ -35,7 +35,7 @@ internal static class Program
         // Add exception handler middleware
         app.UseExceptionHandler(config =>
         {
-            config.AddExceptionHandlers();
+            config.AddExceptionHandlers(app.Environment.IsDevelopment());
         });
 
         app.MapControllers();
