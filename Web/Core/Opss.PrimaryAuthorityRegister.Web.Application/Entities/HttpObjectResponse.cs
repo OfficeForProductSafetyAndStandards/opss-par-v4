@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
+using Opss.PrimaryAuthorityRegister.Common.Problem;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 

@@ -276,3 +276,4 @@ dotnet_style_qualification_for_method = false:silent
 dotnet_diagnostic.CA1054.severity = warning
 dotnet_diagnostic.CA1040.severity = suggestion
 dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1031.severity = suggestion

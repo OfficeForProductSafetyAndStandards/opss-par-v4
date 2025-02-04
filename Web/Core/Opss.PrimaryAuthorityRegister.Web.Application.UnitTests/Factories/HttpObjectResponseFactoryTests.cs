@@ -1,8 +1,9 @@
 ﻿using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
 using Opss.PrimaryAuthorityRegister.Web.Application.Factories;
-using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
+using Opss.PrimaryAuthorityRegister.Common.Problem;
 using System.Net;
 using System.Text.Json;
+using System.Security.Authentication;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Factories;
 
@@ -54,7 +55,7 @@ public class HttpObjectResponseFactoryTests
     public async Task DetermineSuccess_Generic_ErrorResponse_ThrowsHttpResponseException()
     {
         // Arrange
-        var problemDetails = new ProblemDetails(400, "Bad Request");
+        var problemDetails = new ProblemDetails(HttpStatusCode.BadRequest, new ApplicationException("Bad Request"));
         var responseContent = JsonSerializer.Serialize(problemDetails);
         using var responseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
@@ -108,7 +109,7 @@ public class HttpObjectResponseFactoryTests
     public async Task DetermineSuccess_NonGeneric_ErrorResponse_ThrowsHttpResponseException()
     {
         // Arrange
-        var problemDetails = new ProblemDetails(500, "Internal Server Error");
+        var problemDetails = new ProblemDetails(HttpStatusCode.InternalServerError, new ApplicationException("Internal Server Error"));
         var responseContent = JsonSerializer.Serialize(problemDetails);
         using var responseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
         {
@@ -144,7 +145,7 @@ public class HttpObjectResponseFactoryTests
     public void Problem_Generic_CreatesObjectResponseWithProblemDetails()
     {
         // Arrange
-        var problemDetails = new ProblemDetails(404, "Not Found");
+        var problemDetails = new ProblemDetails(HttpStatusCode.NotFound, new FileNotFoundException("Not Found"));
 
         // Act
         var result = HttpObjectResponseFactory.Problem<TestObject>(problemDetails);
@@ -160,7 +161,7 @@ public class HttpObjectResponseFactoryTests
     public void Problem_NonGeneric_CreatesObjectResponseWithProblemDetails()
     {
         // Arrange
-        var problemDetails = new ProblemDetails(403, "Forbidden");
+        var problemDetails = new ProblemDetails(HttpStatusCode.Forbidden, new AuthenticationException("Forbidden"));
 
         // Act
         var result = HttpObjectResponseFactory.Problem(problemDetails);

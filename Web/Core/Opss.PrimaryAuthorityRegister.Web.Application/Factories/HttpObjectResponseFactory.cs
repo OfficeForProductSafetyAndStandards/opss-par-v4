@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Globalization;
+using Opss.PrimaryAuthorityRegister.Common.Problem;
 using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
-using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
 using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.Factories;
@@ -26,8 +25,13 @@ public static class HttpObjectResponseFactory
 
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
-            var problem = TryRetrieveProblem<T>(httpResponseMessage);
-            throw new HttpResponseException(httpResponseMessage.StatusCode, problem.Problem.Detail);
+            var problem = TryRetrieveProblem<T>(httpResponseMessage).Problem;
+            var exceptionMessage = problem?.Detail;
+            if (!string.IsNullOrEmpty(problem?.StackTrace))
+            {
+                exceptionMessage += Environment.NewLine + problem.StackTrace;
+            }
+            throw new HttpResponseException(httpResponseMessage.StatusCode, exceptionMessage);
         }
 
         var result = default(T);
@@ -62,9 +66,13 @@ public static class HttpObjectResponseFactory
         return new HttpObjectResponse(httpResponseMessage);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Usage",
+        "CA2201:Do not raise reserved exception types", 
+        Justification = "Here a generic exception is thrown as we don't know what the problem is.")]
     private static HttpObjectResponse<T> TryRetrieveProblem<T>(HttpResponseMessage httpResponseMessage)
     {
-        var unknownProblem = Problem<T>(new ProblemDetails(StatusCodes.Status500InternalServerError, "Unknown error occurred"));
+        var unknownProblem = Problem<T>(new ProblemDetails(HttpStatusCode.InternalServerError, new ApplicationException("Unknown error occurred")));
 
         try
         {
@@ -76,17 +84,24 @@ public static class HttpObjectResponseFactory
             if (!(json?.Contains('{', StringComparison.InvariantCulture) ?? false)) return unknownProblem;
 
             var problem = JsonSerializer.Deserialize<ProblemDetails>(json, _serializationOptions);
+            
+            if (problem == null) return unknownProblem;
+            
             return Problem<T>(problem);
         }
-        catch
+        catch(Exception ex)
         {
-            return unknownProblem;
+            return Problem<T>(new ProblemDetails(HttpStatusCode.InternalServerError, ex));
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Usage",
+        "CA2201:Do not raise reserved exception types",
+        Justification = "Here a generic exception is thrown as we don't know what the problem is.")]
     private static HttpObjectResponse TryRetrieveProblem(HttpResponseMessage httpResponseMessage)
     {
-        var unknownProblem = Problem(new ProblemDetails(StatusCodes.Status500InternalServerError, "Unknown error occurred"));
+        var unknownProblem = Problem(new ProblemDetails(HttpStatusCode.InternalServerError, new ApplicationException("Unknown error occurred")));
 
         try
         {
@@ -98,11 +113,14 @@ public static class HttpObjectResponseFactory
             if (!(json?.Contains('{', StringComparison.InvariantCulture) ?? false)) return unknownProblem;
 
             var problem = JsonSerializer.Deserialize<ProblemDetails>(json, _serializationOptions);
+            
+            if (problem == null) return unknownProblem;
+
             return Problem(problem);
         }
-        catch
+        catch (Exception ex)
         {
-            return unknownProblem;
+            return Problem(new ProblemDetails(HttpStatusCode.InternalServerError, ex));
         }
     }
 
@@ -110,12 +128,10 @@ public static class HttpObjectResponseFactory
     {
         ArgumentNullException.ThrowIfNull(problem);
 
-        var statusCode = (HttpStatusCode)problem.Status;
-
         var json = JsonSerializer.Serialize(problem);
-        var httpResponseMessage = new HttpResponseMessage(statusCode)
+        var httpResponseMessage = new HttpResponseMessage(problem.Status)
         {
-            StatusCode = statusCode,
+            StatusCode = problem.Status,
             Content = new StringContent(json)
         };
 
@@ -126,12 +142,10 @@ public static class HttpObjectResponseFactory
     {
         ArgumentNullException.ThrowIfNull(problem);
 
-        var statusCode = (HttpStatusCode)problem.Status;
-
-        var json = JsonSerializer.Serialize(problem);
-        var httpResponseMessage = new HttpResponseMessage(statusCode)
+        var json = JsonSerializer.Serialize(problem.Status);
+        var httpResponseMessage = new HttpResponseMessage(problem.Status)
         {
-            StatusCode = statusCode,
+            StatusCode = problem.Status,
             Content = new StringContent(json)
         };
 
