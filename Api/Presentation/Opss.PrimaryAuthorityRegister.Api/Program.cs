@@ -1,4 +1,5 @@
 using Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
+using Opss.PrimaryAuthorityRegister.Api.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
 using System.Diagnostics.CodeAnalysis;
 
@@ -30,6 +31,12 @@ internal static class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        // Add exception handler middleware
+        app.UseExceptionHandler(config =>
+        {
+            config.AddExceptionHandlers(app.Environment.IsDevelopment());
+        });
 
         app.MapControllers();
 

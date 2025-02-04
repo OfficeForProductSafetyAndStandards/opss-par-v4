@@ -101,16 +101,13 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
     {
         var claimRequiredAttributes = resource.GetType().GetAttributes<ClaimRequiredAttribute>(true);
 
-        if (!claimRequiredAttributes.Any())
+        if (!claimRequiredAttributes.Any() && !resource.GetType().GetAttributes<MustBeAuthenticatedAttribute>(false).Any())
         {
-            if (!resource.GetType().GetAttributes<MustBeAuthenticatedAttribute>(false).Any())
-            {
-                throw new ClaimRequiredAttributeNotFoundException(resource);
-            }
+            throw new ClaimRequiredAttributeNotFoundException(resource);
         }
     }
 
-    private IEnumerable<Claim> ExpandClaim(Claim claim)
+    private List<Claim> ExpandClaim(Claim claim)
     {
         var expandedResourceKeyValues = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.Value.ToString()));
         var expandedResourceKeyValueTypes = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.ValueType.ToString()));

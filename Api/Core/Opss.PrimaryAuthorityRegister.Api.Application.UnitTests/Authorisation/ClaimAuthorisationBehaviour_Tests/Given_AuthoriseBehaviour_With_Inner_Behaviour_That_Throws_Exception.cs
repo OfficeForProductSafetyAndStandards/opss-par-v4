@@ -17,15 +17,15 @@ public class Given_AuthoriseBehaviour_With_Inner_Behaviour_That_Throws_Exception
 
         mockNextDelegate
             .Setup(next => next())
-            .Throws< Exception >(() => throw new Exception() );
+            .Throws<Exception>(() => throw new Exception());
 
         var behaviour = new ClaimAuthorisationBehaviour<IRequestBase, string>(
             new Mock<IClaimChecker>().Object, new FakeClaimsPrincipal("A User"));
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() =>
-            behaviour.Handle(new Mock<IRequestBase>().Object, 
-                             mockNextDelegate.Object, 
+            behaviour.Handle(new Mock<IRequestBase>().Object,
+                             mockNextDelegate.Object,
                              CancellationToken.None));
     }
 }

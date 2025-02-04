@@ -1,5 +1,5 @@
 ﻿using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
-using Opss.PrimaryAuthorityRegister.Web.Application.Problem;
+using Opss.PrimaryAuthorityRegister.Common.Problem;
 using System.Net;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Entities;
@@ -11,7 +11,7 @@ public class HttpObjectResponseTests
     {
         // Arrange
         using var response = new HttpResponseMessage(HttpStatusCode.OK);
-        var problemDetails = new ProblemDetails(400, "Bad Request");
+        var problemDetails = new ProblemDetails(HttpStatusCode.BadRequest, new ApplicationException("Bad Request"));
 
         // Act
         var objectResponse = new HttpObjectResponse(response, problemDetails);
@@ -46,7 +46,7 @@ public class HttpObjectResponseGenericTests
         // Arrange
         using var response = new HttpResponseMessage(HttpStatusCode.Created);
         var result = new { Id = 1, Name = "Test" };
-        var problemDetails = new ProblemDetails(400, "Bad Request");
+        var problemDetails = new ProblemDetails(HttpStatusCode.BadRequest, new ApplicationException("Bad Request"));
 
         // Act
         var objectResponse = new HttpObjectResponse<object>(response, result, problemDetails);
