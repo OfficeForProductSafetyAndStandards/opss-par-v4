@@ -101,12 +101,9 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
     {
         var claimRequiredAttributes = resource.GetType().GetAttributes<ClaimRequiredAttribute>(true);
 
-        if (!claimRequiredAttributes.Any())
+        if (!claimRequiredAttributes.Any() && !resource.GetType().GetAttributes<MustBeAuthenticatedAttribute>(false).Any())
         {
-            if (!resource.GetType().GetAttributes<MustBeAuthenticatedAttribute>(false).Any())
-            {
-                throw new ClaimRequiredAttributeNotFoundException(resource);
-            }
+            throw new ClaimRequiredAttributeNotFoundException(resource);
         }
     }
 

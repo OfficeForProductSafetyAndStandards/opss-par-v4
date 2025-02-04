@@ -39,11 +39,11 @@ public class Given_Message_With_Multiple_Required_Claims_In_Different_Sets
                 attributeBasedResourceClaimProvider.GetDemandedClaims(new FakeCommandWithMultipleClaimsInDifferentSet());
 
         // Assert
-        Assert.True(result.GetRequiredClaimSet("Set1")
-                            .IsSatisfiedBy(new[] { new Claim(PermissionType, ResourceKey, "Read") }));
+        Assert.True(result?.GetRequiredClaimSet("Set1")?
+                            .IsSatisfiedBy([new Claim(PermissionType, ResourceKey, "Read")]));
 
-        Assert.True(result.GetRequiredClaimSet("Set2")
-                            .IsSatisfiedBy(new[] { new Claim(PermissionType, ResourceKey, "Write") }));
+        Assert.True(result?.GetRequiredClaimSet("Set2")?
+                            .IsSatisfiedBy([new Claim(PermissionType, ResourceKey, "Write")]));
     }
 
     [Fact]
@@ -58,15 +58,15 @@ public class Given_Message_With_Multiple_Required_Claims_In_Different_Sets
                 attributeBasedResourceClaimProvider.GetDemandedClaims(new FakeCommandWithMultipleClaimsInDifferentSetWithCommonClaim());
 
         // Assert
-        Assert.True(result.GetRequiredClaimSet("Set1")
-                            .IsSatisfiedBy(new[] {
-                                                   new Claim(PermissionType, ResourceKey, "Read"),
-                                                   new Claim(PermissionType, ResourceKey, "CommonPermission") }));
+        Assert.True(result?.GetRequiredClaimSet("Set1")?
+                            .IsSatisfiedBy([
+                                            new Claim(PermissionType, ResourceKey, "Read"),
+                                            new Claim(PermissionType, ResourceKey, "CommonPermission") ]));
 
-        Assert.True(result.GetRequiredClaimSet("Set2")
-                            .IsSatisfiedBy(new[] {
-                                                   new Claim(PermissionType, ResourceKey, "Write"),
-                                                   new Claim(PermissionType, ResourceKey, "CommonPermission") }));
+        Assert.True(result?.GetRequiredClaimSet("Set2")?
+                            .IsSatisfiedBy([
+                                            new Claim(PermissionType, ResourceKey, "Write"),
+                                            new Claim(PermissionType, ResourceKey, "CommonPermission") ]));
     }
 
     [ClaimRequired(PermissionType, ResourceKey, "Read", Group = "Set1")]
