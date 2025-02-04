@@ -107,7 +107,7 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
         }
     }
 
-    private IEnumerable<Claim> ExpandClaim(Claim claim)
+    private List<Claim> ExpandClaim(Claim claim)
     {
         var expandedResourceKeyValues = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.Value.ToString()));
         var expandedResourceKeyValueTypes = _resourceKeyExpanders.SelectMany(k => k.GetKeys(claim.ValueType.ToString()));
