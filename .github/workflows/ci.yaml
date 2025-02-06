@@ -53,11 +53,15 @@ jobs:
       - name: Check glob
         run: shopt -s globstar; printf %s\\n ./$COVERLET_PATH/**/coverage.cobertura.xml
 
+      # Consolidate coverage files
+      - name: Consolidate coverage files
+        run: dotnet-coverage merge ./$COVERLET_PATH/**/coverage.cobertura.xml -o ./$COVERLET_PATH/coverage.cobertura.xml -f cobertura --remove-input-files
+
       # Code Coverage Report
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: $COVERLET_PATH/**/coverage.cobertura.xml
+          filename: ./$COVERLET_PATH/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
