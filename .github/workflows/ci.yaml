@@ -39,7 +39,7 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage"  --results-directory ./$COVERLET_PATH
+        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage" --settings Coverlet.runsettings  --results-directory ./$COVERLET_PATH
 
       # Remove 'empty' coverage files - they cause the CodeCoverageSummary action to fail
       - name: Remove empty coverage files
