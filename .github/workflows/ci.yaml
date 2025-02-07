@@ -58,6 +58,7 @@ jobs:
         run: |
           dotnet tool install -g dotnet-coverage
           dotnet-coverage merge ./$COVERLET_PATH/**/coverage.cobertura.xml -o ./$COVERLET_PATH/coverage.cobertura.xml -f cobertura --remove-input-files
+          ls -l ./$COVERLET_PATH
 
       # Code Coverage Report
       - name: Code Coverage Report
