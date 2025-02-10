@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="XPlat Code Coverage">
+				<Configuration>
+					<Format>cobertura</Format>
+					<Exclude>[Opss.PrimaryAuthorityRegister.Api.Persistence]*</Exclude>
+					<ExcludeByFile>
+						**/Opss.PrimaryAuthorityRegister.Api.Persistence/Migrations/*.*, 
+						**/Opss.PrimaryAuthorityRegister.Web/Pages/*.*
+					</ExcludeByFile>
+					<ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+					<IncludeTestAssembly>false</IncludeTestAssembly>
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+</RunSettings>

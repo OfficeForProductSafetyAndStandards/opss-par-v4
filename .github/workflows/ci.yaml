@@ -39,4 +39,28 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage"  --results-directory ./$COVERLET_PATH
+        run: dotnet test $SLN_PATH --configuration Release --no-build --verbosity normal  --collect:"XPlat Code Coverage" --settings Coverlet.runsettings  --results-directory ./$COVERLET_PATH
+
+      # Remove 'empty' coverage files - they cause the CodeCoverageSummary action to fail
+      - name: Remove empty coverage files
+        run: find ./$COVERLET_PATH -type f -exec sh -c 'for f in "$@"; do grep -l "<sources />" "$f" && rm -f -- "$f"; done' _ {} + || true
+
+      # Consolidate coverage files
+      - name: Consolidate coverage files
+        run: |
+          dotnet tool install -g dotnet-coverage
+          dotnet-coverage merge ./$COVERLET_PATH/**/coverage.cobertura.xml -o $COVERLET_PATH/coverage.cobertura.xml -f cobertura --remove-input-files
+          ls -l $COVERLET_PATH
+
+      # Code Coverage Report
+      - name: Produce the coverage report
+        uses: insightsengineering/coverage-action@v2
+        with:
+          path: ./$COVERLET_PATH/coverage.cobertura.xml
+          threshold: 80.0
+          fail: true
+          publish: true
+          diff: true
+          diff-branch: develop
+          diff-storage: _xml_coverage_reports
+          coverage-summary-title: "Code Coverage Summary"
