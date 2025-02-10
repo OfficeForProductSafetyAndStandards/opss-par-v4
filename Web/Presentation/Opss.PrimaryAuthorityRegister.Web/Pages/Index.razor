@@ -37,7 +37,7 @@
 		var ok = await _httpClient.PostAsync(new CreateTestDataCommand(ownerId, "Something"));
 		status = ok.StatusCode;
 
-		var id = ok.Result.Id;
+		var id = ok?.Result?.Id;
 
 		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id));
 		data = result.Result;
