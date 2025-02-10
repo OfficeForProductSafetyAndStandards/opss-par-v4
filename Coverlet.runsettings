@@ -6,11 +6,11 @@
 			<DataCollector friendlyName="XPlat Code Coverage">
 				<Configuration>
 					<Format>cobertura</Format>
-					<Include>[*.*Opss.*]*</Include>
+					<!--Include>[**Opss.**]*</Include-->
 					<Exclude>[Opss.PrimaryAuthorityRegister.Api.Persistence]*</Exclude>
-					<ExcludeByFile>**/moq.dll, **/unittests.dll, **/integrationtests.dll, **/bunit.dll, **/Opss.PrimaryAuthorityRegister.Api.Persistence/Migrations/*.*, **/Opss.PrimaryAuthorityRegister.Web/Pages/*.*, **/*.cshtml, **/*.razor, **/*.cshtml.cs, **/*.razor.cs, **/Opss.PrimaryAuthorityRegister.Api.Application/Extensions/IServiceCollectionExtensions.cs</ExcludeByFile>
+					<!--ExcludeByFile>**/moq.dll, **/unittests.dll, **/integrationtests.dll, **/bunit.dll, **/Opss.PrimaryAuthorityRegister.Api.Persistence/Migrations/*.*, **/Opss.PrimaryAuthorityRegister.Web/Pages/*.*, **/*.cshtml, **/*.razor, **/*.cshtml.cs, **/*.razor.cs, **/Opss.PrimaryAuthorityRegister.Api.Application/Extensions/IServiceCollectionExtensions.cs</ExcludeByFile>
 					<ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
-					<IncludeTestAssembly>false</IncludeTestAssembly>
+					<IncludeTestAssembly>false</IncludeTestAssembly> -->
 				</Configuration>
 			</DataCollector>
 		</DataCollectors>
