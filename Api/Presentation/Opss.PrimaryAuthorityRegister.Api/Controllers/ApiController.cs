@@ -16,15 +16,17 @@ public class ApiController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<object>> ExecutePost(string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<object?>> ExecutePost(string name, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid) throw new InvalidDataException();
 
-        object? request = await GetRequest(name).ConfigureAwait(false);
+        object request = await GetRequest(name).ConfigureAwait(false);
 
         if (request is BadRequestObjectResult) return request;
 
         var retVal = await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
+
+        if(retVal == null) throw new InvalidDataException();
 
         return Responses.Created((Guid)retVal);
     }
@@ -34,24 +36,28 @@ public class ApiController : ControllerBase
     {
         if (!ModelState.IsValid) throw new InvalidDataException();
 
-        object? request = await GetRequest(name).ConfigureAwait(false);
-  
+        object request = await GetRequest(name).ConfigureAwait(false);
+
+        if (request is BadRequestObjectResult result) return result;
+
         _ = await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
         return Responses.NoContent();
     }
 
     [HttpGet]
-    public async Task<ActionResult<object>> ExecuteQuery(string name, CancellationToken cancellationToken)
+    public async Task<ActionResult<object?>> ExecuteQuery(string name, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid) throw new InvalidDataException();
 
-        object? request = await GetRequest(name).ConfigureAwait(false);
+        object request = await GetRequest(name).ConfigureAwait(false);
+
+        if (request is BadRequestObjectResult) return request;
 
         return await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task<object?> GetRequest(string name)
+    private async Task<object> GetRequest(string name)
     {
         Type? type = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => a.GetTypes())
@@ -70,6 +76,8 @@ public class ApiController : ControllerBase
         {
             request = JsonSerializer.Deserialize(body, type);
         }
+
+        if (request == null) return Responses.BadRequest($"Request: {name} could not created");
 
         return request;
     }
