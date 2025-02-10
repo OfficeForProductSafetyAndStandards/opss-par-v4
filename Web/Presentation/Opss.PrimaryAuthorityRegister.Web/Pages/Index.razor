@@ -39,7 +39,9 @@
 
 		var id = ok?.Result?.Id;
 
-		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id));
+		if (id == null) return;
+
+		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id.Value));
 		data = result.Result;
 
 		StateHasChanged();
