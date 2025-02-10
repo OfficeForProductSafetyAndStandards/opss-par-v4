@@ -15,6 +15,8 @@ public static class ReflectionExtensions
     /// <returns>Whether or not the specified type is a Nullable type.</returns>
     public static bool CanBeNull(this Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+        
         return !type.IsPrimitive;
     }
 
@@ -28,6 +30,8 @@ public static class ReflectionExtensions
     /// <returns>The list of attributes for this member that are of the given type.</returns>
     public static IEnumerable<T> GetAttributes<T>(this MemberInfo memberInfo, bool inherit)
     {
+        ArgumentNullException.ThrowIfNull(memberInfo);
+
         return memberInfo.GetCustomAttributes(typeof(T), inherit).Cast<T>();
     }
 
@@ -37,8 +41,10 @@ public static class ReflectionExtensions
     /// </summary>
     /// <param name="type">The type to get a non-nullable version from.</param>
     /// <returns>The non-nullable version of the given type.</returns>
-    public static Type GetNonNullableType(this Type type)
+    public static Type? GetNonNullableType(this Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             return Nullable.GetUnderlyingType(type);
@@ -57,7 +63,9 @@ public static class ReflectionExtensions
     /// <returns>Whether this member has any attributes of the specified type.</returns>
     public static bool HasAttribute<T>(this MemberInfo memberInfo, bool inherit = true)
     {
-        return memberInfo.GetCustomAttributes(typeof(T), inherit).Any();
+        ArgumentNullException.ThrowIfNull(memberInfo);
+        
+        return memberInfo.GetCustomAttributes(typeof(T), inherit).Length != 0;
     }
 
     /// <summary>
@@ -70,7 +78,9 @@ public static class ReflectionExtensions
     /// <returns>Whether this member has any attributes of the specified type.</returns>
     public static bool HasAttribute(this MemberInfo memberInfo, Type attributeType, bool inherit = true)
     {
-        return memberInfo.GetCustomAttributes(attributeType, inherit).Any();
+        ArgumentNullException.ThrowIfNull(memberInfo);
+        
+        return memberInfo.GetCustomAttributes(attributeType, inherit).Length != 0;
     }
 
     /// <summary>
@@ -82,6 +92,8 @@ public static class ReflectionExtensions
     /// <returns>Whether or not the specified type is an IEnumerable type.</returns>
     public static bool IsEnumerable(this Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+        
         return type != typeof(string) && type.GetInterface("IEnumerable") != null;
     }
 }

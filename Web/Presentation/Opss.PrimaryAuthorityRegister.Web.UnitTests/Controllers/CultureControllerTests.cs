@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Opss.PrimaryAuthorityRegister.Web.Controllers;
+using System;
 
 namespace Opss.PrimaryAuthorityRegister.Web.UnitTests.Controllers;
 
@@ -10,7 +11,7 @@ public class CultureControllerTests
     public void Set_Should_Set_Cookie_When_Culture_Is_Provided()
     {
         // Arrange
-        var controller = new CultureController();
+        using var controller = new CultureController();
         var httpContext = new DefaultHttpContext();
         controller.ControllerContext = new ControllerContext
         {
@@ -18,35 +19,35 @@ public class CultureControllerTests
         };
 
         string culture = "fr-FR";
-        string redirectUri = "/home";
+        Uri redirectUri = new Uri("/home", UriKind.Relative);
 
         // Act
         var result = controller.Set(culture, redirectUri) as LocalRedirectResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(redirectUri, result.Url);
+        Assert.Equal(redirectUri.ToString(), result.Url);
     }
 
     [Fact]
     public void Set_Should_Not_Set_Cookie_When_Culture_Is_Null()
     {
         // Arrange
-        var controller = new CultureController();
+        using var controller = new CultureController();
         var httpContext = new DefaultHttpContext();
         controller.ControllerContext = new ControllerContext
         {
             HttpContext = httpContext
         };
 
-        string culture = null;
-        string redirectUri = "/home";
+        string? culture = null;
+        Uri redirectUri = new Uri("/home", UriKind.Relative);
 
         // Act
         var result = controller.Set(culture, redirectUri) as LocalRedirectResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(redirectUri, result.Url);
+        Assert.Equal(redirectUri.ToString(), result.Url);
     }
 }

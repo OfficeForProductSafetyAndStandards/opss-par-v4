@@ -6,8 +6,13 @@ namespace Opss.PrimaryAuthorityRegister.Web.Controllers;
 [Route("[controller]/[action]")]
 public class CultureController : Controller
 {
-    public IActionResult Set(string culture, string redirectUri)
+    public IActionResult Set(string culture, Uri redirectUri)
     {
+        ArgumentNullException.ThrowIfNull(redirectUri);
+
+        if (!ModelState.IsValid)
+            return LocalRedirect("/");
+
         if (culture != null)
         {
             HttpContext.Response.Cookies.Append(
@@ -16,6 +21,6 @@ public class CultureController : Controller
                     new RequestCulture(culture, culture)));
         }
 
-        return LocalRedirect(redirectUri);
+        return LocalRedirect(redirectUri.ToString());
     }
 }

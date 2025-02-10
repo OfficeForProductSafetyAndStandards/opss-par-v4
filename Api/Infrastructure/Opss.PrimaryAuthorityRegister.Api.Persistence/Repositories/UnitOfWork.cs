@@ -36,6 +36,9 @@ public class UnitOfWork : IUnitOfWork
 
         var repository = (IGenericRepository<T>?)_repositories[type];
 
+        if (repository == null)
+            throw new KeyNotFoundException($"{type} repository not found");
+
         return repository;
     }
 

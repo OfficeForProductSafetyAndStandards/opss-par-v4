@@ -37,7 +37,7 @@ public class ClaimRequiredAttribute : AuthrosationAttributeBaseAttribute
     /// <summary>
     /// Gets or sets the group this attribute belongs to, which may be <c>null</c>.
     /// </summary>
-    public string Group { get; set; }
+    public string? Group { get; set; }
 
     /// <summary>
     /// Gets the claim type this attribute represents.

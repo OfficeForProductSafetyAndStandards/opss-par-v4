@@ -2,7 +2,7 @@
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
-<GdsSelect Id="locale" Name="locale" ValueChanged="ApplySelectedCultureAsync">
+<GdsSelect Id="locale" Name="locale" ValueChanged="ApplySelectedCulture">
 	<LabelTemplate>
 		<GdsLabel>Select your langugage:</GdsLabel>
 	</LabelTemplate>
@@ -16,10 +16,10 @@
 
 @code
 {
-	private CultureInfo[] supportedCultures = new[]
+	private readonly CultureInfo[] supportedCultures = new[]
 	{
 		new CultureInfo("en"),
-		// new CultureInfo("cy"),
+		new CultureInfo("cy"),
 	};
 
 	private CultureInfo? selectedCulture;
@@ -29,18 +29,19 @@
 		selectedCulture = CultureInfo.CurrentCulture;
 	}
 
-	private async Task ApplySelectedCultureAsync(string cultureName)
+	private void ApplySelectedCulture(string cultureName)
 	{
-		if (CultureInfo.CurrentCulture.Name != cultureName)
-		{
-			var uri = new Uri(Navigation.Uri)
-				.GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-			var cultureEscaped = Uri.EscapeDataString(cultureName);
-			var uriEscaped = Uri.EscapeDataString(uri);
+		if (CultureInfo.CurrentCulture.Name == cultureName)
+			return;
 
-			Navigation.NavigateTo(
-				$"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
-				forceLoad: true);
-		}
+		var uri = new Uri(Navigation.Uri)
+			.GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+		var cultureEscaped = Uri.EscapeDataString(cultureName);
+		var uriEscaped = Uri.EscapeDataString(uri);
+
+		Navigation.NavigateTo(
+			$"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+			forceLoad: true);
+
 	}
 }
