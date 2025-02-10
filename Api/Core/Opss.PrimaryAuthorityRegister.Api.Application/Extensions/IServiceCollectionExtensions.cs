@@ -37,9 +37,13 @@ public static class IServiceCollectionExtensions
         services.AddScoped(provider =>
         {
             return GenerateTempIdentity();
-            var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
-            return httpContextAccessor.HttpContext?.User ?? GenerateTempIdentity();
-        });
+#pragma warning disable S125 // Sections of code should not be commented out
+            // Code is commented out until authentication is implemented.
+            // var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+            // return httpContextAccessor.HttpContext?.User ?? GenerateTempIdentity();
+#pragma warning restore S125 // Sections of code should not be commented out
+        }
+);
 
         services.AddMediatR(cfg =>
         {
