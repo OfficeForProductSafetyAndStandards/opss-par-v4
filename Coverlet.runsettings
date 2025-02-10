@@ -7,10 +7,6 @@
 					<Format>cobertura</Format>
 					<Exclude>[Opss.PrimaryAuthorityRegister.Api.Persistence]*</Exclude>
 					<ExcludeByFile>
-						**/moq.dll, 
-						**/unittests.dll, 
-						**/integrationtests.dll, 
-						**/bunit.dll, 
 						**/Opss.PrimaryAuthorityRegister.Api.Persistence/Migrations/*.*, 
 						**/Opss.PrimaryAuthorityRegister.Web/Pages/*.*
 					</ExcludeByFile>
