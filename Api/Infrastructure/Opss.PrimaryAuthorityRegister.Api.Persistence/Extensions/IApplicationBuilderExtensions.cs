@@ -15,7 +15,7 @@ public static class IApplicationBuilderExtensions
         var iServiceScopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
         if(iServiceScopeFactory == null)
         {
-            throw new ServiceNotfoundException(nameof(IServiceScopeFactory));
+            throw new ServiceNotFoundException(nameof(IServiceScopeFactory));
         }
 
         using var scope = iServiceScopeFactory.CreateScope();

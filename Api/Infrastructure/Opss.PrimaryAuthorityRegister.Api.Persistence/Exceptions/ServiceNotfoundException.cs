@@ -1,14 +1,18 @@
 ﻿namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
 
-public class ServiceNotfoundException : Exception
+public class ServiceNotFoundException : Exception
 {
-    public ServiceNotfoundException(string message)
-        : base($"Service: {message} not found")
+    public string ServiceName { get; }
+
+    public ServiceNotFoundException(string serviceName)
+        : base($"Service: {serviceName} not found")
     {
+        ServiceName = serviceName;
     }
 
-    public ServiceNotfoundException(string message, Exception innerException)
-        : base($"Service: {message} not found", innerException)
+    public ServiceNotFoundException(string serviceName, Exception innerException)
+        : base($"Service: {serviceName} not found", innerException)
     {
+        ServiceName = serviceName;
     }
 }
