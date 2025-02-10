@@ -28,6 +28,7 @@ public static class ReflectionExtensions
     /// <returns>The list of attributes for this member that are of the given type.</returns>
     public static IEnumerable<T> GetAttributes<T>(this MemberInfo memberInfo, bool inherit)
     {
+        ArgumentNullException.ThrowIfNull(memberInfo);
         return memberInfo.GetCustomAttributes(typeof(T), inherit).Cast<T>();
     }
 
@@ -37,8 +38,10 @@ public static class ReflectionExtensions
     /// </summary>
     /// <param name="type">The type to get a non-nullable version from.</param>
     /// <returns>The non-nullable version of the given type.</returns>
-    public static Type GetNonNullableType(this Type type)
+    public static Type? GetNonNullableType(this Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             return Nullable.GetUnderlyingType(type);
