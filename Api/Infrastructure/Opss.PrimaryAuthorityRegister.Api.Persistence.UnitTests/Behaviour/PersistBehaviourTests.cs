@@ -52,9 +52,11 @@ public class PersistBehaviourTests
     public async Task Handle_ThrowsArgumentNullException_WhenNextIsNull()
     {
         // Act & Assert
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         await Assert.ThrowsAsync<ArgumentNullException>(() =>
             _persistBehaviour.Handle(Mock.Of<ICommandBase>(), null, CancellationToken.None)
         );
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         _unitOfWorkMock.Verify(uow => uow.Save(It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(uow => uow.Rollback(), Times.Never);
     }

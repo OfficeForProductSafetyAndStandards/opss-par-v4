@@ -83,7 +83,7 @@ public class AttributeBasedResourceClaimProvider : IResourceClaimProvider
 
         return definedSets.Length == 0
                        ? GetRequiredClaimsForNoDefinedGroup(resource, attributes)
-                       : GetRequiredClaimsForMultipleGroups(resource, attributes, definedSets);
+                       : GetRequiredClaimsForMultipleGroups(resource, attributes, definedSets!);
     }
 
     private static void EnsureResourceDoesNotHaveAllowAnonymousAttribute(object resource)

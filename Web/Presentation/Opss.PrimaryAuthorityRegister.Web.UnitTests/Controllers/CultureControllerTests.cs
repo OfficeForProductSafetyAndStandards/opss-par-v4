@@ -44,7 +44,9 @@ public class CultureControllerTests
         Uri redirectUri = new Uri("/home", UriKind.Relative);
 
         // Act
+#pragma warning disable CS8604 // Possible null reference argument.
         var result = controller.Set(culture, redirectUri) as LocalRedirectResult;
+#pragma warning restore CS8604 // Possible null reference argument.
 
         // Assert
         Assert.NotNull(result);

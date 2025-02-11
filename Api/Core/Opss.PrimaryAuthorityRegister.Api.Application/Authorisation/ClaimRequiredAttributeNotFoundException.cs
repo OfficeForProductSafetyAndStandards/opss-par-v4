@@ -16,7 +16,7 @@ public class ClaimRequiredAttributeNotFoundException : Exception
     /// The resource.
     /// </param>
     public ClaimRequiredAttributeNotFoundException(object resource)
-            : base($"The expected attribute was missing from type: {resource.GetType().Name}")
+            : base($"The expected attribute was missing from type: {(resource ?? throw new ArgumentNullException(nameof(resource))).GetType().Name}")
     {
     }
 

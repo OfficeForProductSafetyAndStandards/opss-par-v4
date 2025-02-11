@@ -20,6 +20,7 @@ public sealed class PermissionForAttribute : ClaimRequiredAttribute
         : base(PermissionAttribute.PermissionClaimType, resourceKeyTemplate, permission)
     {
         this.permission = permission;
+        ResourceKeyTemplate = resourceKeyTemplate;
     }
 
     /// <summary>
@@ -32,4 +33,6 @@ public sealed class PermissionForAttribute : ClaimRequiredAttribute
             return permission;
         }
     }
+
+    public string ResourceKeyTemplate { get; }
 }
