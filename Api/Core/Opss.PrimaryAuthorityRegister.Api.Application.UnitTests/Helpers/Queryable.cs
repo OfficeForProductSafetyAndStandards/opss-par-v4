@@ -29,9 +29,7 @@ public class AsyncQueryable<TEntity> : EnumerableQuery<TEntity>, IAsyncEnumerabl
         public void Dispose() => inner.Dispose();
         public TEntity Current => inner.Current;
         public ValueTask<bool> MoveNextAsync() => new ValueTask<bool>(inner.MoveNext());
-#pragma warning disable CS1998 // Nothing to await
         public async ValueTask DisposeAsync() => inner.Dispose();
-#pragma warning restore CS1998
     }
 
     class AsyncQueryProvider : IAsyncQueryProvider
@@ -42,7 +40,7 @@ public class AsyncQueryable<TEntity> : EnumerableQuery<TEntity>, IAsyncEnumerabl
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression) => new AsyncQueryable<TElement>(expression);
         public object Execute(Expression expression) => inner.Execute(expression);
         public TResult Execute<TResult>(Expression expression) => inner.Execute<TResult>(expression);
-        public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression) => new AsyncQueryable<TResult>(expression);
+        public static IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression) => new AsyncQueryable<TResult>(expression);
         TResult IAsyncQueryProvider.ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken) => Execute<TResult>(expression);
     }
 }

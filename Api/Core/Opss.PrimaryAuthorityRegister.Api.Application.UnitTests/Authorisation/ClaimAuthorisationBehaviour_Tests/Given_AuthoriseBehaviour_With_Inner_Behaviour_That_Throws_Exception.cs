@@ -7,10 +7,10 @@ using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.ClaimAuthorisationBehaviour_Tests;
 
-public class Given_AuthoriseBehaviour_With_Inner_Behaviour_That_Throws_Exception
+public class Given_AuthoriseBehaviour_With_Inner_Behaviour_That_Throws
 {
     [Fact]
-    public async void When_Invoked_Bubbles_Exception()
+    public async Task When_Invoked_Bubbles_Exception()
     {
         // Arrange
         var mockNextDelegate = new Mock<RequestHandlerDelegate<string>>();

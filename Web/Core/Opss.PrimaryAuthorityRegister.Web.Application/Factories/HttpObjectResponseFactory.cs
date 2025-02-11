@@ -61,7 +61,7 @@ public static class HttpObjectResponseFactory
             throw new HttpResponseException(httpResponseMessage.StatusCode, problem?.Problem?.Detail);
         }
 
-        var json = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+        _ = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         return new HttpObjectResponse(httpResponseMessage);
     }

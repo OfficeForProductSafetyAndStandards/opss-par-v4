@@ -23,6 +23,6 @@
 
     protected override void OnInitialized()
     {
-        CookieService.SetCultureCookie();
+        CookieService.SetCultureCookie(HttpContext);
     }
 }

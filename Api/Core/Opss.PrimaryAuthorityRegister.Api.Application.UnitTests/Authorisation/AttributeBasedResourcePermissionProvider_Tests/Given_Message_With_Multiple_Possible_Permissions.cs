@@ -27,7 +27,7 @@ public class Given_Message_With_Multiple_Possible_Permissions
             new Claim("urn:claims/permission", "*", "Office Admin")
         };
 
-        Assert.True(defaultGroup.IsSatisfiedBy(expectedClaims));
+        Assert.True(defaultGroup!.IsSatisfiedBy(expectedClaims));
     }
 
     [Permission("System Admin|User")]
