@@ -84,7 +84,7 @@ public class HttpObjectResponseFactoryTests
             await HttpObjectResponseFactory.DetermineSuccess<TestObject>(httpResponseMessage).ConfigureAwait(true)).ConfigureAwait(true);
 
         Assert.Equal(HttpStatusCode.InternalServerError, exception.Response.StatusCode);
-        Assert.StartsWith("'I' is an invalid start of a property name.", exception.Message);
+        Assert.StartsWith("'I' is an invalid start of a property name.", exception.Message, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -138,7 +138,7 @@ public class HttpObjectResponseFactoryTests
             await HttpObjectResponseFactory.DetermineSuccess(httpResponseMessage).ConfigureAwait(true)).ConfigureAwait(true);
 
         Assert.Equal(HttpStatusCode.InternalServerError, exception.Response.StatusCode);
-        Assert.StartsWith("'I' is an invalid start of a property name.", exception.Message);
+        Assert.StartsWith("'I' is an invalid start of a property name.", exception.Message, StringComparison.Ordinal);
     }
 
     [Fact]

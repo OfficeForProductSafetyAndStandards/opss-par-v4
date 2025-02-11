@@ -1,6 +1,8 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Web.Application.Services;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Opss.PrimaryAuthorityRegister.Web.Application.Services;
 
 public interface ICookieService
 {
-    void SetCultureCookie();
+    void SetCultureCookie(HttpContext? httpContext);
 }

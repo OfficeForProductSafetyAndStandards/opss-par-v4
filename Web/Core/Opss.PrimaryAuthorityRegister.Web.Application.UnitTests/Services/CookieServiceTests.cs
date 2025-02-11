@@ -22,14 +22,14 @@ public class CookieServiceTests
         mockHttpContext.Setup(c => c.Response).Returns(mockHttpResponse.Object);
         mockHttpContextAccessor.Setup(a => a.HttpContext).Returns(mockHttpContext.Object);
 
-        var cookieService = new CookieService(mockHttpContextAccessor.Object);
+        var cookieService = new CookieService();
 
         // Expected cookie value
         var expectedCookieValue = CookieRequestCultureProvider.MakeCookieValue(
             new RequestCulture(CultureInfo.CurrentCulture, CultureInfo.CurrentUICulture));
 
         // Act
-        cookieService.SetCultureCookie();
+        cookieService.SetCultureCookie(mockHttpContextAccessor.Object.HttpContext);
 
         // Assert
         mockResponseCookies.Verify(
@@ -45,10 +45,10 @@ public class CookieServiceTests
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         mockHttpContextAccessor.Setup(a => a.HttpContext).Returns((HttpContext?)null);
 
-        var cookieService = new CookieService(mockHttpContextAccessor.Object);
+        var cookieService = new CookieService();
 
         // Act
-        cookieService.SetCultureCookie();
+        cookieService.SetCultureCookie(mockHttpContextAccessor.Object.HttpContext);
 
         // Assert
         // Since HttpContext is null, the cookie should never be set

@@ -1,3 +1,4 @@
+using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Opss.PrimaryAuthorityRegister.Web;
@@ -26,6 +27,9 @@ internal static class Program
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         });
+
+        builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         var app = builder.Build();
 

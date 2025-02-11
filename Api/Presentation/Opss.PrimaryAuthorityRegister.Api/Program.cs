@@ -3,6 +3,8 @@ using Opss.PrimaryAuthorityRegister.Api.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
 using System.Diagnostics.CodeAnalysis;
 
+namespace Opss.PrimaryAuthorityRegister.Api;
+
 [ExcludeFromCodeCoverage]
 internal static class Program
 {

@@ -6,16 +6,8 @@ namespace Opss.PrimaryAuthorityRegister.Web.Application.Services;
 
 public class CookieService : ICookieService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CookieService(IHttpContextAccessor httpContextAccessor)
+    public void SetCultureCookie(HttpContext? httpContext)
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public void SetCultureCookie()
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null) return;
 
         httpContext.Response.Cookies.Append(
