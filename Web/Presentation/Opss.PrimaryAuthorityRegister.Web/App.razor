@@ -1,5 +1,8 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Localization
+@using Opss.PrimaryAuthorityRegister.Web.Application.Services
+
+@inject ICookieService CookieService
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -20,11 +23,6 @@
 
     protected override void OnInitialized()
     {
-        HttpContext?.Response.Cookies.Append(
-            CookieRequestCultureProvider.DefaultCookieName,
-            CookieRequestCultureProvider.MakeCookieValue(
-                new RequestCulture(
-                    CultureInfo.CurrentCulture,
-                    CultureInfo.CurrentUICulture)));
+        CookieService.SetCultureCookie();
     }
 }

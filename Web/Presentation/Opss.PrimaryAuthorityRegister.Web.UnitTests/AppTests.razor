@@ -1,0 +1,20 @@
+﻿@using Opss.PrimaryAuthorityRegister.Web.Application.Services
+
+@inherits BunitContext
+
+@code{
+    [Fact]
+    public void CultureCookie_IsSetOnInitialization()
+    {
+        // Arrange
+        var mockCookieService = new Mock<ICookieService>();
+        Services.AddSingleton(mockCookieService.Object);
+        Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
+
+        // Act
+        var cut = Render<App>(); // Assuming this contains the Router component
+
+        // Assert
+        mockCookieService.Verify(s => s.SetCultureCookie(), Times.Once);
+    }
+}
