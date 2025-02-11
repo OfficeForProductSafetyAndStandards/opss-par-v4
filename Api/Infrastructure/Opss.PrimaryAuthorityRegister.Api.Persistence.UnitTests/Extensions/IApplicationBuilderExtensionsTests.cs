@@ -1,10 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
 

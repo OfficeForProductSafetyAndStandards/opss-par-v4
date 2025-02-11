@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Globalization;
+using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 
@@ -79,14 +80,18 @@ public class SatisficingClaimSet
 
     private static bool ClaimsAreEqual(Claim demandedClaim, Claim availableClaim)
     {
-        return availableClaim.Type.Equals(demandedClaim.Type) &&
-               availableClaim.ValueType.Equals(demandedClaim.ValueType) &&
-               (availableClaim.Value.Equals(demandedClaim.Value) || demandedClaim.Value.Equals(AnyResource) || availableClaim.Value.Equals(AnyResource));
+        return availableClaim.Type.Equals(demandedClaim.Type, StringComparison.Ordinal) &&
+               availableClaim.ValueType.Equals(demandedClaim.ValueType, StringComparison.Ordinal) &&
+               (
+                    availableClaim.Value.Equals(demandedClaim.Value, StringComparison.Ordinal) || 
+                    demandedClaim.Value.Equals(AnyResource, StringComparison.Ordinal) || 
+                    availableClaim.Value.Equals(AnyResource, StringComparison.Ordinal)
+               );
     }
 
     private static string ConvertClaimToString(Claim c)
     {
-        return string.Format("[{0}, '{1}', {2}]", c.Type, c.Value, c.ValueType);
+        return string.Format(CultureInfo.CurrentCulture, "[{0}, '{1}', {2}]", c.Type, c.Value, c.ValueType);
     }
 
     private static string ConvertExpandedClaimSetToString(IEnumerable<Claim> claims)

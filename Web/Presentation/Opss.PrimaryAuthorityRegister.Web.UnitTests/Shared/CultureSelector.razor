@@ -1,0 +1,55 @@
+﻿@inherits BunitContext
+
+@code {
+    [Fact]
+    public void Component_RendersWithSupportedCultures()
+    {
+        // Arrange & Act
+        var cut = Render(@<CultureSelector />);
+
+        // Assert
+        cut.MarkupMatches(@"
+            <div class=""govuk-form-group"">
+              <label class=""govuk-label"" for=""locale"">Select your langugage:</label>
+              <select class=""govuk-select"" id=""locale"" name=""locale"" >
+                <option value=""en"">English</option>
+                <option value=""cy"">Welsh</option>
+              </select>
+            </div>
+        ");
+    }
+
+    [Fact]
+    public void SelectingNewCulture_NavigatesToCorrectUrl()
+    {
+        // Arrange
+        var navMan = Services.GetRequiredService<NavigationManager>();
+
+        CultureInfo.CurrentCulture = new CultureInfo("en"); // Start with English
+
+        var cut = Render(@<CultureSelector />);
+
+        // Act
+        cut.Find("select").Change("cy"); // Simulate selecting Welsh
+
+        // Assert
+        Assert.StartsWith("http://localhost/Culture/Set?culture=cy&redirectUri=", navMan.Uri);
+    }
+
+    [Fact]
+    public void SelectingSameCulture_DoesNotNavigate()
+    {
+        // Arrange
+        var navMan = Services.GetRequiredService<NavigationManager>();
+
+        CultureInfo.CurrentCulture = new CultureInfo("en");
+
+        var cut = Render(@<CultureSelector />);
+
+        // Act
+        cut.Find("select").Change("en"); // Select the same culture
+
+        // Assert
+        Assert.Equal("http://localhost/", navMan.Uri); // No navigation should happen
+    }
+}

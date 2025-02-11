@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using System.Globalization;
+using System.Security;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
@@ -57,7 +58,7 @@ public class DemandedClaims
 
     private static string ConvertClaimToString(Claim c)
     {
-        return string.Format("Claim: [{0}, '{1}', {2}]", c.Type, c.Value, c.ValueType);
+        return string.Format(CultureInfo.CurrentCulture, "Claim: [{0}, '{1}', {2}]", c.Type, c.Value, c.ValueType);
     }
 
     private SecurityException CreateSecurityException(object resource, IEnumerable<Claim> currentClaims)

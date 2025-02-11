@@ -14,7 +14,7 @@ namespace Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
     Justification = "Claim Required Attribute is inherited by several other claim based attributes, so can't be sealed")]
 public class ClaimRequiredAttribute : AuthrosationAttributeBaseAttribute
 {
-    private static readonly Regex ResourceKeyPropertyRegex = new Regex("{([^}]+)}", RegexOptions.Compiled);
+    private static readonly Regex ResourceKeyPropertyRegex = new("{([^}]+)}", RegexOptions.Compiled);
 
     private readonly string _claimType;
     private readonly string _valueTemplate;
