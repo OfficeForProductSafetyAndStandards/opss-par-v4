@@ -7,35 +7,36 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+	<NoWarn>$(NoWarn);CS8625;CS8600;CS8604;CS8625</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageReference Include="Moq.EntityFrameworkCore" Version="9.0.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+	  <PackageReference Include="coverlet.collector" Version="6.0.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+	  <PackageReference Include="Moq.EntityFrameworkCore" Version="9.0.0.1" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="xunit" Version="2.9.3" />
+	  <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Persistence\Opss.PrimaryAuthorityRegister.Api.Persistence.csproj" />
+	  <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Persistence\Opss.PrimaryAuthorityRegister.Api.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+	  <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.6.0.109712" />
+	  <PackageReference Update="SonarAnalyzer.CSharp" Version="10.6.0.109712" />
   </ItemGroup>
 
 </Project>
