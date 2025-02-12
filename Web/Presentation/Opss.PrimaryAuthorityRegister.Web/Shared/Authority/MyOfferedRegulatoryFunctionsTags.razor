@@ -1,0 +1,25 @@
+﻿@using Opss.PrimaryAuthorityRegister.Common.Requests.Common.Authority.Queries
+
+@inject IHttpService _httpClient
+
+@foreach (var function in regulatoryFunctions)
+{
+	<GdsTag Classes=@($"max-width-fit-content govuk-!-static-margin-right-3 {TagClasses.Turquoise}")>@function</GdsTag>
+}
+
+@code {
+	private readonly List<string> regulatoryFunctions = new List<string>();
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender) return;
+
+		var response = await _httpClient.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(new GetMyOfferedRegulatoryFunctionsQuery());
+		regulatoryFunctions.Clear();
+
+		if (response.Result != null)
+			regulatoryFunctions.AddRange(response.Result);
+
+		StateHasChanged();
+	}
+}

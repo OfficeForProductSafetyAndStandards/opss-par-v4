@@ -84,6 +84,7 @@ public static class IServiceCollectionExtensions
 
         // Optionally add a name claim
         claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "User"));
+        claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"*", "Authority"));
         // give the user claims to that test data owner.
         claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"Owner/e3e695cc-ca85-43d8-9add-aa004eea5be5", "Create"));
         claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"Owner/e3e695cc-ca85-43d8-9add-aa004eea5be5", "Write"));

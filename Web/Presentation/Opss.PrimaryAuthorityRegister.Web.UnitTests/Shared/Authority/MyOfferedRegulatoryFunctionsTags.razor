@@ -1,0 +1,40 @@
+﻿@inherits BunitContext
+
+@using System.Net.Http;
+@using Opss.DesignSystem.Frontend.Blazor.Components.Classes
+@using Opss.PrimaryAuthorityRegister.Common.Requests.Common.Authority.Queries
+@using Opss.PrimaryAuthorityRegister.Web.Application.Entities
+@using Opss.PrimaryAuthorityRegister.Web.Application.Services
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+
+@code {
+	[Fact]
+	public void GivenQueryReturnsResults_ThenAListOfRegulatoryFunctionsIsRendered()
+	{
+		// Arrange
+		var mockHttpService = new Mock<IHttpService>(MockBehavior.Strict);
+
+		var mockResponse = new HttpObjectResponse<List<string>>(
+								new HttpResponseMessage(),
+								new List<string> { "Item1", "Item2", "Item3" }
+							);
+
+		mockHttpService
+			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
+			.ReturnsAsync(mockResponse);
+
+		Services.AddSingleton(mockHttpService.Object);
+
+		var component = Render(@<MyOfferedRegulatoryFunctionsTags />);
+
+		var listItems = component.FindAll("strong");
+		Assert.Equal(3, listItems.Count);
+		Assert.Contains("Item1", listItems[0].TextContent);
+		Assert.Contains("Item2", listItems[1].TextContent);
+		Assert.Contains("Item3", listItems[2].TextContent);
+
+		foreach(var item in listItems){
+			Assert.Contains(TagClasses.Turquoise, item.GetAttribute("class"));
+		}
+	}
+}
