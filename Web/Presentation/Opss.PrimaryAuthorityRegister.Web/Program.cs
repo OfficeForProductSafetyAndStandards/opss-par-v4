@@ -29,6 +29,7 @@ internal static class Program
         });
 
         builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         var app = builder.Build();

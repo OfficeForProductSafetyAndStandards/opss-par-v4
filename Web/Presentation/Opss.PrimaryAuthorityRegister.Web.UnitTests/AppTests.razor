@@ -8,7 +8,9 @@
     public void CultureCookie_IsSetOnInitialization()
     {
         // Arrange
+        var mockHttpService = new Mock<IHttpService>();
         var mockCookieService = new Mock<ICookieService>();
+        Services.AddSingleton(mockHttpService.Object);
         Services.AddSingleton(mockCookieService.Object);
         Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
 
