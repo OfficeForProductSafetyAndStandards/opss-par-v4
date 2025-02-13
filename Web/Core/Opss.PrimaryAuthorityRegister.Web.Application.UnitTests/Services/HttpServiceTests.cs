@@ -3,17 +3,17 @@ using Moq;
 using Moq.Protected;
 using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 using Opss.PrimaryAuthorityRegister.Web.Application.Exceptions;
-using Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
 using System.Net;
 using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
 using Opss.PrimaryAuthorityRegister.Common;
+using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 
-namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Extensions;
+namespace Opss.PrimaryAuthorityRegister.Web.Application.UnitTests.Services;
 
-public class HttpClientExtensionsTests
+public class HttpServiceTests
 {
     private static string _baseAddress = "http://api/";
 
@@ -50,10 +50,12 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri(_baseAddress)
         };
 
+        var httpService = new HttpService(client);
+
         var query = new GetTestDataQuery(Guid.NewGuid());
 
         // Act
-        var response = await client.GetAsync<GetTestDataQuery, TestDataDto>(query).ConfigureAwait(true);
+        var response = await httpService.GetAsync<GetTestDataQuery, TestDataDto>(query).ConfigureAwait(true);
 
         // Assert
         var expectedUrl = $"{_baseAddress}api?name=GetTestDataQuery";
@@ -96,10 +98,12 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
+        var httpService = new HttpService(client);
+
         var query = new GetTestDataQuery(Guid.NewGuid());
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.GetAsync<GetTestDataQuery, TestDataDto>(query)).ConfigureAwait(true);
+        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.GetAsync<GetTestDataQuery, TestDataDto>(query)).ConfigureAwait(true);
         Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
     }
 
@@ -136,11 +140,13 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
+        var httpService = new HttpService(client);
+
         var ownerId = Guid.NewGuid();
         var command = new CreateTestDataCommand(ownerId, "Something");
 
         // Act
-        var response = await client.PostAsync(command).ConfigureAwait(true);
+        var response = await httpService.PostAsync(command).ConfigureAwait(true);
 
         // Assert
         var expectedUrl = $"{_baseAddress}api?name=CreateTestDataCommand";
@@ -183,11 +189,13 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
+        var httpService = new HttpService(client);
+
         var ownerId = Guid.NewGuid();
         var command = new CreateTestDataCommand(ownerId, "Something");
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PostAsync(command)).ConfigureAwait(true);
+        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.PostAsync(command)).ConfigureAwait(true);
         Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
     }
 
@@ -223,12 +231,14 @@ public class HttpClientExtensionsTests
         {
             BaseAddress = new Uri("http://api/")
         };
-        
+
+        var httpService = new HttpService(client);
+
         var ownerId = Guid.NewGuid();
         var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
 
         // Act
-        var response = await client.PutAsync(command).ConfigureAwait(true);
+        var response = await httpService.PutAsync(command).ConfigureAwait(true);
 
         // Assert
         var expectedUrl = $"{_baseAddress}api?name=UpdateTestDataCommand";
@@ -271,11 +281,13 @@ public class HttpClientExtensionsTests
             BaseAddress = new Uri("http://api/")
         };
 
+        var httpService = new HttpService(client);
+
         var ownerId = Guid.NewGuid();
         var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => client.PutAsync(command)).ConfigureAwait(true);
+        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.PutAsync(command)).ConfigureAwait(true);
         Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
     }
 }
