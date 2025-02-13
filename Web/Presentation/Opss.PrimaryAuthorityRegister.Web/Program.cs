@@ -59,6 +59,7 @@ internal static class Program
         #endregion
 
         builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         var app = builder.Build();
