@@ -1,6 +1,11 @@
 ﻿@page "/authority/partnership-application/initiate/start"
 
-<h3>Start</h3>
+@inject IStringLocalizer<Start> Loc
+
+<PageTitle>@Loc["PageTitle"]</PageTitle>
+
+<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["PageHeading"]</GdsHeading>
+
 
 @code {
 
