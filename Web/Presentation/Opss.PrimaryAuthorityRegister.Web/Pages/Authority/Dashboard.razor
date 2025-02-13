@@ -1,0 +1,19 @@
+﻿@page "/authority/"
+
+@inject IStringLocalizer<Dashboard> Loc
+@inject NavigationManager NavManager
+
+<PageTitle>@Loc["PageTitle"]</PageTitle>
+
+<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["PageHeading"]</GdsHeading>
+
+<GdsButton Id="apply-button" @onclick="OnPartnershipApplicationClick" Classes=@ButtonStyle.Secondary>@Loc["ApplyButton"]</GdsButton>
+
+@{
+}
+@code {
+	private void OnPartnershipApplicationClick(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/authority/partnership-application/initiate/start");
+	}
+}

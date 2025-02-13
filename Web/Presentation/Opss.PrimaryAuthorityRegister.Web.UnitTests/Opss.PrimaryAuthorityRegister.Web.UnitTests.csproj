@@ -44,10 +44,6 @@
 	  <PackageReference Update="SonarAnalyzer.CSharp" Version="10.6.0.109712" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Pages\" />
-	</ItemGroup>
-
 
 
 </Project>

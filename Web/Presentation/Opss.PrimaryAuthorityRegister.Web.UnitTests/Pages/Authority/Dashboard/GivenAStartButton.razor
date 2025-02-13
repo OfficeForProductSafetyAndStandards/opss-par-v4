@@ -1,0 +1,21 @@
+﻿@inherits BunitContext
+
+<h3>GivenAStartButton</h3>
+
+@code {
+	[Fact]
+	public void WhenClickingApplyButton_ThenNavigatesToStart(){
+		// Arrange
+		Services.AddLocalization();
+		var navMan = Services.GetRequiredService<NavigationManager>();
+		//navMan.NavigateTo("/authority");
+		var dashboard = Render<Web.Pages.Authority.Dashboard>();
+		var applyButton = dashboard.Find("#apply-button");
+
+		// Act
+		applyButton.Click();
+
+		// Assert
+		Assert.EndsWith("/authority/partnership-application/initiate/start", navMan.Uri);
+	}
+}
