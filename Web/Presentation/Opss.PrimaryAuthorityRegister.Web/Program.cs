@@ -1,4 +1,7 @@
+using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
+using Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
+using Opss.PrimaryAuthorityRegister.Web.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Opss.PrimaryAuthorityRegister.Web;
@@ -10,12 +13,25 @@ internal static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
+        builder.Services.Configure<OneLoginAuthConfig>(oneLoginAuthConfigSection);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: "_parAllowOrigins",
+                policy =>
+                {
+                    policy.WithOrigins("https://oidc.integration.account.gov.uk");
+                });
+        });
+
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
 
         builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
         builder.Services.AddControllers();
+        builder.Services.AddAuthentication();
         
         builder.Services.AddHttpClient();
         builder.Services.AddScoped(sp =>
@@ -27,6 +43,20 @@ internal static class Program
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         });
+
+        #region Authentication
+
+        var oneLoginAuthConfig = oneLoginAuthConfigSection.Get<OneLoginAuthConfig>()
+            ?? throw new InvalidOperationException("Cannot load OneLogin auth configuration");
+
+        var chmmOpenIdConnectBuilder = new OpenIdConnectBuilder(oneLoginAuthConfig);
+        builder.Services
+            .AddTransient<OpenIdConnectEvents>()
+            .AddAuthentication(chmmOpenIdConnectBuilder.ConfigureAuthentication)
+            .AddCookie(chmmOpenIdConnectBuilder.ConfigureCookie)
+            .AddOpenIdConnect("oidc-onelogin", chmmOpenIdConnectBuilder.ConfigureOneLoginOpenIdConnectOptions);
+
+        #endregion
 
         builder.Services.AddScoped<ICookieService, CookieService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -46,6 +76,10 @@ internal static class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseAuthentication();
+        app.MapControllers();
+
+        app.UseCors("_parAllowOrigins");
 
         UseLocalization(app);
 
@@ -65,6 +99,5 @@ internal static class Program
 
         app.UseRequestLocalization(localizationOptions);
 
-        app.MapControllers();
     }
 }

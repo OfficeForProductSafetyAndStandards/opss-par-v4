@@ -9,61 +9,14 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["Hello"] @data?.Id.ToString()</GdsHeading>
+<GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
-<p class="govuk-body">@data?.Data</p>
-
-<GdsButtonGroup>
-	<GdsButton @onclick=@OnPostClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryPost"]
-	</GdsButton>
-
-	<GdsButton @onclick=@OnPutClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryPut"]
-	</GdsButton>
-
-	<GdsButton @onclick=@OnGetClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryGet"]
-	</GdsButton>
-</GdsButtonGroup>
+<GdsButton @onclick=@Login IsStartButton=@true>
+	@Loc["StartButton"]
+</GdsButton>
 
 @code {
-	private TestDataDto? data;
-	private System.Net.HttpStatusCode? status;
-	private Guid ownerId = new Guid("E3E695CC-CA85-43D8-9ADD-AA004EEA5BE5");
+	private void Login(){
 
-	protected async void OnPostClick()
-	{
-		var ok = await _httpClient.PostAsync(new CreateTestDataCommand(ownerId, "Something"));
-		status = ok.StatusCode;
-
-		var id = ok?.Result?.Id;
-
-		if (id == null) return;
-
-		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id.Value));
-		data = result.Result;
-
-		StateHasChanged();
-	}
-
-	protected async void OnGetClick()
-	{
-		ArgumentNullException.ThrowIfNull(data);
-
-		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(data.Id));
-		data = result.Result;
-
-		StateHasChanged();
-	}
-
-	protected async void OnPutClick()
-	{
-		ArgumentNullException.ThrowIfNull(data);
-
-		var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(ownerId, data.Id, "Something new"));
-		status = ok.StatusCode;
-
-		StateHasChanged();
 	}
 }

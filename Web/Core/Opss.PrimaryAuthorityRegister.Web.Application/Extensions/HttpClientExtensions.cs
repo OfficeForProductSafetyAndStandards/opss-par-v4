@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 using Opss.PrimaryAuthorityRegister.Common;
+using System.Net.Http.Headers;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
 
@@ -53,6 +54,21 @@ public static class HttpClientExtensions
         if (data != null)
         {
             request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+        }
+
+        var token = client.DefaultRequestHeaders.Authorization?.Parameter;
+        if (!string.IsNullOrEmpty(token))
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+        var entityClaimsJson = client.DefaultRequestHeaders.GetValues("X-Entity-Claims").FirstOrDefault();
+        if (!string.IsNullOrEmpty(entityClaimsJson))
+        {
+            var entityClaims = JsonSerializer.Deserialize<Dictionary<string, string>>(entityClaimsJson);
+            foreach (var entity in entityClaims!)
+            {
+                request.Headers.Add($"X-Entity-{entity.Key}", entity.Value);
+            }
         }
 
         var response = await client.SendAsync(request).ConfigureAwait(false);

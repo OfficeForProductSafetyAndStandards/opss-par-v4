@@ -40,6 +40,21 @@ internal static class Program
             config.AddExceptionHandlers(app.Environment.IsDevelopment());
         });
 
+        app.Use(async (context, next) =>
+        {
+            var entityClaims = new Dictionary<string, string>();
+            foreach (var header in context.Request.Headers)
+            {
+                if (header.Key.StartsWith("X-Entity-"))
+                {
+                    var entityKey = header.Key.Replace("X-Entity-", "");
+                    entityClaims[entityKey] = header.Value;
+                }
+            }
+            context.Items["EntityClaims"] = entityClaims;
+            await next();
+        });
+
         app.MapControllers();
 
         app.MigrateDatabase();

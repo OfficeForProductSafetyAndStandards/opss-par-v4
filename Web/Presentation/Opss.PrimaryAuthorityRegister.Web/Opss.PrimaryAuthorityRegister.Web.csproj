@@ -49,6 +49,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
     <ProjectReference Include="..\..\Core\Opss.PrimaryAuthorityRegister.Web.Application\Opss.PrimaryAuthorityRegister.Web.Application.csproj" />
+    <ProjectReference Include="..\..\Core\Opss.PrimaryAuthorityRegister.Web.Authentication\Opss.PrimaryAuthorityRegister.Web.Authentication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
