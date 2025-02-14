@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage line-rate="0.9122807017543859" branch-rate="0.8333333333333334" complexity="160" version="1.9" timestamp="1739468044" lines-covered="364" lines-valid="399" branches-covered="70" branches-valid="84">
+<coverage line-rate="0.9122807017543859" branch-rate="0.8333333333333334" complexity="160" version="1.9" timestamp="1739526279" lines-covered="364" lines-valid="399" branches-covered="70" branches-valid="84">
   <sources>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/</source>
-    <source>/home/runner/work/opss-par-v4/opss-par-v4/Api/Core/Opss.PrimaryAuthorityRegister.Api.Domain/</source>
-    <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/Opss.PrimaryAuthorityRegister.Common/</source>
   </sources>
   <packages>
     <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Api.Domain">
@@ -1182,6 +1180,72 @@
         </class>
       </classes>
     </package>
+    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Api">
+      <classes>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Extensions.IApplicationBuilderExtensions" filename="Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Extensions/IApplicationBuilderExtensions.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name="AddExceptionHandlers" signature="(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Boolean)">
+              <lines>
+                <line number="12" hits="3" branch="False" />
+                <line number="13" hits="3" branch="False" />
+                <line number="14" hits="3" branch="False" />
+                <line number="15" hits="3" branch="False" />
+                <line number="16" hits="3" branch="False" />
+                <line number="17" hits="3" branch="False" />
+                <line number="18" hits="3" branch="False" />
+                <line number="19" hits="3" branch="False" />
+                <line number="20" hits="3" branch="False" />
+                <line number="21" hits="3" branch="False" />
+                <line number="22" hits="3" branch="False" />
+                <line number="23" hits="3" branch="False" />
+                <line number="24" hits="3" branch="False" />
+                <line number="25" hits="3" branch="False" />
+                <line number="26" hits="3" branch="False" />
+                <line number="27" hits="3" branch="False" />
+                <line number="28" hits="3" branch="False" />
+                <line number="29" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="3" branch="False" />
+            <line number="13" hits="3" branch="False" />
+            <line number="14" hits="3" branch="False" />
+            <line number="15" hits="3" branch="False" />
+            <line number="16" hits="3" branch="False" />
+            <line number="17" hits="3" branch="False" />
+            <line number="18" hits="3" branch="False" />
+            <line number="19" hits="3" branch="False" />
+            <line number="20" hits="3" branch="False" />
+            <line number="21" hits="3" branch="False" />
+            <line number="22" hits="3" branch="False" />
+            <line number="23" hits="3" branch="False" />
+            <line number="24" hits="3" branch="False" />
+            <line number="25" hits="3" branch="False" />
+            <line number="26" hits="3" branch="False" />
+            <line number="27" hits="3" branch="False" />
+            <line number="28" hits="3" branch="False" />
+            <line number="29" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Controllers.ApiController" filename="Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Controllers/ApiController.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(MediatR.IMediator)">
+              <lines>
+                <line number="13" hits="8" branch="False" />
+                <line number="15" hits="8" branch="False" />
+                <line number="16" hits="8" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="13" hits="8" branch="False" />
+            <line number="15" hits="8" branch="False" />
+            <line number="16" hits="8" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
     <package line-rate="0.7466666666666667" branch-rate="0.5" complexity="25" name="Opss.PrimaryAuthorityRegister.Web.Application">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
@@ -1468,72 +1532,6 @@
         </class>
       </classes>
     </package>
-    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Api">
-      <classes>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Extensions.IApplicationBuilderExtensions" filename="Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Extensions/IApplicationBuilderExtensions.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name="AddExceptionHandlers" signature="(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Boolean)">
-              <lines>
-                <line number="12" hits="3" branch="False" />
-                <line number="13" hits="3" branch="False" />
-                <line number="14" hits="3" branch="False" />
-                <line number="15" hits="3" branch="False" />
-                <line number="16" hits="3" branch="False" />
-                <line number="17" hits="3" branch="False" />
-                <line number="18" hits="3" branch="False" />
-                <line number="19" hits="3" branch="False" />
-                <line number="20" hits="3" branch="False" />
-                <line number="21" hits="3" branch="False" />
-                <line number="22" hits="3" branch="False" />
-                <line number="23" hits="3" branch="False" />
-                <line number="24" hits="3" branch="False" />
-                <line number="25" hits="3" branch="False" />
-                <line number="26" hits="3" branch="False" />
-                <line number="27" hits="3" branch="False" />
-                <line number="28" hits="3" branch="False" />
-                <line number="29" hits="3" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="12" hits="3" branch="False" />
-            <line number="13" hits="3" branch="False" />
-            <line number="14" hits="3" branch="False" />
-            <line number="15" hits="3" branch="False" />
-            <line number="16" hits="3" branch="False" />
-            <line number="17" hits="3" branch="False" />
-            <line number="18" hits="3" branch="False" />
-            <line number="19" hits="3" branch="False" />
-            <line number="20" hits="3" branch="False" />
-            <line number="21" hits="3" branch="False" />
-            <line number="22" hits="3" branch="False" />
-            <line number="23" hits="3" branch="False" />
-            <line number="24" hits="3" branch="False" />
-            <line number="25" hits="3" branch="False" />
-            <line number="26" hits="3" branch="False" />
-            <line number="27" hits="3" branch="False" />
-            <line number="28" hits="3" branch="False" />
-            <line number="29" hits="3" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Controllers.ApiController" filename="Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Controllers/ApiController.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(MediatR.IMediator)">
-              <lines>
-                <line number="13" hits="8" branch="False" />
-                <line number="15" hits="8" branch="False" />
-                <line number="16" hits="8" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="13" hits="8" branch="False" />
-            <line number="15" hits="8" branch="False" />
-            <line number="16" hits="8" branch="False" />
-          </lines>
-        </class>
-      </classes>
-    </package>
     <package line-rate="0.9714285714285714" branch-rate="0.75" complexity="14" name="Opss.PrimaryAuthorityRegister.Web">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Web.App" filename="Web/Presentation/Opss.PrimaryAuthorityRegister.Web/App.razor">
@@ -1656,14 +1654,14 @@
           <methods>
             <method line-rate="1" branch-rate="1" complexity="1" name="OnPartnershipApplicationClick" signature="(Microsoft.AspNetCore.Components.Web.MouseEventArgs)">
               <lines>
-                <line number="15" hits="1" branch="False" />
-                <line number="16" hits="1" branch="False" />
+                <line number="21" hits="1" branch="False" />
+                <line number="22" hits="1" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="15" hits="1" branch="False" />
-            <line number="16" hits="1" branch="False" />
+            <line number="21" hits="1" branch="False" />
+            <line number="22" hits="1" branch="False" />
           </lines>
         </class>
         <class line-rate="0.8888888888888888" branch-rate="0.75" complexity="4" name="Opss.PrimaryAuthorityRegister.Web.Controllers.CultureController" filename="Web/Presentation/Opss.PrimaryAuthorityRegister.Web/Controllers/CultureController.cs">
