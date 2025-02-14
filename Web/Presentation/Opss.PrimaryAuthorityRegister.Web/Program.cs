@@ -1,5 +1,6 @@
+using Opss.PrimaryAuthorityRegister.Authentication;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
-using Opss.PrimaryAuthorityRegister.Web.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using Opss.PrimaryAuthorityRegister.Web.Authentication;
 using System.Diagnostics.CodeAnalysis;
@@ -15,6 +16,9 @@ internal static class Program
 
         var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
         builder.Services.Configure<OneLoginAuthConfig>(oneLoginAuthConfigSection);
+
+        var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
+        builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
 
         builder.Services.AddCors(options =>
         {

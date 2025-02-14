@@ -17,11 +17,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Authentication\Opss.PrimaryAuthorityRegister.Authentication.csproj" />
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
     <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Domain\Opss.PrimaryAuthorityRegister.Api.Domain.csproj" />
   </ItemGroup>

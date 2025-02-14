@@ -19,7 +19,7 @@ public class OidcController : ControllerBase
 
         var props = new AuthenticationProperties
         {
-            RedirectUri = returnUrl.ToString()
+            RedirectUri = returnUrl.ToString(),
         };
 
         return Challenge(props, provider);

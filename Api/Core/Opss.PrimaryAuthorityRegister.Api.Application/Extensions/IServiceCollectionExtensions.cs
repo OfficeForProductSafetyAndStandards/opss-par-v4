@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
+using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authentication;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
+using Opss.PrimaryAuthorityRegister.Authentication;
 using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
 using System.Reflection;
 using System.Security.Claims;
@@ -22,6 +24,13 @@ public static class IServiceCollectionExtensions
     public static void AddApplicationLayer(this IServiceCollection services)
     {
         services.AddAuthorisation();
+        services.Addauthentication();
+    }
+
+    private static void Addauthentication(this IServiceCollection services)
+    {
+        services.AddTransient<IOneLoginService, OneLoginService>();
+        services.AddTransient<ITokenService, TokenService>();
     }
 
     private static void AddAuthorisation(this IServiceCollection services)

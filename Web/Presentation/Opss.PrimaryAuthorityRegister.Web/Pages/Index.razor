@@ -4,19 +4,16 @@
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
 
-@inject IHttpService _httpClient
 @inject IStringLocalizer<Index> Loc
+@inject NavigationManager Nav
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
 <GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
-<GdsButton @onclick=@Login IsStartButton=@true>
+<GdsButton Href="/oidc/login" IsStartButton=@true>
 	@Loc["StartButton"]
 </GdsButton>
 
 @code {
-	private void Login(){
-
-	}
 }
