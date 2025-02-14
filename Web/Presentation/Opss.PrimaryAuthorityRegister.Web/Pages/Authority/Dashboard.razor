@@ -5,9 +5,15 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["PageHeading"]</GdsHeading>
+<GdsHeading HeadingLevel="1" Classes=@HeadingSize.Large>
+	@Loc["PageHeading"]
+</GdsHeading>
 
-<GdsButton Id="apply-button" @onclick="OnPartnershipApplicationClick" Classes=@ButtonStyle.Secondary>@Loc["ApplyButton"]</GdsButton>
+<GdsButton Id="apply-button"
+		   @onclick=OnPartnershipApplicationClick
+		   Classes=@ButtonStyle.Secondary>
+	@Loc["ApplyButton"]
+</GdsButton>
 
 @code {
 	private void OnPartnershipApplicationClick(MouseEventArgs e)
