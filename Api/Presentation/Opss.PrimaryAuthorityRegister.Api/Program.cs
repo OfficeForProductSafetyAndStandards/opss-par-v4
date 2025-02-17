@@ -1,8 +1,7 @@
 using Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
-using Opss.PrimaryAuthorityRegister.Api.Application.Settings;
 using Opss.PrimaryAuthorityRegister.Api.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
-using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Opss.PrimaryAuthorityRegister.Api;
@@ -15,7 +14,7 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
-        builder.Services.Configure<OneLoginAuthConfig>(oneLoginAuthConfigSection);
+        builder.Services.Configure<OpenIdConnectAuthConfig>(oneLoginAuthConfigSection);
 
         var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
         builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
@@ -57,21 +56,6 @@ internal static class Program
         {
             config.AddExceptionHandlers(app.Environment.IsDevelopment());
         });
-
-        //app.Use(async (context, next) =>
-        //{
-        //    var entityClaims = new Dictionary<string, string>();
-        //    foreach (var header in context.Request.Headers)
-        //    {
-        //        if (header.Key.StartsWith("X-Entity-"))
-        //        {
-        //            var entityKey = header.Key.Replace("X-Entity-", "");
-        //            entityClaims[entityKey] = header.Value;
-        //        }
-        //    }
-        //    context.Items["EntityClaims"] = entityClaims;
-        //    await next();
-        //});
 
         app.MapControllers();
 

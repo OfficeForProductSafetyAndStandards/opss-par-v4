@@ -8,6 +8,8 @@
     [Fact]
     public void CultureCookie_IsSetOnInitialization()
     {
+        this.AddAuthorization();
+
         // Arrange
         var mockHttpService = new Mock<IHttpService>();
         var mockCookieService = new Mock<ICookieService>();

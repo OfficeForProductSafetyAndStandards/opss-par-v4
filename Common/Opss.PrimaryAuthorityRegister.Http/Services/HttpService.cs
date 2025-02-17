@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Text.Json;
-using System.Net.Http.Headers;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 using Opss.PrimaryAuthorityRegister.Common;
@@ -51,6 +50,14 @@ public class HttpService : IHttpService
     /// <returns></returns>
     public async Task<HttpObjectResponse<NoContentResult>> PutAsync<TCommand>(TCommand command)
         where TCommand : ICommand => await HttpSendAsync<TCommand, NoContentResult>(HttpMethod.Put, command).ConfigureAwait(false);
+
+    /// <summary>
+    /// Used to execute a basic Http Client Send Async
+    /// </summary>
+    /// <param name="request">The Http Request to send</param>
+    /// <returns>Http Response Message</returns>
+    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        => await _httpClient.SendAsync(request).ConfigureAwait(false);
 
     private async Task<HttpObjectResponse<TResponse>> HttpSendAsync<TRequest, TResponse>(HttpMethod method, object? data)
         where TResponse : class

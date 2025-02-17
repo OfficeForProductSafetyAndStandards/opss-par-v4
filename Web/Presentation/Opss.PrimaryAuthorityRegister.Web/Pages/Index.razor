@@ -3,6 +3,7 @@
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
+@using System.Security.Claims
 
 @inject IStringLocalizer<Index> Loc
 @inject NavigationManager Nav
@@ -11,9 +12,49 @@
 
 <GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
+<AuthorizeView>
+	<Authorized>
+		<p class="govuk-body">Welcome, @context.User.Identity.Name!</p>
+		<p class="govuk-body">
+			Your claims:
+			<dl>
+				@foreach (Claim claim in context.User.Claims)
+				{
+					<dt>@claim.Type</dt>
+					<dd>@claim.Value</dd>
+				}
+			</dl>
+
+		</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Please log in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<p>@authMessage</p>
+
 <GdsButton Href="/oidc/login" IsStartButton=@true>
 	@Loc["StartButton"]
 </GdsButton>
 
 @code {
+	private string authMessage = "The user is NOT authenticated.";
+
+	[CascadingParameter]
+	private Task<AuthenticationState>? authenticationState { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (authenticationState is not null)
+		{
+			var authState = await authenticationState;
+			var user = authState?.User;
+
+			if (user?.Identity is not null && user.Identity.IsAuthenticated)
+			{
+				authMessage = $"{user.Identity.Name} is authenticated.";
+			}
+		}
+	}
 }

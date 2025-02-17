@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Web.Authentication;
+﻿namespace Opss.PrimaryAuthorityRegister.Authentication.Constants;
 
 public static class OpenIdConnectCookies
 {

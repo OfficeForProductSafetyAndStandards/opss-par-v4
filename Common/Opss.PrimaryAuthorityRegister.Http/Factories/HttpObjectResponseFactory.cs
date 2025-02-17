@@ -40,7 +40,12 @@ public static class HttpObjectResponseFactory
         {
             if (typeof(T) == typeof(string))
             {
+                if (json.StartsWith('"'))
+                {
+                    json = json.Trim('"');
+                }
                 result = (T)Convert.ChangeType(json, typeof(T), CultureInfo.InvariantCulture);
+                
             }
             else
             {

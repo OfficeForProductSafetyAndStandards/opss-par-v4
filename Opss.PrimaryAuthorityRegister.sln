@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opss.PrimaryAuthorityRegist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opss.PrimaryAuthorityRegister.Http.UnitTests", "Common\Opss.PrimaryAuthorityRegister.Http.UnitTests\Opss.PrimaryAuthorityRegister.Http.UnitTests.csproj", "{6AE6A773-58A0-4C73-BABB-62BA525DEEED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opss.PrimaryAuthorityRegister.Authentication.UnitTests", "Common\Opss.PrimaryAuthorityRegister.Authentication.UnitTests\Opss.PrimaryAuthorityRegister.Authentication.UnitTests.csproj", "{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +150,10 @@ Global
 		{6AE6A773-58A0-4C73-BABB-62BA525DEEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AE6A773-58A0-4C73-BABB-62BA525DEEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AE6A773-58A0-4C73-BABB-62BA525DEEED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +183,7 @@ Global
 		{C184B485-FA04-40F4-B295-EC681C8BE66E} = {26D409C5-6F79-4402-AF8D-72016C0F83DE}
 		{06E26C99-2C4B-4D65-9B96-0E86F2550379} = {26D409C5-6F79-4402-AF8D-72016C0F83DE}
 		{6AE6A773-58A0-4C73-BABB-62BA525DEEED} = {26D409C5-6F79-4402-AF8D-72016C0F83DE}
+		{B215A2F6-D8F6-41F1-91ED-524B3C2DD9B1} = {26D409C5-6F79-4402-AF8D-72016C0F83DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D61354B-C24A-40CA-87D8-0319EA23227A}

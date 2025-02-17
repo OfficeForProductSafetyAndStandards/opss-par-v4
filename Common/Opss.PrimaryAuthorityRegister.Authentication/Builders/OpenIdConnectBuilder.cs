@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using Opss.PrimaryAuthorityRegister.Authentication;
-using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
-using OpenIdConnectEvents = Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnectEvents;
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.Constants;
+using OneLoginOpenIdConnectEvents = Opss.PrimaryAuthorityRegister.Authentication.OneLogin.OneLoginOpenIdConnectEvents;
 
-namespace Opss.PrimaryAuthorityRegister.Web.Authentication;
+namespace Opss.PrimaryAuthorityRegister.Authentication.Builders;
 
 public class OpenIdConnectBuilder
 {
-    private readonly OneLoginAuthConfig _oneLoginAuthConfig;
+    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
 
-    public OpenIdConnectBuilder(OneLoginAuthConfig oneLoginAuthConfig)
+    public OpenIdConnectBuilder(OpenIdConnectAuthConfig oidcAuthConfig)
     {
-        _oneLoginAuthConfig = oneLoginAuthConfig;
+        _oidcAuthConfig = oidcAuthConfig;
     }
 
-    public void ConfigureAuthentication(AuthenticationOptions options)
+    public static void ConfigureAuthentication(AuthenticationOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
 
@@ -40,22 +40,22 @@ public class OpenIdConnectBuilder
             Path = "/",
             SameSite = SameSiteMode.Strict,
             SecurePolicy = CookieSecurePolicy.Always,
-            MaxAge = TimeSpan.FromMinutes(_oneLoginAuthConfig.CookieMaxAge),
+            MaxAge = TimeSpan.FromMinutes(_oidcAuthConfig.CookieMaxAge),
         };
         options.SlidingExpiration = false;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(_oneLoginAuthConfig.CookieMaxAge);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(_oidcAuthConfig.CookieMaxAge);
     }
 
     public void ConfigureOneLoginOpenIdConnectOptions(OpenIdConnectOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
 
-        options.Authority = _oneLoginAuthConfig.Authority;
-        options.ClientId = _oneLoginAuthConfig.ClientId;
+        options.Authority = _oidcAuthConfig.Authority;
+        options.ClientId = _oidcAuthConfig.ClientId;
 
         options.ResponseType = OpenIdConnectResponseType.Code;
         options.ResponseMode = OpenIdConnectResponseMode.Query;
-        options.EventsType = typeof(OpenIdConnectEvents);
+        options.EventsType = typeof(OneLoginOpenIdConnectEvents);
 
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
@@ -64,14 +64,14 @@ public class OpenIdConnectBuilder
         options.Scope.Add("openid");
         options.Scope.Add("email");
 
-        options.MetadataAddress = $"{_oneLoginAuthConfig.Authority}/.well-known/openid-configuration";
+        options.MetadataAddress = $"{_oidcAuthConfig.Authority}/.well-known/openid-configuration";
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = $"{_oneLoginAuthConfig.Authority}/",
-            ValidAudience = _oneLoginAuthConfig.ClientId,
+            ValidIssuer = $"{_oidcAuthConfig.Authority}/",
+            ValidAudience = _oidcAuthConfig.ClientId,
             ValidateIssuerSigningKey = true,
-            ClockSkew = TimeSpan.FromSeconds(_oneLoginAuthConfig.ClockSkewSeconds),
+            ClockSkew = TimeSpan.FromSeconds(_oidcAuthConfig.ClockSkewSeconds),
         };
     }
 }

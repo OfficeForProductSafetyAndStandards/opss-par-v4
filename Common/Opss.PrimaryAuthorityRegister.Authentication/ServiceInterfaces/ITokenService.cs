@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authentication;
+﻿namespace Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 
 public interface ITokenService
 {

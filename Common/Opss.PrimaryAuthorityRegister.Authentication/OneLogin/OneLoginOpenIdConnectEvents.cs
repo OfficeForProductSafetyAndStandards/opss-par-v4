@@ -4,33 +4,33 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Services;
-using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
-using Opss.PrimaryAuthorityRegister.Web.Authentication;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 
-namespace Opss.PrimaryAuthorityRegister.Authentication;
+namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 
-public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents
+public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
 {
-    private readonly OneLoginAuthConfig _oneLoginAuthConfig;
-    private readonly JwtAuthConfig _chmmJwtAuthConfig;
+    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly JwtAuthConfig _jwtAuthConfig;
 
     private readonly CookieOptions _cookieOptions;
     private readonly IHttpService _httpService;
 
-    public OpenIdConnectEvents(IOptions<OneLoginAuthConfig> oneLoginAuthConfig, IOptions<JwtAuthConfig> chmmJwtAuthConfig, IHttpService httpService)
+    public OneLoginOpenIdConnectEvents(IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig, IOptions<JwtAuthConfig> chmmJwtAuthConfig, IHttpService httpService)
     {
         ArgumentNullException.ThrowIfNull(oneLoginAuthConfig);
         ArgumentNullException.ThrowIfNull(chmmJwtAuthConfig);
 
         _oneLoginAuthConfig = oneLoginAuthConfig.Value;
-        _chmmJwtAuthConfig = chmmJwtAuthConfig.Value;
+        _jwtAuthConfig = chmmJwtAuthConfig.Value;
         _cookieOptions = new CookieOptions
         {
             Secure = true,
@@ -53,7 +53,7 @@ public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdCon
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _oneLoginAuthConfig.ClientId),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, now.ToString(), ClaimValueTypes.Integer64)
+                new Claim(JwtRegisteredClaimNames.Iat, now.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64)
             },
             expires: DateTime.UtcNow.AddMinutes(3),
             signingCredentials: signingCredentials
@@ -62,18 +62,18 @@ public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdCon
 
     private IEnumerable<Claim> GetClaimsFromToken(string token)
     {
-        var key = Encoding.ASCII.GetBytes(_chmmJwtAuthConfig.SecurityKey);
+        var key = Encoding.ASCII.GetBytes(_jwtAuthConfig.SecurityKey);
         var validationParameters = new TokenValidationParameters()
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidIssuer = _chmmJwtAuthConfig.Issuer,
-            ValidAudience = _chmmJwtAuthConfig.Audience,
-            ClockSkew = TimeSpan.FromSeconds(_chmmJwtAuthConfig.ClockSkewSeconds)
+            ValidIssuer = _jwtAuthConfig.Issuer,
+            ValidAudience = _jwtAuthConfig.Audience,
+            ClockSkew = TimeSpan.FromSeconds(_jwtAuthConfig.ClockSkewSeconds)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+        var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken _);
 
         return claimsPrincipal.Claims;
     }
@@ -94,8 +94,8 @@ public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdCon
         {
             var tokens = properties.GetTokens().ToList();
 
-            var idToken = tokens.FirstOrDefault(t => t.Name == "id_token")?.Value;
-            var accessToken = tokens.FirstOrDefault(t => t.Name == "access_token")?.Value;
+            var idToken = tokens.First(t => t.Name == "id_token").Value;
+            var accessToken = tokens.First(t => t.Name == "access_token").Value;
 
             var response = await _httpService.GetAsync<GetJwtTokenQuery, string>(new GetJwtTokenQuery(idToken, accessToken)).ConfigureAwait(false);
 
@@ -121,11 +121,10 @@ public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdCon
 
     public override Task AuthorizationCodeReceived(AuthorizationCodeReceivedContext context)
     {
-        string base64Key = ExtractBase64FromPem(_oneLoginAuthConfig.RsaPrivateKey, "PRIVATE KEY");
-        using var rsa = RSA.Create();
-        byte[] privateKeyBytes = Convert.FromBase64String(base64Key);
-        rsa.ImportPkcs8PrivateKey(privateKeyBytes, out _);
+        ArgumentNullException.ThrowIfNull(context);
 
+        using var rsa = RSA.Create();
+        rsa.ImportFromPem(_oneLoginAuthConfig.RsaPrivateKey);
         var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256)
         {
             CryptoProviderFactory = new CryptoProviderFactory { CacheSignatureProviders = false }
@@ -153,29 +152,21 @@ public class OpenIdConnectEvents : Microsoft.AspNetCore.Authentication.OpenIdCon
 
     public override async Task RedirectToIdentityProviderForSignOut(RedirectContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
+
         context.HttpContext.Response.Cookies.Delete(OpenIdConnectCookies.OneLoginState);
         context.HttpContext.Response.Cookies.Delete(OpenIdConnectCookies.ParToken);
 
         var props = context.ProtocolMessage;
-        props.PostLogoutRedirectUri = _oneLoginAuthConfig.PostLogoutRedirectUri;
+        props.PostLogoutRedirectUri = _oneLoginAuthConfig.PostLogoutRedirectUri.ToString();
 
-        var idToken = await context.HttpContext.GetTokenAsync("id_token");
+        var idToken = await context.HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
         props.IdTokenHint = idToken;
 
         if (context.Request.Cookies.TryGetValue(OpenIdConnectCookies.OneLoginState, out var state))
         {
             props.State = state;
         }
-    }
-
-    private static string ExtractBase64FromPem(string pem, string keyType)
-    {
-        string pattern = $"-----BEGIN {keyType}-----(.*?)-----END {keyType}-----";
-        Match match = Regex.Match(pem, pattern, RegexOptions.Singleline);
-        if (!match.Success)
-            throw new FormatException("Invalid PEM format.");
-
-        return match.Groups[1].Value.Replace("\n", "").Replace("\r", "").Trim();
     }
 }
 

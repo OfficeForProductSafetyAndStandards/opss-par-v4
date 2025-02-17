@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Authentication;
+﻿namespace Opss.PrimaryAuthorityRegister.Authentication.Constants;
 
 public static class AuthenticationConstants
 {

@@ -36,7 +36,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Opss.DesignSystem.Frontend.Blazor.Components" Version="0.3.0" />
     <PackageReference Include="System.Formats.Asn1" Version="9.0.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />

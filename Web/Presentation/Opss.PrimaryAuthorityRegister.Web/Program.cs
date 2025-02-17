@@ -1,8 +1,7 @@
-using Opss.PrimaryAuthorityRegister.Authentication;
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 using Opss.PrimaryAuthorityRegister.Http.Services;
-using Opss.PrimaryAuthorityRegister.Web.Application.Entities;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
-using Opss.PrimaryAuthorityRegister.Web.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Opss.PrimaryAuthorityRegister.Web;
@@ -15,7 +14,7 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
-        builder.Services.Configure<OneLoginAuthConfig>(oneLoginAuthConfigSection);
+        builder.Services.Configure<OpenIdConnectAuthConfig>(oneLoginAuthConfigSection);
 
         var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
         builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
@@ -35,8 +34,11 @@ internal static class Program
 
         builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
         builder.Services.AddControllers();
+
         builder.Services.AddAuthentication();
-        
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddAuthorizationCore();
+
         builder.Services.AddHttpClient();
         builder.Services.AddScoped(sp =>
         {
@@ -48,19 +50,7 @@ internal static class Program
             return client;
         });
 
-        #region Authentication
-
-        var oneLoginAuthConfig = oneLoginAuthConfigSection.Get<OneLoginAuthConfig>()
-            ?? throw new InvalidOperationException("Cannot load OneLogin auth configuration");
-
-        var chmmOpenIdConnectBuilder = new OpenIdConnectBuilder(oneLoginAuthConfig);
-        builder.Services
-            .AddTransient<OpenIdConnectEvents>()
-            .AddAuthentication(chmmOpenIdConnectBuilder.ConfigureAuthentication)
-            .AddCookie(chmmOpenIdConnectBuilder.ConfigureCookie)
-            .AddOpenIdConnect("oidc-onelogin", chmmOpenIdConnectBuilder.ConfigureOneLoginOpenIdConnectOptions);
-
-        #endregion
+        builder.AddOneLoginAuthentication();
 
         builder.Services.AddScoped<ICookieService, CookieService>();
         builder.Services.AddScoped<IHttpService, HttpService>();

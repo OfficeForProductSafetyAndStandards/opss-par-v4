@@ -39,4 +39,6 @@ public interface IHttpService
     /// <returns></returns>
     public Task<HttpObjectResponse<NoContentResult>> PutAsync<TCommand>(TCommand command)
         where TCommand : ICommand;
+
+    Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
 }
