@@ -4,6 +4,8 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
+@errorSummary
+
 <GdsHeading HeadingLevel="1" Classes=@HeadingSize.ExtraLarge>
 	@Loc["PageHeading"]
 </GdsHeading>
@@ -12,6 +14,63 @@
 	@Loc["Guidance"]
 </GdsInsetText> 
 
+<GdsCheckboxes Name="confirm-criteria" @bind-Values=selectedCriteria ErrorMessageTemplate=errorMessage!>
+	<LegendTemplate>
+		<p class="govuk-body">@Loc["Criteria_Text"]</p>
+	</LegendTemplate>
+	<ChildContent>
+		<GdsCheckbox Value="1">@Loc["Criteria1_Checkbox_Text"]</GdsCheckbox>
+		<GdsCheckbox Value="2">@Loc["Criteria2_Checkbox_Text"]</GdsCheckbox>
+		<GdsCheckbox Value="3">@Loc["Criteria3_Checkbox_Text"]</GdsCheckbox>
+	</ChildContent>
+</GdsCheckboxes>
+
+<GdsButton Name="confirm-button" OnClick=@OnConfirmAgreement>
+	@Loc["Button_Continue"]
+</GdsButton>
+
 @code {
+	#region Private Properties
+	#region Error Components
+	private RenderFragment? errorSummary;
+	private RenderFragment? errorMessage;
+	private bool isValid;
+	#endregion
+
+	private List<string> selectedCriteria = new();
+	#endregion
+
+	#region Event Handlers
+	private void validate()
+	{
+		errorSummary = null;
+		errorMessage = null;
+		isValid = true;
+
+		if (selectedCriteria.Count != 3)
+		{
+			errorSummary =
+				@<GdsErrorSummary>
+					<GdsErrorSummaryItem Href="#confirm-criteria">
+						@Loc["Criteria_Error_Text"]
+					</GdsErrorSummaryItem>
+				</GdsErrorSummary>;
+
+			errorMessage =
+				@<GdsErrorMessage>
+					@Loc["Criteria_Error_Text"]
+				</GdsErrorMessage>;
+
+			isValid = false;
+		}
+	}
+
+	private void OnConfirmAgreement(MouseEventArgs e)
+	{
+		validate();
+
+		// next action here if isValid...
+	}
+	#endregion
 
 }
