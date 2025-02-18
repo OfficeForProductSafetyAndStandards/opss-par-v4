@@ -9,7 +9,7 @@ public class AuthenticatedUserInfoDto
     [JsonPropertyName("email")]
     public string? Email { get; set; }
     [JsonPropertyName("email_verified")]
-    public string? EmailVerified { get; set; }
+    public bool? EmailVerified { get; set; }
     [JsonPropertyName("phone_number")]
     public string? PhoneNumber { get; set; }
     [JsonPropertyName("phone_number_verified")]

@@ -29,14 +29,14 @@ public class AuthenticatedUserInfoDtoTests
         var dto = new AuthenticatedUserInfoDto("subject-123", "2024-01-01T12:00:00Z")
         {
             Email = "test@example.com",
-            EmailVerified = "true",
+            EmailVerified = true,
             PhoneNumber = "+1234567890",
             PhoneNumberVerified = "false"
         };
 
         // Assert
         Assert.Equal("test@example.com", dto.Email);
-        Assert.Equal("true", dto.EmailVerified);
+        Assert.Equal(true, dto.EmailVerified);
         Assert.Equal("+1234567890", dto.PhoneNumber);
         Assert.Equal("false", dto.PhoneNumberVerified);
     }
@@ -48,7 +48,7 @@ public class AuthenticatedUserInfoDtoTests
         var dto = new AuthenticatedUserInfoDto("subject-123", "2024-01-01T12:00:00Z")
         {
             Email = "test@example.com",
-            EmailVerified = "true",
+            EmailVerified = true,
             PhoneNumber = "+1234567890",
             PhoneNumberVerified = "false"
         };
@@ -78,7 +78,7 @@ public class AuthenticatedUserInfoDtoTests
         Assert.NotNull(dto);
         Assert.Equal("subject-123", dto.Sub);
         Assert.Equal("test@example.com", dto.Email);
-        Assert.Equal("true", dto.EmailVerified);
+        Assert.Equal(true, dto.EmailVerified);
         Assert.Equal("+1234567890", dto.PhoneNumber);
         Assert.Equal("false", dto.PhoneNumberVerified);
         Assert.Equal("2024-01-01T12:00:00Z", dto.UpdatedAt);
