@@ -13,7 +13,7 @@ public class AuthenticatedUserInfoDto
     [JsonPropertyName("phone_number")]
     public string? PhoneNumber { get; set; }
     [JsonPropertyName("phone_number_verified")]
-    public string? PhoneNumberVerified { get; set; }
+    public bool? PhoneNumberVerified { get; set; }
     [JsonPropertyName("updated_at")]
     public string UpdatedAt { get; set; }
 
