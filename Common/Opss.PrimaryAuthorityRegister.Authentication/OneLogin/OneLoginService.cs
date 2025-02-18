@@ -4,9 +4,7 @@ using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Entities;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
-using Opss.PrimaryAuthorityRegister.Http.Factories;
 using Opss.PrimaryAuthorityRegister.Http.Services;
-using System.Net.Http.Headers;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 
