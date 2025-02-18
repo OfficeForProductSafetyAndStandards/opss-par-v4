@@ -5,6 +5,8 @@ using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 using Opss.PrimaryAuthorityRegister.Common;
 using Microsoft.AspNetCore.Mvc;
 using Opss.PrimaryAuthorityRegister.Http.Factories;
+using System.Xml.Linq;
+using System.Net.Http.Headers;
 
 namespace Opss.PrimaryAuthorityRegister.Http.Services;
 
@@ -22,8 +24,7 @@ public class HttpService : IHttpService
     /// </summary>
     /// <typeparam name="TQuery">The type of the query being executed</typeparam>
     /// <typeparam name="TResponse">The type of data being retrieved</typeparam>
-    /// <param name="client">The HTTP Client</param>
-    /// <param name="uri">Uri of the API endpoint</param>
+    /// <param name="query">The query object</param>
     /// <returns></returns>
     public async Task<HttpObjectResponse<TResponse>> GetAsync<TQuery, TResponse>(TQuery query)
         where TQuery : IQuery<TResponse>
@@ -33,8 +34,6 @@ public class HttpService : IHttpService
     /// Used when a command will return a Guid
     /// </summary>
     /// <typeparam name="TCommand">The type of the command being executed</typeparam>
-    /// <param name="client">The HTTP Cient</param>
-    /// <param name="uri">Uri of the API endpoint</param>
     /// <param name="command">The command to execute</param>
     /// <returns></returns>
     public async Task<HttpObjectResponse<CreatedResponse>> PostAsync<TCommand>(TCommand command)
@@ -44,30 +43,39 @@ public class HttpService : IHttpService
     /// Used to execute a command that doesn't create anything (i.e. no Id to be returned)
     /// </summary>
     /// <typeparam name="TCommand">The type of the command being executed</typeparam>
-    /// <param name="client">The HTTP Cient</param>
-    /// <param name="uri">Uri of the API endpoint</param>
     /// <param name="command">The command to execute</param>
     /// <returns></returns>
     public async Task<HttpObjectResponse<NoContentResult>> PutAsync<TCommand>(TCommand command)
         where TCommand : ICommand => await HttpSendAsync<TCommand, NoContentResult>(HttpMethod.Put, command).ConfigureAwait(false);
 
-    /// <summary>
-    /// Used to execute a basic Http Client Send Async
-    /// </summary>
-    /// <param name="request">The Http Request to send</param>
-    /// <returns>Http Response Message</returns>
-    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
-        => await _httpClient.SendAsync(request).ConfigureAwait(false);
-
     private async Task<HttpObjectResponse<TResponse>> HttpSendAsync<TRequest, TResponse>(HttpMethod method, object? data)
         where TResponse : class
     {
-        var name = typeof(TRequest).Name;
-        using var request = new HttpRequestMessage(method, new Uri($"api?name={name}", UriKind.Relative));
+        var uri = new Uri($"api?name={typeof(TRequest).Name}", UriKind.Relative);
+        return await HttpSendAsync<TResponse>(method, uri, data).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Provide access to SendAsync of the HttpClient without passing a command or query.
+    /// </summary>
+    /// <typeparam name="TResponse">The type of the response to be extracted from the return data</typeparam>
+    /// <param name="method"></param>
+    /// <param name="uri"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public async Task<HttpObjectResponse<TResponse>> HttpSendAsync<TResponse>(HttpMethod method, Uri uri, object? data = null, string? bearerToken = null)
+        where TResponse : class
+    {
+        using var request = new HttpRequestMessage(method, uri);
 
         if (data != null)
         {
             request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+        }
+
+        if (!string.IsNullOrEmpty(bearerToken))
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
         }
 
         var response = await _httpClient.SendAsync(request).ConfigureAwait(false);

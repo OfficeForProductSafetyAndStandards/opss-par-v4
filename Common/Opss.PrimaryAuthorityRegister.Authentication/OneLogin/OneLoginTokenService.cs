@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
+using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
@@ -14,15 +15,21 @@ public class OneLoginTokenService : ITokenService
 {
     private readonly JwtAuthConfig _jwtAuthConfig;
     private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly IJwtTokenHandler _tokenHandler;
     private readonly IAuthenticatedUserService _oneLoginService;
 
-    public OneLoginTokenService(IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig, IOptions<JwtAuthConfig> jwtAuthConfig, IAuthenticatedUserService oneLoginService)
+    public OneLoginTokenService(
+        IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig,
+        IOptions<JwtAuthConfig> jwtAuthConfig,
+        IJwtTokenHandler tokenHandler,
+        IAuthenticatedUserService oneLoginService)
     {
         ArgumentNullException.ThrowIfNull(jwtAuthConfig);
         ArgumentNullException.ThrowIfNull(oneLoginAuthConfig);
 
         _jwtAuthConfig = jwtAuthConfig.Value;
         _oneLoginAuthConfig = oneLoginAuthConfig.Value;
+        _tokenHandler = tokenHandler;
         _oneLoginService = oneLoginService;
     }
 
@@ -65,8 +72,7 @@ public class OneLoginTokenService : ITokenService
             ClockSkew = TimeSpan.FromSeconds(_oneLoginAuthConfig.ClockSkewSeconds)
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        tokenHandler.ValidateToken(idToken, tokenValidationParameters, out SecurityToken _);
+        _tokenHandler.ValidateToken(idToken, tokenValidationParameters, out SecurityToken _);
     }
 
     private static List<Claim> GetDefaultClaims(string email)

@@ -25,25 +25,16 @@ public class OneLoginService : IAuthenticatedUserService
 
     public async Task<HttpObjectResponse<JsonWebKeySet>> GetSigningKeys()
     {
-        // TODO: Move Requst builder and Derermine Success into the SendAsync function of httpService
-        // as Determine Success throws an exception, which needs wrapping into a problem...
-        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_oneLoginAuthConfig.Authority + "/.well-known/jwks.json"));
-
-        var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-
-        var result = await HttpObjectResponseFactory.DetermineSuccess<JsonWebKeySet>(response).ConfigureAwait(false);
+        var uri = new Uri(_oneLoginAuthConfig.Authority + "/.well-known/jwks.json");
+        var result = await _httpClient.HttpSendAsync<JsonWebKeySet>(HttpMethod.Get, uri).ConfigureAwait(false);
 
         return result;
     }
 
     public async Task<HttpObjectResponse<AuthenticatedUserInfoDto>> GetUserInfo(string accessToken)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_oneLoginAuthConfig.Authority + "/userinfo"));
-
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-
-        var result = await HttpObjectResponseFactory.DetermineSuccess<AuthenticatedUserInfoDto>(response).ConfigureAwait(false);
+        var uri = new Uri(_oneLoginAuthConfig.Authority + "/userinfo");
+        var result = await _httpClient.HttpSendAsync<AuthenticatedUserInfoDto>(HttpMethod.Get, uri, bearerToken: accessToken).ConfigureAwait(false);
 
         return result;
     }

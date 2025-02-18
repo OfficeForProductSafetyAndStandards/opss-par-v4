@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\**" />
+	  <Content Remove="Pages\**" />
+	  <EmbeddedResource Remove="Pages\**" />
+	  <None Remove="Pages\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
 		<Using Include="Microsoft.Extensions.DependencyInjection" />
@@ -39,10 +46,6 @@
 
 	<ItemGroup>
 	  <PackageReference Update="SonarAnalyzer.CSharp" Version="10.6.0.109712" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\" />
 	</ItemGroup>
 
 

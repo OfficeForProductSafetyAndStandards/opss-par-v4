@@ -2,6 +2,8 @@ using Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Opss.PrimaryAuthorityRegister.Api;
@@ -36,6 +38,10 @@ internal static class Program
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         });
+
+        builder.AddOneLoginAuthentication();
+
+        builder.Services.AddScoped<IHttpService, HttpService>();
 
         var app = builder.Build();
 

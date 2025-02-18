@@ -1,21 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
-using Moq;
-using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
-using System.Text.Json;
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
 public class IServiceCollectionExtensionsTests
 {
-    private readonly JsonSerializerOptions options = new JsonSerializerOptions
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-    };
-
     [Fact]
     public void AddAuthentication_ShouldThrowException_WhenBuilderIsNull()
     {
