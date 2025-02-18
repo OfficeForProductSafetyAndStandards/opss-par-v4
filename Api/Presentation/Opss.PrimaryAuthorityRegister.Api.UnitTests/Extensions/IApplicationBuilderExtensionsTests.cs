@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Opss.PrimaryAuthorityRegister.Api.Extensions;
-using Opss.PrimaryAuthorityRegister.Common.Problem;
+using Opss.PrimaryAuthorityRegister.Http.Problem;
 
 namespace Opss.PrimaryAuthorityRegister.Api.UnitTests.Extensions;
 

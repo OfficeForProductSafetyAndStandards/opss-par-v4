@@ -3,67 +3,57 @@
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos
 @using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
+@using System.Security.Claims
 
-@inject IHttpService _httpClient
 @inject IStringLocalizer<Index> Loc
+@inject NavigationManager Nav
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">@Loc["Hello"] @data?.Id.ToString()</GdsHeading>
+<GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
-<p class="govuk-body">@data?.Data</p>
+<AuthorizeView>
+	<Authorized>
+		<p class="govuk-body">
+			Your claims:
+			<dl>
+				@foreach (Claim claim in context.User.Claims)
+				{
+					<dt>@claim.Type</dt>
+					<dd>@claim.Value</dd>
+				}
+			</dl>
 
-<GdsButtonGroup>
-	<GdsButton @onclick=@OnPostClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryPost"]
-	</GdsButton>
+		</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Please log in.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
-	<GdsButton @onclick=@OnPutClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryPut"]
-	</GdsButton>
+<p>@authMessage</p>
 
-	<GdsButton @onclick=@OnGetClick Classes=@ButtonStyle.Secondary>
-		@Loc["Button_TryGet"]
-	</GdsButton>
-</GdsButtonGroup>
+<GdsButton Href="/oidc/login" IsStartButton=@true>
+	@Loc["StartButton"]
+</GdsButton>
 
 @code {
-	private TestDataDto? data;
-	private System.Net.HttpStatusCode? status;
-	private Guid ownerId = new Guid("E3E695CC-CA85-43D8-9ADD-AA004EEA5BE5");
+	private string authMessage = "The user is NOT authenticated.";
 
-	protected async void OnPostClick()
+	[CascadingParameter]
+	private Task<AuthenticationState>? authenticationState { get; set; }
+
+	protected override async Task OnInitializedAsync()
 	{
-		var ok = await _httpClient.PostAsync(new CreateTestDataCommand(ownerId, "Something"));
-		status = ok.StatusCode;
+		if (authenticationState is not null)
+		{
+			var authState = await authenticationState;
+			var user = authState?.User;
 
-		var id = ok?.Result?.Id;
-
-		if (id == null) return;
-
-		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(id.Value));
-		data = result.Result;
-
-		StateHasChanged();
-	}
-
-	protected async void OnGetClick()
-	{
-		ArgumentNullException.ThrowIfNull(data);
-
-		var result = await _httpClient.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(data.Id));
-		data = result.Result;
-
-		StateHasChanged();
-	}
-
-	protected async void OnPutClick()
-	{
-		ArgumentNullException.ThrowIfNull(data);
-
-		var ok = await _httpClient.PutAsync(new UpdateTestDataCommand(ownerId, data.Id, "Something new"));
-		status = ok.StatusCode;
-
-		StateHasChanged();
+			if (user?.Identity is not null && user.Identity.IsAuthenticated)
+			{
+				authMessage = $"{user.Identity.Name} is authenticated.";
+			}
+		}
 	}
 }
