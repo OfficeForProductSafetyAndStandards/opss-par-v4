@@ -35,18 +35,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.1" />
     <PackageReference Include="Opss.DesignSystem.Frontend.Blazor.Components" Version="0.3.0" />
-    <PackageReference Include="System.Formats.Asn1" Version="9.0.1" />
+    <PackageReference Include="System.Formats.Asn1" Version="9.0.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.1" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="9.0.1" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Authentication\Opss.PrimaryAuthorityRegister.Authentication.csproj" />
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
     <ProjectReference Include="..\..\Core\Opss.PrimaryAuthorityRegister.Web.Application\Opss.PrimaryAuthorityRegister.Web.Application.csproj" />
   </ItemGroup>

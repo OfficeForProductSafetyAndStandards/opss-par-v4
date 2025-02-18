@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using Opss.PrimaryAuthorityRegister.Http.Services
 @using Opss.PrimaryAuthorityRegister.Web.Application.Services
 
 @inherits BunitContext
@@ -7,6 +8,8 @@
     [Fact]
     public void CultureCookie_IsSetOnInitialization()
     {
+        this.AddAuthorization();
+
         // Arrange
         var mockHttpService = new Mock<IHttpService>();
         var mockCookieService = new Mock<ICookieService>();

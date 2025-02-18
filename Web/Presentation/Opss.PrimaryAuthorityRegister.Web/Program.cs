@@ -1,3 +1,6 @@
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using System.Diagnostics.CodeAnalysis;
 
@@ -10,13 +13,32 @@ internal static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
+        builder.Services.Configure<OpenIdConnectAuthConfig>(oneLoginAuthConfigSection);
+
+        var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
+        builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: "_parAllowOrigins",
+                policy =>
+                {
+                    policy.WithOrigins("https://oidc.integration.account.gov.uk");
+                });
+        });
+
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
 
         builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
         builder.Services.AddControllers();
-        
+
+        builder.Services.AddAuthentication();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddAuthorizationCore();
+
         builder.Services.AddHttpClient();
         builder.Services.AddScoped(sp =>
         {
@@ -27,6 +49,8 @@ internal static class Program
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         });
+
+        builder.AddOneLoginAuthentication();
 
         builder.Services.AddScoped<ICookieService, CookieService>();
         builder.Services.AddScoped<IHttpService, HttpService>();
@@ -47,6 +71,10 @@ internal static class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseAuthentication();
+        app.MapControllers();
+
+        app.UseCors("_parAllowOrigins");
 
         UseLocalization(app);
 
@@ -66,6 +94,5 @@ internal static class Program
 
         app.UseRequestLocalization(localizationOptions);
 
-        app.MapControllers();
     }
 }

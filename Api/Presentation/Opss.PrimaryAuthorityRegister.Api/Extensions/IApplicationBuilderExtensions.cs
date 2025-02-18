@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using Opss.PrimaryAuthorityRegister.Common.Problem;
+using Opss.PrimaryAuthorityRegister.Http.Problem;
 using System.Net;
 using System.Security;
 
