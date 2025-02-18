@@ -1,6 +1,7 @@
 ﻿@page "/authority/partnership-application/initiate/confirm"
 
 @inject IStringLocalizer<Confirm> Loc
+@inject NavigationManager navigationManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
@@ -25,7 +26,7 @@
 	</ChildContent>
 </GdsCheckboxes>
 
-<GdsButton Name="confirm-button" OnClick=@OnConfirmAgreement>
+<GdsButton Id="confirm-button" OnClick=@OnConfirmAgreement>
 	@Loc["Button_Continue"]
 </GdsButton>
 
@@ -59,7 +60,8 @@
 			errorMessage =
 				@<GdsErrorMessage>
 					@Loc["Criteria_Error_Text"]
-				</GdsErrorMessage>;
+				</GdsErrorMessage>
+	;
 
 			isValid = false;
 		}
@@ -69,7 +71,10 @@
 	{
 		validate();
 
-		// next action here if isValid...
+		if (isValid)
+		{
+			navigationManager.NavigateTo("/authority/partnership-application/tasklist");
+		}
 	}
 	#endregion
 
