@@ -1,10 +1,328 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage line-rate="0.9352640545144804" branch-rate="0.8181818181818182" complexity="182" version="1.9" timestamp="1739894295" lines-covered="549" lines-valid="587" branches-covered="72" branches-valid="88">
+<coverage line-rate="0.9352640545144804" branch-rate="0.8297872340425532" complexity="187" version="1.9" timestamp="1739895355" lines-covered="549" lines-valid="587" branches-covered="78" branches-valid="94">
   <sources>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/</source>
+    <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/Opss.PrimaryAuthorityRegister.Common/</source>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/</source>
+    <source>/home/runner/work/opss-par-v4/opss-par-v4/Api/Core/Opss.PrimaryAuthorityRegister.Api.Domain/</source>
   </sources>
   <packages>
+    <package line-rate="0.9846153846153847" branch-rate="1" complexity="23" name="Opss.PrimaryAuthorityRegister.Common">
+      <classes>
+        <class line-rate="1" branch-rate="1" complexity="8" name="Opss.PrimaryAuthorityRegister.Common.Responses" filename="Common/Opss.PrimaryAuthorityRegister.Common/Responses.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name="NotFound" signature="(System.Object)">
+              <lines>
+                <line number="7" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="BadRequest" signature="(System.Object)">
+              <lines>
+                <line number="8" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.Guid)">
+              <lines>
+                <line number="9" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.Collections.Generic.IEnumerable`1&lt;System.Guid&gt;)">
+              <lines>
+                <line number="10" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.String,System.Guid)">
+              <lines>
+                <line number="11" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.String,System.Collections.Generic.IEnumerable`1&lt;System.Guid&gt;)">
+              <lines>
+                <line number="12" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="NoContent" signature="()">
+              <lines>
+                <line number="13" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="Ok" signature="()">
+              <lines>
+                <line number="14" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="7" hits="1" branch="False" />
+            <line number="8" hits="1" branch="False" />
+            <line number="9" hits="1" branch="False" />
+            <line number="10" hits="1" branch="False" />
+            <line number="11" hits="1" branch="False" />
+            <line number="12" hits="1" branch="False" />
+            <line number="13" hits="1" branch="False" />
+            <line number="14" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.GetTestDataQuery" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Queries/GetTestDataQuery.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid)">
+              <lines>
+                <line number="12" hits="1" branch="False" />
+                <line number="14" hits="1" branch="False" />
+                <line number="15" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="1" branch="False" />
+            <line number="14" hits="1" branch="False" />
+            <line number="15" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos.TestDataDto" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Queries/Dtos/TestDataDto.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.String)">
+              <lines>
+                <line number="8" hits="1" branch="False" />
+                <line number="10" hits="1" branch="False" />
+                <line number="11" hits="1" branch="False" />
+                <line number="12" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="1" branch="False" />
+            <line number="10" hits="1" branch="False" />
+            <line number="11" hits="1" branch="False" />
+            <line number="12" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands.CreateTestDataCommand" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Commands/CreateTestDataCommand.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.String)">
+              <lines>
+                <line number="12" hits="1" branch="False" />
+                <line number="14" hits="1" branch="False" />
+                <line number="15" hits="1" branch="False" />
+                <line number="16" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="1" branch="False" />
+            <line number="14" hits="1" branch="False" />
+            <line number="15" hits="1" branch="False" />
+            <line number="16" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands.UpdateTestDataCommand" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Commands/UpdateTestDataCommand.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.Guid,System.String)">
+              <lines>
+                <line number="16" hits="1" branch="False" />
+                <line number="18" hits="1" branch="False" />
+                <line number="19" hits="1" branch="False" />
+                <line number="20" hits="1" branch="False" />
+                <line number="21" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="16" hits="1" branch="False" />
+            <line number="18" hits="1" branch="False" />
+            <line number="19" hits="1" branch="False" />
+            <line number="20" hits="1" branch="False" />
+            <line number="21" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries.GetJwtTokenQuery" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Authentication/Queries/GetJwtTokenQuery.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String,System.String)">
+              <lines>
+                <line number="24" hits="1" branch="False" />
+                <line number="26" hits="1" branch="False" />
+                <line number="27" hits="1" branch="False" />
+                <line number="28" hits="1" branch="False" />
+                <line number="29" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="24" hits="1" branch="False" />
+            <line number="26" hits="1" branch="False" />
+            <line number="27" hits="1" branch="False" />
+            <line number="28" hits="1" branch="False" />
+            <line number="29" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="6" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.ClaimRequiredAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/ClaimRequiredAttribute.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name="get_ClaimType" signature="()">
+              <lines>
+                <line number="45" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="get_ValueTemplate" signature="()">
+              <lines>
+                <line number="50" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="get_ValueType" signature="()">
+              <lines>
+                <line number="55" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name="GetClaim" signature="(System.Object)">
+              <lines>
+                <line number="64" hits="1" branch="False" />
+                <line number="65" hits="1" branch="False" />
+                <line number="66" hits="1" branch="False" />
+                <line number="67" hits="1" branch="False" />
+                <line number="68" hits="1" branch="False" />
+                <line number="69" hits="1" branch="False" />
+                <line number="70" hits="1" branch="False" />
+                <line number="71" hits="1" branch="False" />
+                <line number="72" hits="1" branch="False" />
+                <line number="73" hits="1" branch="False" />
+                <line number="74" hits="1" branch="False" />
+                <line number="75" hits="1" branch="False" />
+                <line number="76" hits="1" branch="False" />
+                <line number="77" hits="1" branch="False" />
+                <line number="78" hits="1" branch="False" />
+                <line number="79" hits="1" branch="False" />
+                <line number="80" hits="1" branch="False" />
+                <line number="82" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String,System.String)">
+              <lines>
+                <line number="30" hits="1" branch="False" />
+                <line number="32" hits="1" branch="False" />
+                <line number="33" hits="1" branch="False" />
+                <line number="34" hits="1" branch="False" />
+                <line number="35" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".cctor" signature="()">
+              <lines>
+                <line number="17" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="17" hits="1" branch="False" />
+            <line number="30" hits="1" branch="False" />
+            <line number="32" hits="1" branch="False" />
+            <line number="33" hits="1" branch="False" />
+            <line number="34" hits="1" branch="False" />
+            <line number="35" hits="1" branch="False" />
+            <line number="45" hits="1" branch="False" />
+            <line number="50" hits="1" branch="False" />
+            <line number="55" hits="1" branch="False" />
+            <line number="64" hits="1" branch="False" />
+            <line number="65" hits="1" branch="False" />
+            <line number="66" hits="1" branch="False" />
+            <line number="67" hits="1" branch="False" />
+            <line number="68" hits="1" branch="False" />
+            <line number="69" hits="1" branch="False" />
+            <line number="70" hits="1" branch="False" />
+            <line number="71" hits="1" branch="False" />
+            <line number="72" hits="1" branch="False" />
+            <line number="73" hits="1" branch="False" />
+            <line number="74" hits="1" branch="False" />
+            <line number="75" hits="1" branch="False" />
+            <line number="76" hits="1" branch="False" />
+            <line number="77" hits="1" branch="False" />
+            <line number="78" hits="1" branch="False" />
+            <line number="79" hits="1" branch="False" />
+            <line number="80" hits="1" branch="False" />
+            <line number="82" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.PermissionAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/PermissionAttribute.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="1" name="get_Permission" signature="()">
+              <lines>
+                <line number="37" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String)">
+              <lines>
+                <line number="25" hits="1" branch="False" />
+                <line number="27" hits="1" branch="False" />
+                <line number="28" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="25" hits="1" branch="False" />
+            <line number="27" hits="1" branch="False" />
+            <line number="28" hits="1" branch="False" />
+            <line number="37" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class line-rate="0.8" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.PermissionForAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/PermissionForAttribute.cs">
+          <methods>
+            <method line-rate="0" branch-rate="1" complexity="1" name="get_Permission" signature="()">
+              <lines>
+                <line number="33" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String)">
+              <lines>
+                <line number="20" hits="1" branch="False" />
+                <line number="22" hits="1" branch="False" />
+                <line number="23" hits="1" branch="False" />
+                <line number="24" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="20" hits="1" branch="False" />
+            <line number="22" hits="1" branch="False" />
+            <line number="23" hits="1" branch="False" />
+            <line number="24" hits="1" branch="False" />
+            <line number="33" hits="0" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application">
+      <classes>
+        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="2" name="SetCultureCookie" signature="(Microsoft.AspNetCore.Http.HttpContext)">
+              <lines>
+                <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="13" hits="1" branch="False" />
+                <line number="14" hits="1" branch="False" />
+                <line number="15" hits="1" branch="False" />
+                <line number="16" hits="1" branch="False" />
+                <line number="17" hits="1" branch="False" />
+                <line number="18" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="13" hits="1" branch="False" />
+            <line number="14" hits="1" branch="False" />
+            <line number="15" hits="1" branch="False" />
+            <line number="16" hits="1" branch="False" />
+            <line number="17" hits="1" branch="False" />
+            <line number="18" hits="1" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
     <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Api.Domain">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Domain.Entities.TestData" filename="Api/Core/Opss.PrimaryAuthorityRegister.Api.Domain/Entities/TestData.cs">
@@ -1343,287 +1661,7 @@
         </class>
       </classes>
     </package>
-    <package line-rate="0.9846153846153847" branch-rate="1" complexity="23" name="Opss.PrimaryAuthorityRegister.Common">
-      <classes>
-        <class line-rate="1" branch-rate="1" complexity="8" name="Opss.PrimaryAuthorityRegister.Common.Responses" filename="Common/Opss.PrimaryAuthorityRegister.Common/Responses.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name="NotFound" signature="(System.Object)">
-              <lines>
-                <line number="7" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="BadRequest" signature="(System.Object)">
-              <lines>
-                <line number="8" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.Guid)">
-              <lines>
-                <line number="9" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.Collections.Generic.IEnumerable`1&lt;System.Guid&gt;)">
-              <lines>
-                <line number="10" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.String,System.Guid)">
-              <lines>
-                <line number="11" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Created" signature="(System.String,System.Collections.Generic.IEnumerable`1&lt;System.Guid&gt;)">
-              <lines>
-                <line number="12" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="NoContent" signature="()">
-              <lines>
-                <line number="13" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Ok" signature="()">
-              <lines>
-                <line number="14" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="7" hits="1" branch="False" />
-            <line number="8" hits="1" branch="False" />
-            <line number="9" hits="1" branch="False" />
-            <line number="10" hits="1" branch="False" />
-            <line number="11" hits="1" branch="False" />
-            <line number="12" hits="1" branch="False" />
-            <line number="13" hits="1" branch="False" />
-            <line number="14" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.GetTestDataQuery" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Queries/GetTestDataQuery.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid)">
-              <lines>
-                <line number="12" hits="1" branch="False" />
-                <line number="14" hits="1" branch="False" />
-                <line number="15" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="12" hits="1" branch="False" />
-            <line number="14" hits="1" branch="False" />
-            <line number="15" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos.TestDataDto" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Queries/Dtos/TestDataDto.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.String)">
-              <lines>
-                <line number="8" hits="1" branch="False" />
-                <line number="10" hits="1" branch="False" />
-                <line number="11" hits="1" branch="False" />
-                <line number="12" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="8" hits="1" branch="False" />
-            <line number="10" hits="1" branch="False" />
-            <line number="11" hits="1" branch="False" />
-            <line number="12" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands.CreateTestDataCommand" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Commands/CreateTestDataCommand.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.String)">
-              <lines>
-                <line number="12" hits="1" branch="False" />
-                <line number="14" hits="1" branch="False" />
-                <line number="15" hits="1" branch="False" />
-                <line number="16" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="12" hits="1" branch="False" />
-            <line number="14" hits="1" branch="False" />
-            <line number="15" hits="1" branch="False" />
-            <line number="16" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands.UpdateTestDataCommand" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Test/Commands/UpdateTestDataCommand.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Guid,System.Guid,System.String)">
-              <lines>
-                <line number="16" hits="1" branch="False" />
-                <line number="18" hits="1" branch="False" />
-                <line number="19" hits="1" branch="False" />
-                <line number="20" hits="1" branch="False" />
-                <line number="21" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="16" hits="1" branch="False" />
-            <line number="18" hits="1" branch="False" />
-            <line number="19" hits="1" branch="False" />
-            <line number="20" hits="1" branch="False" />
-            <line number="21" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries.GetJwtTokenQuery" filename="Common/Opss.PrimaryAuthorityRegister.Common/Requests/Authentication/Queries/GetJwtTokenQuery.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String,System.String)">
-              <lines>
-                <line number="24" hits="1" branch="False" />
-                <line number="26" hits="1" branch="False" />
-                <line number="27" hits="1" branch="False" />
-                <line number="28" hits="1" branch="False" />
-                <line number="29" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="24" hits="1" branch="False" />
-            <line number="26" hits="1" branch="False" />
-            <line number="27" hits="1" branch="False" />
-            <line number="28" hits="1" branch="False" />
-            <line number="29" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="6" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.ClaimRequiredAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/ClaimRequiredAttribute.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name="get_ClaimType" signature="()">
-              <lines>
-                <line number="45" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="get_ValueTemplate" signature="()">
-              <lines>
-                <line number="50" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="get_ValueType" signature="()">
-              <lines>
-                <line number="55" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="GetClaim" signature="(System.Object)">
-              <lines>
-                <line number="64" hits="1" branch="False" />
-                <line number="65" hits="1" branch="False" />
-                <line number="66" hits="1" branch="False" />
-                <line number="67" hits="1" branch="False" />
-                <line number="68" hits="1" branch="False" />
-                <line number="69" hits="1" branch="False" />
-                <line number="70" hits="1" branch="False" />
-                <line number="71" hits="1" branch="False" />
-                <line number="72" hits="1" branch="False" />
-                <line number="73" hits="1" branch="False" />
-                <line number="74" hits="1" branch="False" />
-                <line number="75" hits="1" branch="False" />
-                <line number="76" hits="1" branch="False" />
-                <line number="77" hits="1" branch="False" />
-                <line number="78" hits="1" branch="False" />
-                <line number="79" hits="1" branch="False" />
-                <line number="80" hits="1" branch="False" />
-                <line number="82" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String,System.String)">
-              <lines>
-                <line number="30" hits="1" branch="False" />
-                <line number="32" hits="1" branch="False" />
-                <line number="33" hits="1" branch="False" />
-                <line number="34" hits="1" branch="False" />
-                <line number="35" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".cctor" signature="()">
-              <lines>
-                <line number="17" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="17" hits="1" branch="False" />
-            <line number="30" hits="1" branch="False" />
-            <line number="32" hits="1" branch="False" />
-            <line number="33" hits="1" branch="False" />
-            <line number="34" hits="1" branch="False" />
-            <line number="35" hits="1" branch="False" />
-            <line number="45" hits="1" branch="False" />
-            <line number="50" hits="1" branch="False" />
-            <line number="55" hits="1" branch="False" />
-            <line number="64" hits="1" branch="False" />
-            <line number="65" hits="1" branch="False" />
-            <line number="66" hits="1" branch="False" />
-            <line number="67" hits="1" branch="False" />
-            <line number="68" hits="1" branch="False" />
-            <line number="69" hits="1" branch="False" />
-            <line number="70" hits="1" branch="False" />
-            <line number="71" hits="1" branch="False" />
-            <line number="72" hits="1" branch="False" />
-            <line number="73" hits="1" branch="False" />
-            <line number="74" hits="1" branch="False" />
-            <line number="75" hits="1" branch="False" />
-            <line number="76" hits="1" branch="False" />
-            <line number="77" hits="1" branch="False" />
-            <line number="78" hits="1" branch="False" />
-            <line number="79" hits="1" branch="False" />
-            <line number="80" hits="1" branch="False" />
-            <line number="82" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.PermissionAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/PermissionAttribute.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name="get_Permission" signature="()">
-              <lines>
-                <line number="37" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String)">
-              <lines>
-                <line number="25" hits="1" branch="False" />
-                <line number="27" hits="1" branch="False" />
-                <line number="28" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="25" hits="1" branch="False" />
-            <line number="27" hits="1" branch="False" />
-            <line number="28" hits="1" branch="False" />
-            <line number="37" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class line-rate="0.8" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes.PermissionForAttribute" filename="Common/Opss.PrimaryAuthorityRegister.Common/AuthorisationAttributes/PermissionForAttribute.cs">
-          <methods>
-            <method line-rate="0" branch-rate="1" complexity="1" name="get_Permission" signature="()">
-              <lines>
-                <line number="33" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.String,System.String)">
-              <lines>
-                <line number="20" hits="1" branch="False" />
-                <line number="22" hits="1" branch="False" />
-                <line number="23" hits="1" branch="False" />
-                <line number="24" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="20" hits="1" branch="False" />
-            <line number="22" hits="1" branch="False" />
-            <line number="23" hits="1" branch="False" />
-            <line number="24" hits="1" branch="False" />
-            <line number="33" hits="0" branch="False" />
-          </lines>
-        </class>
-      </classes>
-    </package>
-    <package line-rate="0.7560975609756098" branch-rate="0.4166666666666667" complexity="25" name="Opss.PrimaryAuthorityRegister.Http">
+    <package line-rate="0.7560975609756098" branch-rate="0.6111111111111112" complexity="30" name="Opss.PrimaryAuthorityRegister.Http">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Http.Services.HttpService" filename="Common/Opss.PrimaryAuthorityRegister.Http/Services/HttpService.cs">
           <methods>
@@ -1641,15 +1679,24 @@
             <line number="20" hits="1" branch="False" />
           </lines>
         </class>
-        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails" filename="Common/Opss.PrimaryAuthorityRegister.Http/Problem/ProblemDetails.cs">
+        <class line-rate="1" branch-rate="1" complexity="7" name="Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails" filename="Common/Opss.PrimaryAuthorityRegister.Http/Problem/ProblemDetails.cs">
           <methods>
-            <method line-rate="1" branch-rate="1" complexity="1" name=".ctor" signature="(System.Net.HttpStatusCode,System.Exception,System.Boolean)">
+            <method line-rate="1" branch-rate="1" complexity="6" name=".ctor" signature="(System.Net.HttpStatusCode,System.Exception,System.Boolean)">
               <lines>
                 <line number="13" hits="1" branch="False" />
                 <line number="15" hits="1" branch="False" />
-                <line number="16" hits="1" branch="True" />
+                <line number="16" hits="1" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="15" type="jump" coverage="100%" />
+                    <condition number="27" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
                 <line number="17" hits="1" branch="True" />
-                <line number="18" hits="1" branch="True" />
+                <line number="18" hits="1" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="70" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
                 <line number="19" hits="1" branch="False" />
               </lines>
             </method>
@@ -1667,9 +1714,18 @@
           <lines>
             <line number="13" hits="1" branch="False" />
             <line number="15" hits="1" branch="False" />
-            <line number="16" hits="1" branch="True" />
+            <line number="16" hits="1" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="15" type="jump" coverage="100%" />
+                <condition number="27" type="jump" coverage="100%" />
+              </conditions>
+            </line>
             <line number="17" hits="1" branch="True" />
-            <line number="18" hits="1" branch="True" />
+            <line number="18" hits="1" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="70" type="jump" coverage="100%" />
+              </conditions>
+            </line>
             <line number="19" hits="1" branch="False" />
             <line number="22" hits="1" branch="False" />
             <line number="24" hits="1" branch="False" />
@@ -1981,42 +2037,6 @@
             <line number="13" hits="8" branch="False" />
             <line number="15" hits="8" branch="False" />
             <line number="16" hits="8" branch="False" />
-          </lines>
-        </class>
-      </classes>
-    </package>
-    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application">
-      <classes>
-        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="2" name="SetCultureCookie" signature="(Microsoft.AspNetCore.Http.HttpContext)">
-              <lines>
-                <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="13" hits="1" branch="False" />
-                <line number="14" hits="1" branch="False" />
-                <line number="15" hits="1" branch="False" />
-                <line number="16" hits="1" branch="False" />
-                <line number="17" hits="1" branch="False" />
-                <line number="18" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="13" hits="1" branch="False" />
-            <line number="14" hits="1" branch="False" />
-            <line number="15" hits="1" branch="False" />
-            <line number="16" hits="1" branch="False" />
-            <line number="17" hits="1" branch="False" />
-            <line number="18" hits="1" branch="False" />
           </lines>
         </class>
       </classes>
