@@ -1,8 +1,18 @@
 ﻿@page "/authority/partnership-application/initiate/confirm"
 
 @inject IStringLocalizer<Confirm> Loc
+@inject NavigationManager navigationManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
+
+@if (pageHasErrors)
+{
+	<GdsErrorSummary>
+		<GdsErrorSummaryItem Href="#confirm-criteria">
+			@Loc["Criteria_Error_Text"]
+		</GdsErrorSummaryItem>
+	</GdsErrorSummary>
+}
 
 <GdsHeading HeadingLevel="1" Classes=@HeadingSize.ExtraLarge>
 	@Loc["PageHeading"]
@@ -12,6 +22,44 @@
 	@Loc["Guidance"]
 </GdsInsetText> 
 
+<GdsCheckboxes Name="confirm-criteria" @bind-Values=selectedCriteria ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)>
+	<LegendTemplate>
+		<p class="govuk-body">@Loc["Criteria_Text"]</p>
+	</LegendTemplate>
+	<ChildContent>
+		<GdsCheckbox Value="1">@Loc["Criteria1_Checkbox_Text"]</GdsCheckbox>
+		<GdsCheckbox Value="2">@Loc["Criteria2_Checkbox_Text"]</GdsCheckbox>
+		<GdsCheckbox Value="3">@Loc["Criteria3_Checkbox_Text"]</GdsCheckbox>
+	</ChildContent>
+</GdsCheckboxes>
+
+<GdsButton Id="confirm-button" OnClick=@OnConfirmAgreement>
+	@Loc["Continue_Button_Text"]
+</GdsButton>
+
 @code {
+	#region Private Properties
+	private List<string> selectedCriteria = new();
+	private bool pageHasErrors = false;
+	private RenderFragment? errorMessage;
+	#endregion
+
+	protected override void OnInitialized()
+	{
+		errorMessage =@<GdsErrorMessage>@Loc["Criteria_Error_Text"]</GdsErrorMessage>;
+		base.OnInitialized();
+	}
+
+	#region Event Handlers
+	private void OnConfirmAgreement(MouseEventArgs e)
+	{
+		pageHasErrors = selectedCriteria.Count != 3;
+
+		if (!pageHasErrors)
+		{
+			navigationManager.NavigateTo("/authority/partnership-application/initiate/task-list");
+		}
+	}
+	#endregion
 
 }

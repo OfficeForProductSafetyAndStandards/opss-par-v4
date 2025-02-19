@@ -7,7 +7,6 @@
 		<NoWarn>$(NoWarn);CS8604</NoWarn>
 	</PropertyGroup>
 
-
 	<ItemGroup>
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
