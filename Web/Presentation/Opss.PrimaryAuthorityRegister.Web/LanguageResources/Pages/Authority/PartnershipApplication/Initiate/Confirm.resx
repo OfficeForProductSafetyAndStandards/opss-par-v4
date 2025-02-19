@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Button_Continue" xml:space="preserve">
+  <data name="Guidance" xml:space="preserve">
+    <value>Before you can start a new application, you must have been in contact with the organization and have a written summary document detailing the partnership. </value>
+  </data>
+  <data name="PageHeading" xml:space="preserve">
+    <value>Confirm agreement to apply for partnership</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Primary Authority Register - Confirm partnership agreement</value>
+  </data>
+  <data name="Continue_Button_Text" xml:space="preserve">
     <value>Continue</value>
   </data>
   <data name="Criteria1_Checkbox_Text" xml:space="preserve">
@@ -134,14 +143,5 @@
   </data>
   <data name="Criteria_Text" xml:space="preserve">
     <value>Confirm that you meet the below criteria before continuing.</value>
-  </data>
-  <data name="Guidance" xml:space="preserve">
-    <value>Before you can start a new application, you must have been in contact with the organization and have a written summary document detailing the partnership. </value>
-  </data>
-  <data name="PageHeading" xml:space="preserve">
-    <value>Confirm agreement to apply for partnership</value>
-  </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Primary Authority Register - Confirm partnership agreement</value>
   </data>
 </root>
