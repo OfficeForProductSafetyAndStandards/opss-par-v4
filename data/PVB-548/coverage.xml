@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage line-rate="0.9388794567062818" branch-rate="0.8297872340425532" complexity="188" version="1.9" timestamp="1739970302" lines-covered="553" lines-valid="589" branches-covered="78" branches-valid="94">
+<coverage line-rate="0.9388794567062818" branch-rate="0.8367346938775511" complexity="192" version="1.9" timestamp="1739977213" lines-covered="553" lines-valid="589" branches-covered="82" branches-valid="98">
   <sources>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/</source>
+    <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/Opss.PrimaryAuthorityRegister.Common/</source>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/</source>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/Api/Core/Opss.PrimaryAuthorityRegister.Api.Domain/</source>
   </sources>
@@ -1624,7 +1625,7 @@
         </class>
       </classes>
     </package>
-    <package line-rate="0.7560975609756098" branch-rate="0.6111111111111112" complexity="30" name="Opss.PrimaryAuthorityRegister.Http">
+    <package line-rate="0.7560975609756098" branch-rate="0.6818181818181818" complexity="34" name="Opss.PrimaryAuthorityRegister.Http">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Http.Services.HttpService" filename="Common/Opss.PrimaryAuthorityRegister.Http/Services/HttpService.cs">
           <methods>
@@ -1642,9 +1643,9 @@
             <line number="20" hits="1" branch="False" />
           </lines>
         </class>
-        <class line-rate="1" branch-rate="1" complexity="7" name="Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails" filename="Common/Opss.PrimaryAuthorityRegister.Http/Problem/ProblemDetails.cs">
+        <class line-rate="1" branch-rate="1" complexity="11" name="Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails" filename="Common/Opss.PrimaryAuthorityRegister.Http/Problem/ProblemDetails.cs">
           <methods>
-            <method line-rate="1" branch-rate="1" complexity="6" name=".ctor" signature="(System.Net.HttpStatusCode,System.Exception,System.Boolean)">
+            <method line-rate="1" branch-rate="1" complexity="10" name=".ctor" signature="(System.Net.HttpStatusCode,System.Exception,System.Boolean)">
               <lines>
                 <line number="13" hits="1" branch="False" />
                 <line number="15" hits="1" branch="False" />
@@ -1654,7 +1655,12 @@
                     <condition number="27" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="17" hits="1" branch="True" />
+                <line number="17" hits="1" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="42" type="jump" coverage="100%" />
+                    <condition number="52" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
                 <line number="18" hits="1" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="70" type="jump" coverage="100%" />
@@ -1683,7 +1689,12 @@
                 <condition number="27" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="17" hits="1" branch="True" />
+            <line number="17" hits="1" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="42" type="jump" coverage="100%" />
+                <condition number="52" type="jump" coverage="100%" />
+              </conditions>
+            </line>
             <line number="18" hits="1" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="70" type="jump" coverage="100%" />
@@ -1938,42 +1949,6 @@
         </class>
       </classes>
     </package>
-    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application">
-      <classes>
-        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
-          <methods>
-            <method line-rate="1" branch-rate="1" complexity="2" name="SetCultureCookie" signature="(Microsoft.AspNetCore.Http.HttpContext)">
-              <lines>
-                <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="13" hits="1" branch="False" />
-                <line number="14" hits="1" branch="False" />
-                <line number="15" hits="1" branch="False" />
-                <line number="16" hits="1" branch="False" />
-                <line number="17" hits="1" branch="False" />
-                <line number="18" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="13" hits="1" branch="False" />
-            <line number="14" hits="1" branch="False" />
-            <line number="15" hits="1" branch="False" />
-            <line number="16" hits="1" branch="False" />
-            <line number="17" hits="1" branch="False" />
-            <line number="18" hits="1" branch="False" />
-          </lines>
-        </class>
-      </classes>
-    </package>
     <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Api">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Api.Extensions.IApplicationBuilderExtensions" filename="Api/Presentation/Opss.PrimaryAuthorityRegister.Api/Extensions/IApplicationBuilderExtensions.cs">
@@ -2036,6 +2011,42 @@
             <line number="13" hits="8" branch="False" />
             <line number="15" hits="8" branch="False" />
             <line number="16" hits="8" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application">
+      <classes>
+        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
+          <methods>
+            <method line-rate="1" branch-rate="1" complexity="2" name="SetCultureCookie" signature="(Microsoft.AspNetCore.Http.HttpContext)">
+              <lines>
+                <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="13" hits="1" branch="False" />
+                <line number="14" hits="1" branch="False" />
+                <line number="15" hits="1" branch="False" />
+                <line number="16" hits="1" branch="False" />
+                <line number="17" hits="1" branch="False" />
+                <line number="18" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="1" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="13" hits="1" branch="False" />
+            <line number="14" hits="1" branch="False" />
+            <line number="15" hits="1" branch="False" />
+            <line number="16" hits="1" branch="False" />
+            <line number="17" hits="1" branch="False" />
+            <line number="18" hits="1" branch="False" />
           </lines>
         </class>
       </classes>
