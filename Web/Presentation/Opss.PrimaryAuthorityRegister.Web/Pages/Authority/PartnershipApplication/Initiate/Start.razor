@@ -1,6 +1,7 @@
 ﻿@page "/authority/partnership-application/initiate/start"
 
 @inject IStringLocalizer<Start> Loc
+@inject NavigationManager NavManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
@@ -8,6 +9,15 @@
 	@Loc["PageHeading"]
 </GdsHeading>
 
-@code {
+<GdsButton Id="start-button" 
+		   IsStartButton=@true 
+		   @onclick=OnStartClick>
+	@Loc["Button_Start"]
+</GdsButton>
 
+@code {
+	private void OnStartClick(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/authority/partnership-application/initiate/confirm");
+	}
 }

@@ -1,0 +1,19 @@
+﻿@inherits BunitContext
+
+@code {
+	[Fact]
+	public void WhenStartButtonClicked_ThenNavigatesToConfirm()
+	{
+		// Arrange
+		Services.AddLocalization();
+		var navMan = Services.GetRequiredService<NavigationManager>();
+		var start = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Start>();
+		var startButton = start.Find("#start-button");
+
+		// Act
+		startButton.Click();
+
+		// Assert
+		Assert.EndsWith("/authority/partnership-application/initiate/confirm", navMan.Uri);
+	}
+}
