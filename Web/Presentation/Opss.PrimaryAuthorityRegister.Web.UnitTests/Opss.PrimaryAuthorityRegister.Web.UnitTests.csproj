@@ -8,13 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Pages\**" />
-	  <Content Remove="Pages\**" />
-	  <EmbeddedResource Remove="Pages\**" />
-	  <None Remove="Pages\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
 		<Using Include="Microsoft.Extensions.DependencyInjection" />
