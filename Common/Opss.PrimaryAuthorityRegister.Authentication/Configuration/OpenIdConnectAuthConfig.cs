@@ -9,11 +9,6 @@ public class OpenIdConnectAuthConfigurations
 
     public Dictionary<string, OpenIdConnectAuthConfig> Providers => _providers;
 
-    public void AddConfig(string key, OpenIdConnectAuthConfig config)
-    {
-        _providers.Add(key, config);
-    }
-
     public OpenIdConnectAuthConfigurations(Dictionary<string, OpenIdConnectAuthConfig> providers)
     {
         _providers = providers;
@@ -49,7 +44,7 @@ public class OpenIdConnectAuthConfig
     /// <summary>
     /// RSA Private Key
     /// </summary>
-    public required string RsaPrivateKey { get; set; }
+    public string? RsaPrivateKey { get; set; }
 
     /// <summary>
     /// Post logout redirect URI

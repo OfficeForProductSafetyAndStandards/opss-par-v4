@@ -4,7 +4,7 @@ using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
 namespace Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
 
 [MustBeAuthenticated]
-public class GetJwtTokenQuery : IQuery<string>
+public class GetJwtQuery : IQuery<string>
 {
     /// <summary>
     /// GOV.UK One Login ID token
@@ -26,7 +26,7 @@ public class GetJwtTokenQuery : IQuery<string>
     /// </summary>
     public string ProviderKey { get; set; }
 
-    public GetJwtTokenQuery(string providerKey, string idToken, string accessToken, string? email = null)
+    public GetJwtQuery(string providerKey, string idToken, string accessToken, string? email = null)
     {
         ProviderKey = providerKey;
         IdToken = idToken;

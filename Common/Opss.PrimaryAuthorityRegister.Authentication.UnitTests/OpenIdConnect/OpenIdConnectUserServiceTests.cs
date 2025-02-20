@@ -5,39 +5,21 @@ using Opss.PrimaryAuthorityRegister.Http.Services;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Entities;
 using System.Net;
-using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Problem;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
-public class OneLoginServiceTests
+public class OpenIdConnectUserServiceTests
 {
     private readonly Mock<IHttpService> _httpServiceMock;
     private readonly OpenIdConnectUserService _oneLoginService;
-    private readonly OpenIdConnectAuthConfig _authConfig;
 
-    public OneLoginServiceTests()
+    public OpenIdConnectUserServiceTests()
     {
-        _authConfig = new OpenIdConnectAuthConfig
-        {
-            ProviderKey = "Provider",
-            AuthorityUri = new Uri("https://example.com"),
-            IssuerUri = new Uri("https://example.com"),
-            ClientId = "client-id",
-            CookieMaxAge = 60,
-            ClockSkewSeconds = 300,
-            PostLogoutRedirectUri = new Uri("https://localhost/"),
-            RsaPrivateKey = "RSAKey",
-            WellKnownPath = "/.well-known/openid-configuration",
-            UserInfoPath = "/userinfo",
-            AccessTokenPath = "/accesstoken",
-            CallbackPath = "/onelogin-signin-oidc"
-        };
-
-        var optionsMock = new Mock<IOptions<OpenIdConnectAuthConfig>>();
-        optionsMock.Setup(o => o.Value).Returns(_authConfig);
+        var optionsMock = new Mock<IOptions<OpenIdConnectAuthConfigurations>>();
+        optionsMock.Setup(o => o.Value).Returns(AuthenticationTestHelpers.ProviderAuthConfigurations);
 
         _httpServiceMock = new Mock<IHttpService>(MockBehavior.Strict);
 
@@ -63,7 +45,7 @@ public class OneLoginServiceTests
             .ReturnsAsync(new HttpObjectResponse<JsonWebKeySet>(okCode, expectedKeys, null));
 
         // Act
-        var result = await _oneLoginService.GetSigningKeys().ConfigureAwait(true);
+        var result = await _oneLoginService.GetSigningKeys(AuthenticationTestHelpers.AuthProviderKey).ConfigureAwait(true);
 
         // Assert
         Assert.NotNull(result);
@@ -91,7 +73,7 @@ public class OneLoginServiceTests
             );
 
         // Act
-        var result = await _oneLoginService.GetSigningKeys().ConfigureAwait(true);
+        var result = await _oneLoginService.GetSigningKeys(AuthenticationTestHelpers.AuthProviderKey).ConfigureAwait(true);
 
         // Assert
         Assert.NotNull(result);
@@ -112,7 +94,7 @@ public class OneLoginServiceTests
             .ReturnsAsync(new HttpObjectResponse<AuthenticatedUserInfoDto>(okCode, expectedUserInfo, null));
 
         // Act
-        var result = await _oneLoginService.GetUserInfo(accessToken).ConfigureAwait(true);
+        var result = await _oneLoginService.GetUserInfo(AuthenticationTestHelpers.AuthProviderKey, accessToken).ConfigureAwait(true);
 
         // Assert
         Assert.NotNull(result);
@@ -142,7 +124,7 @@ public class OneLoginServiceTests
             );
 
         // Act
-        var result = await _oneLoginService.GetUserInfo(accessToken).ConfigureAwait(true);
+        var result = await _oneLoginService.GetUserInfo(AuthenticationTestHelpers.AuthProviderKey, accessToken).ConfigureAwait(true);
 
 
         // Assert

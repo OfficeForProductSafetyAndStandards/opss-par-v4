@@ -15,71 +15,39 @@ using Opss.PrimaryAuthorityRegister.Http.Problem;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
-public class OneLoginTokenServiceTests
+public class OpenIdConnectTokenServiceTests
 {
     private readonly Mock<IAuthenticatedUserService> _mockAuthenticatedUserService;
-    private readonly Mock<IJwtTokenHandler> _mockJwtTokenHandler;
-    private readonly IOptions<JwtAuthConfig> _jwtAuthConfig;
-    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
-    private readonly IOptions<OpenIdConnectAuthConfigurations> _authConfig;
+    private readonly Mock<IJwtHandler> _mockJwtHandler;
     private readonly OpenIdConnectTokenService _tokenService;
 
-    public OneLoginTokenServiceTests()
+    public OpenIdConnectTokenServiceTests()
     {
         _mockAuthenticatedUserService = new Mock<IAuthenticatedUserService>();
-        _mockJwtTokenHandler = new Mock<IJwtTokenHandler>();
-        _jwtAuthConfig = Options.Create(new JwtAuthConfig
-        {
-            SecurityKey = "SuperSecretKey1234567890SuperSecretKey1234567890",
-            IssuerUri = new Uri("https://issuer.example.com"),
-            AudienceUri = new Uri("https://audience.example.com"),
-            MinutesUntilExpiration = 60
-        });
-        _oneLoginAuthConfig = new OpenIdConnectAuthConfig
-        {
-            ProviderKey = "Provider",
-            AuthorityUri = new Uri("https://auth.example.com"),
-            IssuerUri = new Uri("https://issuer.example.com"),
-            ClientId = "client-id",
-            ClockSkewSeconds = 300,
-            CookieMaxAge = 30,
-            PostLogoutRedirectUri = new Uri("https://localhost"),
-            RsaPrivateKey = "PrivateKey",
-            WellKnownPath = "/.well-known/openid-configuration",
-            UserInfoPath = "/userinfo",
-            AccessTokenPath = "/accesstoken",
-            CallbackPath = "/onelogin-signin-oidc"
-        };
-        var config = new Dictionary<string, OpenIdConnectAuthConfig>
-        {
-            { "PRovider", _oneLoginAuthConfig }
-        };
-        var authconfig = new OpenIdConnectAuthConfigurations(config);
-
-        _authConfig = Options.Create(authconfig);
+        _mockJwtHandler = new Mock<IJwtHandler>();
 
         _tokenService = new OpenIdConnectTokenService(
-            _authConfig, 
-            _jwtAuthConfig,
-            _mockJwtTokenHandler.Object, 
+            Options.Create(AuthenticationTestHelpers.ProviderAuthConfigurations),
+            Options.Create(AuthenticationTestHelpers.JwtConfig),
+            _mockJwtHandler.Object, 
             _mockAuthenticatedUserService.Object);
     }
 
     [Fact]
-    public void GenerateJwtToken_ShouldReturnValidJwt()
+    public void GenerateJwt_ShouldReturnValidJwt()
     {
         // Arrange
         string email = "test@example.com";
 
         // Act
-        string token = _tokenService.GenerateJwtToken(email);
+        string token = _tokenService.GenerateJwt(email);
 
         // Assert
         Assert.NotNull(token);
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
-        Assert.Equal("https://issuer.example.com", jwt.Issuer);
-        Assert.Equal("https://audience.example.com", jwt.Audiences.First());
+        Assert.Equal(AuthenticationTestHelpers.JwtConfig.IssuerUri.ToString(), jwt.Issuer);
+        Assert.Equal(AuthenticationTestHelpers.JwtConfig.AudienceUri.ToString(), jwt.Audiences.First());
         Assert.Contains(jwt.Claims, c => c.Type == JwtRegisteredClaimNames.Email && c.Value == email);
     }
 
@@ -91,11 +59,11 @@ public class OneLoginTokenServiceTests
 
         using var okCode = new HttpResponseMessage(HttpStatusCode.OK);
         var response = new HttpObjectResponse<JsonWebKeySet>(okCode, null, null);
-        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys()).ReturnsAsync(response);
+        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys(AuthenticationTestHelpers.AuthProviderKey)).ReturnsAsync(response);
 
         // Act & Assert
         await Assert.ThrowsAsync<AuthenticationException>(async () =>
-            await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None).ConfigureAwait(true))
+            await _tokenService.ValidateTokenAsync(AuthenticationTestHelpers.AuthProviderKey, idToken, CancellationToken.None).ConfigureAwait(true))
             .ConfigureAwait(true);
     }
 
@@ -114,11 +82,11 @@ public class OneLoginTokenServiceTests
                         new Exception("Error"), true
                     )
                 );
-        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys()).ReturnsAsync(response);
+        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys(AuthenticationTestHelpers.AuthProviderKey)).ReturnsAsync(response);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(async () =>
-            await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None).ConfigureAwait(true))
+            await _tokenService.ValidateTokenAsync(AuthenticationTestHelpers.AuthProviderKey, idToken, CancellationToken.None).ConfigureAwait(true))
             .ConfigureAwait(true);
         Assert.Equal(HttpStatusCode.BadRequest, exception.Response.StatusCode);
     }
@@ -134,13 +102,13 @@ public class OneLoginTokenServiceTests
         using var okCode = new HttpResponseMessage(HttpStatusCode.OK);
         string idToken = "valid-token";
         var response = new HttpObjectResponse<JsonWebKeySet>(okCode, expectedKeys, null);
-        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys()).ReturnsAsync(response);
+        _mockAuthenticatedUserService.Setup(s => s.GetSigningKeys(AuthenticationTestHelpers.AuthProviderKey)).ReturnsAsync(response);
 
-        _mockJwtTokenHandler.Setup(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny)).Verifiable();
+        _mockJwtHandler.Setup(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny)).Verifiable();
 
         // Act & Assert
-        await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None);
-        _mockJwtTokenHandler.Verify(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny), Times.Once);
+        await _tokenService.ValidateTokenAsync(AuthenticationTestHelpers.AuthProviderKey, idToken, CancellationToken.None);
+        _mockJwtHandler.Verify(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny), Times.Once);
     }
 }
 

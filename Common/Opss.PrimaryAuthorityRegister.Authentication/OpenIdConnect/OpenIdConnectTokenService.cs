@@ -15,13 +15,13 @@ public class OpenIdConnectTokenService : ITokenService
 {
     private readonly JwtAuthConfig _jwtAuthConfig;
     private readonly OpenIdConnectAuthConfigurations _oidcAuthConfig;
-    private readonly IJwtTokenHandler _tokenHandler;
+    private readonly IJwtHandler _tokenHandler;
     private readonly IAuthenticatedUserService _authUserService;
 
     public OpenIdConnectTokenService(
         IOptions<OpenIdConnectAuthConfigurations> oneLoginAuthConfig,
         IOptions<JwtAuthConfig> jwtAuthConfig,
-        IJwtTokenHandler tokenHandler,
+        IJwtHandler tokenHandler,
         IAuthenticatedUserService authUserService)
     {
         ArgumentNullException.ThrowIfNull(jwtAuthConfig);
@@ -33,7 +33,7 @@ public class OpenIdConnectTokenService : ITokenService
         _authUserService = authUserService;
     }
 
-    public string GenerateJwtToken(string email)
+    public string GenerateJwt(string email)
     {
         var key = Encoding.UTF8.GetBytes(_jwtAuthConfig.SecurityKey);
         var securityKey = new SymmetricSecurityKey(key);

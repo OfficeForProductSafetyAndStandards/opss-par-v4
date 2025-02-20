@@ -90,38 +90,47 @@ public class OpssOpenIdConnectEvents : OpenIdConnectEvents
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        if (context.Properties is AuthenticationProperties properties)
+        if (context.Properties is not AuthenticationProperties properties)
+            return;
+
+        var tokens = properties.GetTokens().ToList();
+
+        var idToken = tokens.First(t => t.Name == "id_token").Value;
+        var accessToken = tokens.First(t => t.Name == "access_token").Value;
+        var jwtQuery = new GetJwtQuery(_oidcAuthConfig.ProviderKey, idToken, accessToken);
+
+        var response = await _httpService.GetAsync<GetJwtQuery, string>(jwtQuery).ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode || response.Result is null)
+            return;
+
+        var authToken = response.Result;
+        var claims = GetClaimsFromToken(authToken);
+        var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
+
+        if (context.Principal is ClaimsPrincipal principal)
         {
-            var tokens = properties.GetTokens().ToList();
-
-            var idToken = tokens.First(t => t.Name == "id_token").Value;
-            var accessToken = tokens.First(t => t.Name == "access_token").Value;
-
-            var response = await _httpService.GetAsync<GetJwtTokenQuery, string>(new GetJwtTokenQuery(_oidcAuthConfig.ProviderKey, idToken, accessToken)).ConfigureAwait(false);
-
-            if (response.IsSuccessStatusCode && response.Result is not null)
+            principal.AddIdentity(identity);
+            tokens.Add(new AuthenticationToken()
             {
-                var authToken = response.Result;
-                var claims = GetClaimsFromToken(authToken);
-                var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
-
-                if (context.Principal is ClaimsPrincipal principal)
-                {
-                    principal.AddIdentity(identity);
-                    tokens.Add(new AuthenticationToken()
-                    {
-                        Name = AuthenticationConstants.TokenName,
-                        Value = authToken
-                    });
-                }
-                properties.StoreTokens(tokens);
-            }
+                Name = AuthenticationConstants.TokenName,
+                Value = authToken
+            });
         }
+        properties.StoreTokens(tokens);
     }
 
     public override Task AuthorizationCodeReceived(AuthorizationCodeReceivedContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
+
+        if (context.Request.Query.TryGetValue("state", out var state))
+        {
+            context.Response.Cookies.Append(OpenIdConnectCookies.AuthState, state!, _cookieOptions);
+        }
+
+        if (string.IsNullOrEmpty(_oidcAuthConfig.RsaPrivateKey))
+            return Task.CompletedTask;
 
         using var rsa = RSA.Create();
         rsa.ImportFromPem(_oidcAuthConfig.RsaPrivateKey);
@@ -140,11 +149,6 @@ public class OpssOpenIdConnectEvents : OpenIdConnectEvents
         {
             tokenEndpointRequest.ClientAssertionType = ClientAssertionTypes.JwtBearer;
             tokenEndpointRequest.ClientAssertion = jwt;
-        }
-
-        if (context.Request.Query.TryGetValue("state", out var state))
-        {
-            context.Response.Cookies.Append(OpenIdConnectCookies.AuthState, state, _cookieOptions);
         }
 
         return Task.CompletedTask;

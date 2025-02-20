@@ -31,7 +31,7 @@ public static class IServiceCollectionExtensions
     private static void Addauthentication(this IServiceCollection services)
     {
         services.AddTransient<IAuthenticatedUserService, OpenIdConnectUserService>();
-        services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
+        services.AddTransient<IJwtHandler, JwtHandler>();
         services.AddTransient<ITokenService, OpenIdConnectTokenService>();
     }
 

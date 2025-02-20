@@ -8,7 +8,8 @@
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 public sealed class PermissionForAttribute : ClaimRequiredAttribute
 {
-    private readonly string permission;
+    private readonly string _permission;
+    private readonly string _resourceKeyTemplate;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PermissionForAttribute"/> class. 
@@ -19,8 +20,8 @@ public sealed class PermissionForAttribute : ClaimRequiredAttribute
     public PermissionForAttribute(string permission, string resourceKeyTemplate)
         : base(PermissionAttribute.PermissionClaimType, resourceKeyTemplate, permission)
     {
-        this.permission = permission;
-        ResourceKeyTemplate = resourceKeyTemplate;
+        _permission = permission;
+        _resourceKeyTemplate = resourceKeyTemplate;
     }
 
     /// <summary>
@@ -30,9 +31,19 @@ public sealed class PermissionForAttribute : ClaimRequiredAttribute
     {
         get
         {
-            return permission;
+            return _permission;
         }
     }
 
-    public string ResourceKeyTemplate { get; }
+    /// <summary>
+    /// Gets the resource key template representing the required resource
+    /// </summary>
+    public string ResourceKeyTemplate
+    {
+        get
+        {
+            return _resourceKeyTemplate;
+        }
+    }
 }
+

@@ -10,36 +10,36 @@ using System.Net;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Authentication.QueryHandlers;
 
-public class GetJwtTokenQueryHandlerTests
+public class GetJwtQueryHandlerTests
 {
     private readonly Mock<ITokenService> _tokenServiceMock;
     private readonly Mock<IAuthenticatedUserService> _oneLoginServiceMock;
-    private readonly GetJwtTokenQueryHandler _handler;
+    private readonly GetJwtQueryHandler _handler;
 
-    public GetJwtTokenQueryHandlerTests()
+    public GetJwtQueryHandlerTests()
     {
         _tokenServiceMock = new Mock<ITokenService>();
         _oneLoginServiceMock = new Mock<IAuthenticatedUserService>();
-        _handler = new GetJwtTokenQueryHandler(_tokenServiceMock.Object, _oneLoginServiceMock.Object);
+        _handler = new GetJwtQueryHandler(_tokenServiceMock.Object, _oneLoginServiceMock.Object);
     }
 
     [Fact]
     public async Task Handle_ShouldReturnToken_WhenValidRequest()
     {
         // Arrange
-        var query = new GetJwtTokenQuery("Provider", "validIdToken", "validAccessToken");
+        var query = new GetJwtQuery("Provider", "validIdToken", "validAccessToken");
         using var okMessage = new HttpResponseMessage(HttpStatusCode.OK);
 
-        var expectedToken = "jwtToken";
+        var expectedToken = "jwt";
         var userInfoResponse = new HttpObjectResponse<AuthenticatedUserInfoDto>(
             okMessage,
             new AuthenticatedUserInfoDto("sub", DateTime.Now.ToString()) { Email = "test@example.com" });
 
         _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.ProviderKey, query.IdToken, It.IsAny<CancellationToken>()))
                           .Returns(Task.CompletedTask);
-        _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.AccessToken))
+        _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.ProviderKey, query.AccessToken))
                             .ReturnsAsync(userInfoResponse);
-        _tokenServiceMock.Setup(ts => ts.GenerateJwtToken("test@example.com"))
+        _tokenServiceMock.Setup(ts => ts.GenerateJwt("test@example.com"))
                           .Returns(expectedToken);
 
         // Act
@@ -62,7 +62,7 @@ public class GetJwtTokenQueryHandlerTests
     public async Task Handle_ShouldThrowHttpResponseException_WhenUserServiceFails()
     {
         // Arrange
-        var query = new GetJwtTokenQuery("Provider", "validIdToken", "validAccessToken");
+        var query = new GetJwtQuery("Provider", "validIdToken", "validAccessToken");
         using var badRequestMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
         var errorResponse = new HttpObjectResponse<AuthenticatedUserInfoDto>(
@@ -73,7 +73,7 @@ public class GetJwtTokenQueryHandlerTests
 
         _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.ProviderKey, query.IdToken, It.IsAny<CancellationToken>()))
                           .Returns(Task.CompletedTask);
-        _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.AccessToken))
+        _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.ProviderKey, query.AccessToken))
                             .ReturnsAsync(errorResponse);
 
         // Act & Assert

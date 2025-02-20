@@ -5,13 +5,13 @@ using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.TokenHandler;
 
-public class JwtTokenHandlerTests
+public class JwtHandlerTests
 {
-    private readonly JwtTokenHandler _jwtTokenHandler;
+    private readonly JwtHandler _jwtHandler;
 
-    public JwtTokenHandlerTests()
+    public JwtHandlerTests()
     {
-        _jwtTokenHandler = new JwtTokenHandler();
+        _jwtHandler = new JwtHandler();
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class JwtTokenHandlerTests
     {
         // Arrange
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String("MDEyMzQ1Njc4OWFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MTIzNDU2Nzg5");
+        var key = Convert.FromBase64String(AuthenticationTestHelpers.JwtConfig.SecurityKey);
         var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -42,7 +42,7 @@ public class JwtTokenHandlerTests
         };
 
         // Act
-        var principal = _jwtTokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+        var principal = _jwtHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
 
         // Assert
         Assert.NotNull(principal);

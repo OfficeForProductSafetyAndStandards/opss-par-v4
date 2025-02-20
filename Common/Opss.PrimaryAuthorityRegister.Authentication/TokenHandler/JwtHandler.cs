@@ -1,10 +1,21 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 
-public interface IJwtTokenHandler
+/// <summary>
+/// Exposes the JwtSecurityTokenHandler so it can be mocked in tests
+/// </summary>
+public class JwtHandler : IJwtHandler
 {
+    private readonly JwtSecurityTokenHandler _tokenHandler;
+
+    public JwtHandler()
+    {
+        _tokenHandler = new JwtSecurityTokenHandler();
+    }
+
     /// <summary>
     /// Reads and validates a 'JSON Web Token' (JWT) encoded as a JWS or JWE in Compact Serialized Format.
     /// </summary>
@@ -33,5 +44,10 @@ public interface IJwtTokenHandler
     /// <remarks>
     /// Many of the exceptions listed above are not thrown directly from this method. See <see cref="Validators"/> to examine the call graph.
     /// </remarks>
-    ClaimsPrincipal ValidateToken(string token, TokenValidationParameters validationParameters, out SecurityToken validatedToken);
+    public ClaimsPrincipal ValidateToken(string token, TokenValidationParameters validationParameters, out SecurityToken validatedToken)
+    {
+        var principal = _tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedSecurityToken);
+        validatedToken = validatedSecurityToken;
+        return principal;
+    }
 }
