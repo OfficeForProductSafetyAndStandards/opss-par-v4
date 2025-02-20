@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
@@ -12,7 +12,7 @@ public class IServiceCollectionExtensionsTests
     public void AddAuthentication_ShouldThrowException_WhenBuilderIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => IServiceCollectionExtensions.AddOneLoginAuthentication(null!));
+        Assert.Throws<ArgumentNullException>(() => IServiceCollectionExtensions.AddOidcAuthentication(null!, "OneLogin"));
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class IServiceCollectionExtensionsTests
         builder.Configuration.AddConfiguration(config);
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidOperationException>(() => builder.AddOneLoginAuthentication());
+        var exception = Assert.Throws<InvalidOperationException>(() => builder.AddOidcAuthentication("OneLogin"));
         Assert.Equal("Cannot load OneLogin auth configuration", exception.Message);
     }
 
@@ -62,7 +62,7 @@ public class IServiceCollectionExtensionsTests
         builder.Services.AddScoped((IServiceProvider provider) => new Mock<IHttpService>().Object);
 
         // Act
-        builder.AddOneLoginAuthentication();
+        builder.AddOidcAuthentication("OneLogin");
 
         // Assert
         var services = builder.Services;

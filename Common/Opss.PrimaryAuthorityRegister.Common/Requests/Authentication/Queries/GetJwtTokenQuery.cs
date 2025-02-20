@@ -21,8 +21,14 @@ public class GetJwtTokenQuery : IQuery<string>
     /// </summary>
     public string? Email { get; private set; }
 
-    public GetJwtTokenQuery(string idToken, string accessToken, string? email = null)
+    /// <summary>
+    /// The Authentication provider
+    /// </summary>
+    public string ProviderKey { get; set; }
+
+    public GetJwtTokenQuery(string providerKey, string idToken, string accessToken, string? email = null)
     {
+        ProviderKey = providerKey;
         IdToken = idToken;
         AccessToken = accessToken;
         Email = email;

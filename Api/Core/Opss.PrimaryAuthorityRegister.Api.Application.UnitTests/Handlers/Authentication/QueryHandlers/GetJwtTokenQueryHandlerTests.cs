@@ -27,7 +27,7 @@ public class GetJwtTokenQueryHandlerTests
     public async Task Handle_ShouldReturnToken_WhenValidRequest()
     {
         // Arrange
-        var query = new GetJwtTokenQuery("validIdToken", "validAccessToken");
+        var query = new GetJwtTokenQuery("Provider", "validIdToken", "validAccessToken");
         using var okMessage = new HttpResponseMessage(HttpStatusCode.OK);
 
         var expectedToken = "jwtToken";
@@ -35,7 +35,7 @@ public class GetJwtTokenQueryHandlerTests
             okMessage,
             new AuthenticatedUserInfoDto("sub", DateTime.Now.ToString()) { Email = "test@example.com" });
 
-        _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.IdToken, It.IsAny<CancellationToken>()))
+        _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.ProviderKey, query.IdToken, It.IsAny<CancellationToken>()))
                           .Returns(Task.CompletedTask);
         _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.AccessToken))
                             .ReturnsAsync(userInfoResponse);
@@ -62,7 +62,7 @@ public class GetJwtTokenQueryHandlerTests
     public async Task Handle_ShouldThrowHttpResponseException_WhenUserServiceFails()
     {
         // Arrange
-        var query = new GetJwtTokenQuery("validIdToken", "validAccessToken");
+        var query = new GetJwtTokenQuery("Provider", "validIdToken", "validAccessToken");
         using var badRequestMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
         var errorResponse = new HttpObjectResponse<AuthenticatedUserInfoDto>(
@@ -71,7 +71,7 @@ public class GetJwtTokenQueryHandlerTests
             new ProblemDetails(HttpStatusCode.BadRequest, new Exception("Invalid token"))
         );
 
-        _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.IdToken, It.IsAny<CancellationToken>()))
+        _tokenServiceMock.Setup(ts => ts.ValidateTokenAsync(query.ProviderKey, query.IdToken, It.IsAny<CancellationToken>()))
                           .Returns(Task.CompletedTask);
         _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.AccessToken))
                             .ReturnsAsync(errorResponse);

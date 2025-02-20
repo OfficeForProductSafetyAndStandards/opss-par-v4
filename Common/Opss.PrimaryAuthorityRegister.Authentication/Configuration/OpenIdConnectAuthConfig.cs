@@ -1,10 +1,35 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+﻿using Microsoft.Extensions.Options;
+using System.Collections.ObjectModel;
+
+namespace Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+
+public class OpenIdConnectAuthConfigurations
+{
+    private readonly Dictionary<string, OpenIdConnectAuthConfig> _providers;
+
+    public Dictionary<string, OpenIdConnectAuthConfig> Providers => _providers;
+
+    public void AddConfig(string key, OpenIdConnectAuthConfig config)
+    {
+        _providers.Add(key, config);
+    }
+
+    public OpenIdConnectAuthConfigurations(Dictionary<string, OpenIdConnectAuthConfig> providers)
+    {
+        _providers = providers;
+    }
+    public OpenIdConnectAuthConfigurations()
+    {
+        _providers = [];
+    }
+}
 
 /// <summary>
 /// Authentication configuration
 /// </summary>
 public class OpenIdConnectAuthConfig
 {
+    public required string ProviderKey { get; set; }
     /// <summary>
     /// Max-age of cookie, in minutes
     /// </summary>

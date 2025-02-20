@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Entities;
@@ -9,6 +8,7 @@ using System.Net;
 using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Problem;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
@@ -22,6 +22,7 @@ public class OneLoginServiceTests
     {
         _authConfig = new OpenIdConnectAuthConfig
         {
+            ProviderKey = "Provider",
             AuthorityUri = new Uri("https://example.com"),
             IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",

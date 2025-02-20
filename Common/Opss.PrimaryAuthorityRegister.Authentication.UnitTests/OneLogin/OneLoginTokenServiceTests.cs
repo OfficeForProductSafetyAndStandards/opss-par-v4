@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
@@ -20,7 +20,8 @@ public class OneLoginTokenServiceTests
     private readonly Mock<IAuthenticatedUserService> _mockAuthenticatedUserService;
     private readonly Mock<IJwtTokenHandler> _mockJwtTokenHandler;
     private readonly IOptions<JwtAuthConfig> _jwtAuthConfig;
-    private readonly IOptions<OpenIdConnectAuthConfig> _oneLoginAuthConfig;
+    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly IOptions<OpenIdConnectAuthConfigurations> _authConfig;
     private readonly OpenIdConnectTokenService _tokenService;
 
     public OneLoginTokenServiceTests()
@@ -34,23 +35,31 @@ public class OneLoginTokenServiceTests
             AudienceUri = new Uri("https://audience.example.com"),
             MinutesUntilExpiration = 60
         });
-        _oneLoginAuthConfig = Options.Create(new OpenIdConnectAuthConfig
+        _oneLoginAuthConfig = new OpenIdConnectAuthConfig
         {
+            ProviderKey = "Provider",
             AuthorityUri = new Uri("https://auth.example.com"),
             IssuerUri = new Uri("https://issuer.example.com"),
             ClientId = "client-id",
             ClockSkewSeconds = 300,
             CookieMaxAge = 30,
-            PostLogoutRedirectUri = new Uri("https://localhost"), 
+            PostLogoutRedirectUri = new Uri("https://localhost"),
             RsaPrivateKey = "PrivateKey",
             WellKnownPath = "/.well-known/openid-configuration",
             UserInfoPath = "/userinfo",
             AccessTokenPath = "/accesstoken",
             CallbackPath = "/onelogin-signin-oidc"
-        });
+        };
+        var config = new Dictionary<string, OpenIdConnectAuthConfig>
+        {
+            { "PRovider", _oneLoginAuthConfig }
+        };
+        var authconfig = new OpenIdConnectAuthConfigurations(config);
+
+        _authConfig = Options.Create(authconfig);
 
         _tokenService = new OpenIdConnectTokenService(
-            _oneLoginAuthConfig, 
+            _authConfig, 
             _jwtAuthConfig,
             _mockJwtTokenHandler.Object, 
             _mockAuthenticatedUserService.Object);
@@ -86,7 +95,7 @@ public class OneLoginTokenServiceTests
 
         // Act & Assert
         await Assert.ThrowsAsync<AuthenticationException>(async () =>
-            await _tokenService.ValidateTokenAsync(idToken, CancellationToken.None).ConfigureAwait(true))
+            await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None).ConfigureAwait(true))
             .ConfigureAwait(true);
     }
 
@@ -109,7 +118,7 @@ public class OneLoginTokenServiceTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(async () =>
-            await _tokenService.ValidateTokenAsync(idToken, CancellationToken.None).ConfigureAwait(true))
+            await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None).ConfigureAwait(true))
             .ConfigureAwait(true);
         Assert.Equal(HttpStatusCode.BadRequest, exception.Response.StatusCode);
     }
@@ -130,7 +139,7 @@ public class OneLoginTokenServiceTests
         _mockJwtTokenHandler.Setup(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny)).Verifiable();
 
         // Act & Assert
-        await _tokenService.ValidateTokenAsync(idToken, CancellationToken.None);
+        await _tokenService.ValidateTokenAsync("Provider", idToken, CancellationToken.None);
         _mockJwtTokenHandler.Verify(h => h.ValidateToken(idToken, It.IsAny<TokenValidationParameters>(), out It.Ref<SecurityToken>.IsAny), Times.Once);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
@@ -15,7 +14,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+namespace Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 public class OpssOpenIdConnectEvents : OpenIdConnectEvents
 {
@@ -98,7 +97,7 @@ public class OpssOpenIdConnectEvents : OpenIdConnectEvents
             var idToken = tokens.First(t => t.Name == "id_token").Value;
             var accessToken = tokens.First(t => t.Name == "access_token").Value;
 
-            var response = await _httpService.GetAsync<GetJwtTokenQuery, string>(new GetJwtTokenQuery(idToken, accessToken)).ConfigureAwait(false);
+            var response = await _httpService.GetAsync<GetJwtTokenQuery, string>(new GetJwtTokenQuery(_oidcAuthConfig.ProviderKey, idToken, accessToken)).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode && response.Result is not null)
             {

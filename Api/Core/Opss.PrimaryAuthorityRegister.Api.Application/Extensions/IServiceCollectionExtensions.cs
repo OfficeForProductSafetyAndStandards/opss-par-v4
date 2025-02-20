@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;

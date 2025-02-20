@@ -7,7 +7,7 @@ using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Builders;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.Builders;
@@ -22,6 +22,7 @@ public class OpenIdConnectBuilderTests
     {
         _config = new OpenIdConnectAuthConfig
         {
+            ProviderKey = "Provider",
             AuthorityUri = new Uri("https://example.com"),
             IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",

@@ -23,8 +23,8 @@ public class GetJwtTokenQueryHandler : IRequestHandler<GetJwtTokenQuery, string>
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        await _tokenService.ValidateTokenAsync(request.IdToken, cancellationToken).ConfigureAwait(false);
-        var response = await _oneLoginService.GetUserInfo(request.AccessToken).ConfigureAwait(false);
+        await _tokenService.ValidateTokenAsync(request.ProviderKey, request.IdToken, cancellationToken).ConfigureAwait(false);
+        var response = await _oneLoginService.GetUserInfo(request.ProviderKey, request.AccessToken).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
             throw new HttpResponseException(response.StatusCode, response.Problem.Detail);

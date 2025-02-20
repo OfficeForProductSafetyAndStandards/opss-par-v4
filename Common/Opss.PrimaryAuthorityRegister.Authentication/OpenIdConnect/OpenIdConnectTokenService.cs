@@ -9,17 +9,17 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 
-namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+namespace Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 public class OpenIdConnectTokenService : ITokenService
 {
     private readonly JwtAuthConfig _jwtAuthConfig;
-    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
+    private readonly OpenIdConnectAuthConfigurations _oidcAuthConfig;
     private readonly IJwtTokenHandler _tokenHandler;
     private readonly IAuthenticatedUserService _authUserService;
 
     public OpenIdConnectTokenService(
-        IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig,
+        IOptions<OpenIdConnectAuthConfigurations> oneLoginAuthConfig,
         IOptions<JwtAuthConfig> jwtAuthConfig,
         IJwtTokenHandler tokenHandler,
         IAuthenticatedUserService authUserService)
@@ -53,9 +53,9 @@ public class OpenIdConnectTokenService : ITokenService
         return jwt;
     }
 
-    public async Task ValidateTokenAsync(string idToken, CancellationToken cancellationToken)
+    public async Task ValidateTokenAsync(string providerKey, string idToken, CancellationToken cancellationToken)
     {
-        var response = await _authUserService.GetSigningKeys().ConfigureAwait(false);
+        var response = await _authUserService.GetSigningKeys(providerKey).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
             throw new HttpResponseException(response.StatusCode, response.Problem?.Detail);
@@ -63,13 +63,15 @@ public class OpenIdConnectTokenService : ITokenService
 
         var keys = (response.Result?.Keys) ?? throw new AuthenticationException("An empty key set was returned");
 
+        var config = _oidcAuthConfig.Providers[providerKey];
+
         var tokenValidationParameters = new TokenValidationParameters()
         {
-            ValidIssuer = _oidcAuthConfig.IssuerUri.ToString(),
-            ValidAudience = _oidcAuthConfig.ClientId,
+            ValidIssuer = config.IssuerUri.ToString(),
+            ValidAudience = config.ClientId,
             ValidateIssuerSigningKey = true,
             IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => keys,
-            ClockSkew = TimeSpan.FromSeconds(_oidcAuthConfig.ClockSkewSeconds)
+            ClockSkew = TimeSpan.FromSeconds(config.ClockSkewSeconds)
         };
 
         _tokenHandler.ValidateToken(idToken, tokenValidationParameters, out SecurityToken _);

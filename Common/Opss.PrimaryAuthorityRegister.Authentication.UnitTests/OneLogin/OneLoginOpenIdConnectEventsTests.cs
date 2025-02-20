@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Services;
@@ -30,6 +30,7 @@ public class OneLoginOpenIdConnectEventsTests
         _mockHttpService = new Mock<IHttpService>();
         _mockOneLoginConfig = new OpenIdConnectAuthConfig
         {
+            ProviderKey = "Provider",
             AuthorityUri = new Uri("https://example.com"),
             IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",

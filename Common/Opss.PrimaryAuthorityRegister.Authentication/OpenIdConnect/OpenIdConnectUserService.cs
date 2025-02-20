@@ -7,32 +7,32 @@ using Opss.PrimaryAuthorityRegister.Common.ExtensionMethods;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 
-namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+namespace Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 public class OpenIdConnectUserService : IAuthenticatedUserService
 {
     private readonly IHttpService _httpClient;
-    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly OpenIdConnectAuthConfigurations _oidcAuthConfig;
 
-    public OpenIdConnectUserService(IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig, IHttpService httpClient)
+    public OpenIdConnectUserService(IOptions<OpenIdConnectAuthConfigurations> oneLoginAuthConfig, IHttpService httpClient)
     {
         ArgumentNullException.ThrowIfNull(oneLoginAuthConfig);
 
         _httpClient = httpClient;
-        _oneLoginAuthConfig = oneLoginAuthConfig.Value;
+        _oidcAuthConfig = oneLoginAuthConfig.Value;
     }
 
-    public async Task<HttpObjectResponse<JsonWebKeySet>> GetSigningKeys()
+    public async Task<HttpObjectResponse<JsonWebKeySet>> GetSigningKeys(string providerKey)
     {
-        var uri = _oneLoginAuthConfig.AuthorityUri.AppendPath("/.well-known/jwks.json");
+        var uri = _oidcAuthConfig.Providers[providerKey].AuthorityUri.AppendPath("/.well-known/jwks.json");
         var result = await _httpClient.HttpSendAsync<JsonWebKeySet>(HttpMethod.Get, uri).ConfigureAwait(false);
 
         return result;
     }
 
-    public async Task<HttpObjectResponse<AuthenticatedUserInfoDto>> GetUserInfo(string accessToken)
+    public async Task<HttpObjectResponse<AuthenticatedUserInfoDto>> GetUserInfo(string providerKey, string accessToken)
     {
-        var uri = _oneLoginAuthConfig.AuthorityUri.AppendPath(_oneLoginAuthConfig.UserInfoPath);
+        var uri = _oidcAuthConfig.Providers[providerKey].AuthorityUri.AppendPath(_oidcAuthConfig.Providers[providerKey].UserInfoPath);
         var result = await _httpClient.HttpSendAsync<AuthenticatedUserInfoDto>(HttpMethod.Get, uri, bearerToken: accessToken).ConfigureAwait(false);
 
         return result;

@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Common.ExtensionMethods;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 
