@@ -21,7 +21,7 @@ public class OneLoginTokenServiceTests
     private readonly Mock<IJwtTokenHandler> _mockJwtTokenHandler;
     private readonly IOptions<JwtAuthConfig> _jwtAuthConfig;
     private readonly IOptions<OpenIdConnectAuthConfig> _oneLoginAuthConfig;
-    private readonly OneLoginTokenService _tokenService;
+    private readonly OpenIdConnectTokenService _tokenService;
 
     public OneLoginTokenServiceTests()
     {
@@ -30,21 +30,26 @@ public class OneLoginTokenServiceTests
         _jwtAuthConfig = Options.Create(new JwtAuthConfig
         {
             SecurityKey = "SuperSecretKey1234567890SuperSecretKey1234567890",
-            Issuer = "https://issuer.example.com",
-            Audience = "https://audience.example.com",
+            IssuerUri = new Uri("https://issuer.example.com"),
+            AudienceUri = new Uri("https://audience.example.com"),
             MinutesUntilExpiration = 60
         });
         _oneLoginAuthConfig = Options.Create(new OpenIdConnectAuthConfig
         {
-            Authority = "https://auth.example.com",
+            AuthorityUri = new Uri("https://auth.example.com"),
+            IssuerUri = new Uri("https://issuer.example.com"),
             ClientId = "client-id",
             ClockSkewSeconds = 300,
             CookieMaxAge = 30,
             PostLogoutRedirectUri = new Uri("https://localhost"), 
-            RsaPrivateKey = "PrivateKey"
+            RsaPrivateKey = "PrivateKey",
+            WellKnownPath = "/.well-known/openid-configuration",
+            UserInfoPath = "/userinfo",
+            AccessTokenPath = "/accesstoken",
+            CallbackPath = "/onelogin-signin-oidc"
         });
 
-        _tokenService = new OneLoginTokenService(
+        _tokenService = new OpenIdConnectTokenService(
             _oneLoginAuthConfig, 
             _jwtAuthConfig,
             _mockJwtTokenHandler.Object, 

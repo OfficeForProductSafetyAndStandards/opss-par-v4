@@ -21,7 +21,7 @@ namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 public class OneLoginOpenIdConnectEventsTests
 {
     private readonly Mock<IHttpService> _mockHttpService;
-    private readonly OneLoginOpenIdConnectEvents _events;
+    private readonly OpssOpenIdConnectEvents _events;
     private readonly OpenIdConnectAuthConfig _mockOneLoginConfig;
     private readonly JwtAuthConfig _mockJwtAuthConfig;
 
@@ -30,26 +30,28 @@ public class OneLoginOpenIdConnectEventsTests
         _mockHttpService = new Mock<IHttpService>();
         _mockOneLoginConfig = new OpenIdConnectAuthConfig
         {
-            Authority = "https://example.com",
+            AuthorityUri = new Uri("https://example.com"),
+            IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",
             CookieMaxAge = 30,
             // This RSA key was generaated specifically for this test file and is used nowhere else in the system.
             RsaPrivateKey = StaticTestRsaKey.Value,
             PostLogoutRedirectUri = new Uri("https://localhost"),
-            ClockSkewSeconds = 60
+            ClockSkewSeconds = 60,
+            WellKnownPath = "/.well-known/openid-configuration",
+            UserInfoPath = "/userinfo",
+            AccessTokenPath = "/accesstoken",
+            CallbackPath = "/onelogin-signin-oidc"
         };
         _mockJwtAuthConfig = new JwtAuthConfig
         {
             SecurityKey = "supersecretkeysupersecretkeysupersecretkey",
-            Issuer = "issuer",
-            Audience = "audience",
+            IssuerUri = new Uri("https://localhost/"),
+            AudienceUri = new Uri("https://localhost/"),
             ClockSkewSeconds = 300
         };
 
-        var oneLoginOptions = Options.Create(_mockOneLoginConfig);
-        var jwtOptions = Options.Create(_mockJwtAuthConfig);
-
-        _events = new OneLoginOpenIdConnectEvents(oneLoginOptions, jwtOptions, _mockHttpService.Object);
+        _events = new OpssOpenIdConnectEvents(_mockOneLoginConfig, _mockJwtAuthConfig, _mockHttpService.Object);
     }
 
     [Fact]
@@ -103,8 +105,8 @@ public class OneLoginOpenIdConnectEventsTests
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _mockJwtAuthConfig.Issuer,
-            audience: _mockJwtAuthConfig.Audience,
+            issuer: _mockJwtAuthConfig.IssuerUri.ToString(),
+            audience: _mockJwtAuthConfig.AudienceUri.ToString(),
             claims: Array.Empty<Claim>(),
             expires: DateTime.UtcNow.AddMinutes(_mockJwtAuthConfig.MinutesUntilExpiration),
             signingCredentials: credentials
@@ -145,12 +147,12 @@ public class OneLoginOpenIdConnectEventsTests
         context.HttpContext.RequestServices = serviceProvider.Object;
 
 
-        context.HttpContext.Response.Cookies.Append(OpenIdConnectCookies.OneLoginState, "state_value");
+        context.HttpContext.Response.Cookies.Append(OpenIdConnectCookies.AuthState, "state_value");
         context.HttpContext.Response.Cookies.Append(OpenIdConnectCookies.ParToken, "par_value");
 
         await _events.RedirectToIdentityProviderForSignOut(context);
 
-        Assert.Null(context.HttpContext.Request.Cookies[OpenIdConnectCookies.OneLoginState]);
+        Assert.Null(context.HttpContext.Request.Cookies[OpenIdConnectCookies.AuthState]);
         Assert.Null(context.HttpContext.Request.Cookies[OpenIdConnectCookies.ParToken]);
     }
 
@@ -177,6 +179,6 @@ public class OneLoginOpenIdConnectEventsTests
         Assert.Equal(ClientAssertionTypes.JwtBearer, context.TokenEndpointRequest.ClientAssertionType);
         Assert.NotNull(context.TokenEndpointRequest.ClientAssertion);
         var setCookieHeaders = context.Response.Headers["Set-Cookie"].ToString();
-        Assert.Contains($"{OpenIdConnectCookies.OneLoginState}=test-state-value", setCookieHeaders);
+        Assert.Contains($"{OpenIdConnectCookies.AuthState}=test-state-value", setCookieHeaders);
     }
 }

@@ -33,8 +33,11 @@
 
 <p>@authMessage</p>
 
-<GdsButton Href="/oidc/login" IsStartButton=@true>
-	@Loc["StartButton"]
+<GdsButton Href="/oidc/login?provider=oidc-onelogin" IsStartButton=@true>
+	@Loc["StartButton"] - onelogin
+</GdsButton>
+<GdsButton Href="/oidc/login?provider=oidc-staffsso" IsStartButton=@true>
+	@Loc["StartButton"] - staff sso
 </GdsButton>
 
 @code {

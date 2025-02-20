@@ -15,19 +15,24 @@ namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 public class OneLoginServiceTests
 {
     private readonly Mock<IHttpService> _httpServiceMock;
-    private readonly OneLoginService _oneLoginService;
+    private readonly OpenIdConnectUserService _oneLoginService;
     private readonly OpenIdConnectAuthConfig _authConfig;
 
     public OneLoginServiceTests()
     {
         _authConfig = new OpenIdConnectAuthConfig
         {
-            Authority = "https://example.com",
+            AuthorityUri = new Uri("https://example.com"),
+            IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",
             CookieMaxAge = 60,
             ClockSkewSeconds = 300,
             PostLogoutRedirectUri = new Uri("https://localhost/"),
-            RsaPrivateKey = "RSAKey"
+            RsaPrivateKey = "RSAKey",
+            WellKnownPath = "/.well-known/openid-configuration",
+            UserInfoPath = "/userinfo",
+            AccessTokenPath = "/accesstoken",
+            CallbackPath = "/onelogin-signin-oidc"
         };
 
         var optionsMock = new Mock<IOptions<OpenIdConnectAuthConfig>>();
@@ -35,13 +40,13 @@ public class OneLoginServiceTests
 
         _httpServiceMock = new Mock<IHttpService>(MockBehavior.Strict);
 
-        _oneLoginService = new OneLoginService(optionsMock.Object, _httpServiceMock.Object);
+        _oneLoginService = new OpenIdConnectUserService(optionsMock.Object, _httpServiceMock.Object);
     }
 
     [Fact]
     public void Constructor_ShouldThrow_WhenOptionsIsNull()
     {
-        Assert.Throws<ArgumentNullException>(() => new OneLoginService(null, _httpServiceMock.Object));
+        Assert.Throws<ArgumentNullException>(() => new OpenIdConnectUserService(null, _httpServiceMock.Object));
     }
 
     [Fact]

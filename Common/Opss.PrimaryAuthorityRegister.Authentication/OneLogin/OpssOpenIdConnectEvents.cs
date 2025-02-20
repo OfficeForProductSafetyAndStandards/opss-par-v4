@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
+using Opss.PrimaryAuthorityRegister.Common.ExtensionMethods;
 using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using System.Globalization;
@@ -16,28 +17,28 @@ using System.Text;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 
-public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
+public class OpssOpenIdConnectEvents : OpenIdConnectEvents
 {
-    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
     private readonly JwtAuthConfig _jwtAuthConfig;
 
     private readonly CookieOptions _cookieOptions;
     private readonly IHttpService _httpService;
 
-    public OneLoginOpenIdConnectEvents(IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig, IOptions<JwtAuthConfig> chmmJwtAuthConfig, IHttpService httpService)
+    public OpssOpenIdConnectEvents(OpenIdConnectAuthConfig oidcAuthConfig, JwtAuthConfig jwtAuthConfig, IHttpService httpService)
     {
-        ArgumentNullException.ThrowIfNull(oneLoginAuthConfig);
-        ArgumentNullException.ThrowIfNull(chmmJwtAuthConfig);
+        ArgumentNullException.ThrowIfNull(oidcAuthConfig);
+        ArgumentNullException.ThrowIfNull(jwtAuthConfig);
 
-        _oneLoginAuthConfig = oneLoginAuthConfig.Value;
-        _jwtAuthConfig = chmmJwtAuthConfig.Value;
+        _oidcAuthConfig = oidcAuthConfig;
+        _jwtAuthConfig = jwtAuthConfig;
         _cookieOptions = new CookieOptions
         {
             Secure = true,
             HttpOnly = true,
             Path = "/",
             SameSite = SameSiteMode.Strict,
-            MaxAge = TimeSpan.FromMinutes(_oneLoginAuthConfig.CookieMaxAge)
+            MaxAge = TimeSpan.FromMinutes(_oidcAuthConfig.CookieMaxAge)
         };
         _httpService = httpService;
     }
@@ -47,11 +48,11 @@ public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         return new JwtSecurityToken(
-            audience: $"{_oneLoginAuthConfig.Authority}/token",
-            issuer: _oneLoginAuthConfig.ClientId,
+            audience: _oidcAuthConfig.AuthorityUri.AppendPath(_oidcAuthConfig.AccessTokenPath).ToString(),
+            issuer: _oidcAuthConfig.ClientId,
             claims: new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _oneLoginAuthConfig.ClientId),
+                new Claim(JwtRegisteredClaimNames.Sub, _oidcAuthConfig.ClientId),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, now.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64)
             },
@@ -67,8 +68,8 @@ public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidIssuer = _jwtAuthConfig.Issuer,
-            ValidAudience = _jwtAuthConfig.Audience,
+            ValidIssuer = _jwtAuthConfig.IssuerUri.ToString(),
+            ValidAudience = _jwtAuthConfig.AudienceUri.ToString(),
             ClockSkew = TimeSpan.FromSeconds(_jwtAuthConfig.ClockSkewSeconds)
         };
 
@@ -124,7 +125,7 @@ public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
         ArgumentNullException.ThrowIfNull(context);
 
         using var rsa = RSA.Create();
-        rsa.ImportFromPem(_oneLoginAuthConfig.RsaPrivateKey);
+        rsa.ImportFromPem(_oidcAuthConfig.RsaPrivateKey);
         var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256)
         {
             CryptoProviderFactory = new CryptoProviderFactory { CacheSignatureProviders = false }
@@ -144,7 +145,7 @@ public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
 
         if (context.Request.Query.TryGetValue("state", out var state))
         {
-            context.Response.Cookies.Append(OpenIdConnectCookies.OneLoginState, state, _cookieOptions);
+            context.Response.Cookies.Append(OpenIdConnectCookies.AuthState, state, _cookieOptions);
         }
 
         return Task.CompletedTask;
@@ -154,16 +155,16 @@ public class OneLoginOpenIdConnectEvents : OpenIdConnectEvents
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        context.HttpContext.Response.Cookies.Delete(OpenIdConnectCookies.OneLoginState);
+        context.HttpContext.Response.Cookies.Delete(OpenIdConnectCookies.AuthState);
         context.HttpContext.Response.Cookies.Delete(OpenIdConnectCookies.ParToken);
 
         var props = context.ProtocolMessage;
-        props.PostLogoutRedirectUri = _oneLoginAuthConfig.PostLogoutRedirectUri.ToString();
+        props.PostLogoutRedirectUri = _oidcAuthConfig.PostLogoutRedirectUri.ToString();
 
         var idToken = await context.HttpContext.GetTokenAsync("id_token").ConfigureAwait(false);
         props.IdTokenHint = idToken;
 
-        if (context.Request.Cookies.TryGetValue(OpenIdConnectCookies.OneLoginState, out var state))
+        if (context.Request.Cookies.TryGetValue(OpenIdConnectCookies.AuthState, out var state))
         {
             props.State = state;
         }

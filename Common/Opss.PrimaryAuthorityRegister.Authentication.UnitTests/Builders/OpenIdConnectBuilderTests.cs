@@ -3,30 +3,46 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Builders;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.Builders;
 
 public class OpenIdConnectBuilderTests
 {
     private readonly OpenIdConnectAuthConfig _config;
+    private readonly JwtAuthConfig _jwtConfig;
     private readonly OpenIdConnectBuilder _builder;
 
     public OpenIdConnectBuilderTests()
     {
         _config = new OpenIdConnectAuthConfig
         {
-            Authority = "https://example.com",
+            AuthorityUri = new Uri("https://example.com"),
+            IssuerUri = new Uri("https://example.com"),
             ClientId = "client-id",
             CookieMaxAge = 60,
             ClockSkewSeconds = 300,
             PostLogoutRedirectUri =  new Uri("https://localhost/"),
-            RsaPrivateKey = "RSAKey"
+            RsaPrivateKey = "RSAKey",
+            WellKnownPath= "/.well-known/openid-configuration",
+            UserInfoPath= "/userinfo",
+            AccessTokenPath= "/accesstoken",
+            CallbackPath= "/onelogin-signin-oidc"
         };
-        _builder = new OpenIdConnectBuilder(_config);
+        _jwtConfig = new JwtAuthConfig
+        {
+            AudienceUri = new Uri("https://localhost/"),
+            IssuerUri = new Uri("https://localhost/"),
+            SecurityKey = "Sec-key",
+            ClockSkewSeconds = 340,
+            MinutesUntilExpiration = 30
+        };
+        _builder = new OpenIdConnectBuilder(_config, _jwtConfig, new Mock<IHttpService>().Object);
     }
 
     [Fact]
@@ -83,20 +99,20 @@ public class OpenIdConnectBuilderTests
         var options = new OpenIdConnectOptions();
 
         // Act
-        _builder.ConfigureOneLoginOpenIdConnectOptions(options);
+        _builder.ConfigureOpenIdConnectOptions(options);
 
         // Assert
-        Assert.Equal(_config.Authority, options.Authority);
+        Assert.Equal(_config.AuthorityUri.ToString(), options.Authority);
         Assert.Equal(_config.ClientId, options.ClientId);
         Assert.Equal(OpenIdConnectResponseType.Code, options.ResponseType);
         Assert.Equal(OpenIdConnectResponseMode.Query, options.ResponseMode);
-        Assert.Equal(typeof(OneLoginOpenIdConnectEvents), options.EventsType);
+        Assert.NotNull(options.Events);
         Assert.True(options.SaveTokens);
         Assert.True(options.GetClaimsFromUserInfoEndpoint);
         Assert.Contains("openid", options.Scope);
         Assert.Contains("email", options.Scope);
-        Assert.Equal($"{_config.Authority}/.well-known/openid-configuration", options.MetadataAddress);
-        Assert.Equal($"{_config.Authority}/", options.TokenValidationParameters.ValidIssuer);
+        Assert.Equal($"{_config.AuthorityUri}/.well-known/openid-configuration", options.MetadataAddress);
+        Assert.Equal($"{_config.AuthorityUri}", options.TokenValidationParameters.ValidIssuer);
         Assert.Equal(_config.ClientId, options.TokenValidationParameters.ValidAudience);
         Assert.True(options.TokenValidationParameters.ValidateIssuerSigningKey);
         Assert.Equal(TimeSpan.FromSeconds(_config.ClockSkewSeconds), options.TokenValidationParameters.ClockSkew);
@@ -105,6 +121,6 @@ public class OpenIdConnectBuilderTests
     [Fact]
     public void ConfigureOneLoginOpenIdConnectOptions_ShouldThrowException_WhenOptionsIsNull()
     {
-        Assert.Throws<ArgumentNullException>(() => _builder.ConfigureOneLoginOpenIdConnectOptions(null));
+        Assert.Throws<ArgumentNullException>(() => _builder.ConfigureOpenIdConnectOptions(null));
     }
 }

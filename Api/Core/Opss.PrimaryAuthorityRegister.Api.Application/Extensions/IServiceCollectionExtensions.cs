@@ -30,9 +30,9 @@ public static class IServiceCollectionExtensions
 
     private static void Addauthentication(this IServiceCollection services)
     {
-        services.AddTransient<IAuthenticatedUserService, OneLoginService>();
+        services.AddTransient<IAuthenticatedUserService, OpenIdConnectUserService>();
         services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
-        services.AddTransient<ITokenService, OneLoginTokenService>();
+        services.AddTransient<ITokenService, OpenIdConnectTokenService>();
     }
 
     private static void AddAuthorisation(this IServiceCollection services)

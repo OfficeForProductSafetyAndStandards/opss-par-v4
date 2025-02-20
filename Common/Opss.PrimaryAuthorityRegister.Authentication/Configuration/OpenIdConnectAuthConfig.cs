@@ -13,7 +13,8 @@ public class OpenIdConnectAuthConfig
     /// <summary>
     /// OpenID Connect Authority for GOV.UK OneLogin
     /// </summary>
-    public required string Authority { get; set; }
+    public required Uri AuthorityUri { get; set; }
+    public required Uri IssuerUri { get; set; }
 
     /// <summary>
     /// OpenID Connect Client Id for GOV.UK OneLogin
@@ -32,4 +33,10 @@ public class OpenIdConnectAuthConfig
 
 
     public short ClockSkewSeconds { get; set; }
+    public required string WellKnownPath { get; set; }
+    public required string UserInfoPath { get; set; }
+    public required string AccessTokenPath { get; set; }
+    public required string CallbackPath { get; set; }
+
+    public string? ClientSecret { get; set; }
 }

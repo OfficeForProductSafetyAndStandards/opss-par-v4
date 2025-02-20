@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Authentication.Builders;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 
@@ -13,15 +14,24 @@ public static class IServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(builder);
 
         var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
-        var section = oneLoginAuthConfigSection.Get<OpenIdConnectAuthConfig>();
-        var oneLoginAuthConfig = section
+        var oneLoginSection = oneLoginAuthConfigSection.Get<OpenIdConnectAuthConfig>();
+        var oneLoginAuthConfig = oneLoginSection
             ?? throw new InvalidOperationException("Cannot load OneLogin auth configuration");
 
-        var openIdConnectBuilder = new OpenIdConnectBuilder(oneLoginAuthConfig);
+
+        var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
+        var jwtSection = jwtAuthConfigSection.Get<JwtAuthConfig>();
+        var jwtConfig = jwtSection
+            ?? throw new InvalidOperationException("Cannot load JwtAuth auth configuration");
+
+        var serviceProvider = builder.Services.BuildServiceProvider();
+        var httpService = serviceProvider.GetRequiredService<IHttpService>();
+
+        var openIdConnectBuilder = new OpenIdConnectBuilder(oneLoginAuthConfig, jwtConfig, httpService);
         builder.Services
-            .AddTransient<OneLoginOpenIdConnectEvents>()
+            .AddTransient((IServiceProvider provider) => new OpssOpenIdConnectEvents(oneLoginAuthConfig, jwtConfig, httpService))
             .AddAuthentication(OpenIdConnectBuilder.ConfigureAuthentication)
             .AddCookie(openIdConnectBuilder.ConfigureCookie)
-            .AddOpenIdConnect("oidc-onelogin", openIdConnectBuilder.ConfigureOneLoginOpenIdConnectOptions);
+            .AddOpenIdConnect("oidc-onelogin", openIdConnectBuilder.ConfigureOpenIdConnectOptions);
     }
 }

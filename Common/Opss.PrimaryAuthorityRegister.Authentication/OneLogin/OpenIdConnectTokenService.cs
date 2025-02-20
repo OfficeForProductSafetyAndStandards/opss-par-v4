@@ -11,26 +11,26 @@ using System.Text;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
 
-public class OneLoginTokenService : ITokenService
+public class OpenIdConnectTokenService : ITokenService
 {
     private readonly JwtAuthConfig _jwtAuthConfig;
-    private readonly OpenIdConnectAuthConfig _oneLoginAuthConfig;
+    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
     private readonly IJwtTokenHandler _tokenHandler;
-    private readonly IAuthenticatedUserService _oneLoginService;
+    private readonly IAuthenticatedUserService _authUserService;
 
-    public OneLoginTokenService(
+    public OpenIdConnectTokenService(
         IOptions<OpenIdConnectAuthConfig> oneLoginAuthConfig,
         IOptions<JwtAuthConfig> jwtAuthConfig,
         IJwtTokenHandler tokenHandler,
-        IAuthenticatedUserService oneLoginService)
+        IAuthenticatedUserService authUserService)
     {
         ArgumentNullException.ThrowIfNull(jwtAuthConfig);
         ArgumentNullException.ThrowIfNull(oneLoginAuthConfig);
 
         _jwtAuthConfig = jwtAuthConfig.Value;
-        _oneLoginAuthConfig = oneLoginAuthConfig.Value;
+        _oidcAuthConfig = oneLoginAuthConfig.Value;
         _tokenHandler = tokenHandler;
-        _oneLoginService = oneLoginService;
+        _authUserService = authUserService;
     }
 
     public string GenerateJwtToken(string email)
@@ -42,8 +42,8 @@ public class OneLoginTokenService : ITokenService
         IEnumerable<Claim> claims = GetDefaultClaims(email);
 
         var token = new JwtSecurityToken(
-            issuer: _jwtAuthConfig.Issuer,
-            audience: _jwtAuthConfig.Audience,
+            issuer: _jwtAuthConfig.IssuerUri.ToString(),
+            audience: _jwtAuthConfig.AudienceUri.ToString(),
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtAuthConfig.MinutesUntilExpiration),
             signingCredentials: credentials
@@ -55,21 +55,21 @@ public class OneLoginTokenService : ITokenService
 
     public async Task ValidateTokenAsync(string idToken, CancellationToken cancellationToken)
     {
-        var response = await _oneLoginService.GetSigningKeys().ConfigureAwait(false);
+        var response = await _authUserService.GetSigningKeys().ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
             throw new HttpResponseException(response.StatusCode, response.Problem?.Detail);
         }
 
-        var keys = (response.Result?.Keys) ?? throw new AuthenticationException("GOV.UK One Login returned an empty key set");
+        var keys = (response.Result?.Keys) ?? throw new AuthenticationException("An empty key set was returned");
 
         var tokenValidationParameters = new TokenValidationParameters()
         {
-            ValidIssuer = $"{_oneLoginAuthConfig.Authority}/",
-            ValidAudience = _oneLoginAuthConfig.ClientId,
+            ValidIssuer = _oidcAuthConfig.IssuerUri.ToString(),
+            ValidAudience = _oidcAuthConfig.ClientId,
             ValidateIssuerSigningKey = true,
             IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => keys,
-            ClockSkew = TimeSpan.FromSeconds(_oneLoginAuthConfig.ClockSkewSeconds)
+            ClockSkew = TimeSpan.FromSeconds(_oidcAuthConfig.ClockSkewSeconds)
         };
 
         _tokenHandler.ValidateToken(idToken, tokenValidationParameters, out SecurityToken _);

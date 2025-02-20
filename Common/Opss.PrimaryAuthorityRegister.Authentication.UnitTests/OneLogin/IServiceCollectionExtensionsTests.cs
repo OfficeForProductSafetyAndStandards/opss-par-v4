@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OneLogin;
 
 public class IServiceCollectionExtensionsTests
@@ -41,7 +44,12 @@ public class IServiceCollectionExtensionsTests
             {"OneLoginAuth:CookieMaxAge" , "30"},
             {"OneLoginAuth:ClockSkewSeconds" , "60"},
             {"OneLoginAuth:ClientId" , "test-client-id"},
-            { "OneLoginAuth:Authority" ,"https://example.com" }
+            {"OneLoginAuth:Authority" ,"https://example.com" },
+            {"JwtAuth:SecurityKey", "test-key"},
+            {"JwtAuth:MinutesUntilExpiration", "30"},
+            {"JwtAuth:Issuer", "https://example.com"},
+            {"JwtAuth:ClockSkewSeconds", "30"},
+            { "JwtAuth:Audience", "https://localhost/" },
         };
 
         var config = new ConfigurationBuilder()
@@ -50,13 +58,15 @@ public class IServiceCollectionExtensionsTests
 
         var builder = WebApplication.CreateBuilder();
         builder.Configuration.AddConfiguration(config);
+        builder.Services.AddHttpClient();
+        builder.Services.AddScoped((IServiceProvider provider) => new Mock<IHttpService>().Object);
 
         // Act
         builder.AddOneLoginAuthentication();
 
         // Assert
         var services = builder.Services;
-        Assert.Contains(services, s => s.ServiceType.FullName == typeof(OneLoginOpenIdConnectEvents).FullName);
+        Assert.Contains(services, s => s.ServiceType.FullName == typeof(OpssOpenIdConnectEvents).FullName);
     }
 }
 
