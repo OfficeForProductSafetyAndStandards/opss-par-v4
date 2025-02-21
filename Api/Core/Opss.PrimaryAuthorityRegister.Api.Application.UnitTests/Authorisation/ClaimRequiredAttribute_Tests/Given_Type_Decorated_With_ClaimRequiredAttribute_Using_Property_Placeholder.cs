@@ -1,4 +1,4 @@
-﻿using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
+﻿using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.ClaimRequiredAttribute_Tests;
 

@@ -1,7 +1,6 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
-
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
 using System.Security;
 using System.Security.Claims;
 

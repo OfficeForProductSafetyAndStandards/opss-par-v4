@@ -1,8 +1,8 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation.ResourceKeyExpanders;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.AttributeBasedResourcePermissionProvider_Tests;

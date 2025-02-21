@@ -2,6 +2,6 @@
 
 public interface ITokenService
 {
-    Task ValidateTokenAsync(string idToken, CancellationToken cancellationToken);
-    string GenerateJwtToken(string email);
+    Task ValidateTokenAsync(string providerKey, string idToken, CancellationToken cancellationToken);
+    string GenerateJwt(string email);
 }

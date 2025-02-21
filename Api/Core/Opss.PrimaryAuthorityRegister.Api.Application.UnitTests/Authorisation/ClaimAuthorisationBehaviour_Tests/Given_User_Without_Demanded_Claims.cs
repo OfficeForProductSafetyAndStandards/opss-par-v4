@@ -3,8 +3,8 @@ using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Fakes;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.ClaimAuthorisationBehaviour_Tests;
 

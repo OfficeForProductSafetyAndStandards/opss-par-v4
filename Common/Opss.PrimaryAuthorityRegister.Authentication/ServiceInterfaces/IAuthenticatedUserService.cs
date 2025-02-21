@@ -6,6 +6,6 @@ namespace Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 
 public interface IAuthenticatedUserService
 {
-    Task<HttpObjectResponse<JsonWebKeySet>> GetSigningKeys();
-    Task<HttpObjectResponse<AuthenticatedUserInfoDto>> GetUserInfo(string accessToken);
+    Task<HttpObjectResponse<JsonWebKeySet>> GetSigningKeys(string providerKey);
+    Task<HttpObjectResponse<AuthenticatedUserInfoDto>> GetUserInfo(string providerKey, string accessToken);
 }

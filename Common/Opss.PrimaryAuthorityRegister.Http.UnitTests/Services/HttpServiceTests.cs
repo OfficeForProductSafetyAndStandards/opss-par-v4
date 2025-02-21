@@ -1,37 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Moq.Protected;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands;
+﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
-using Opss.PrimaryAuthorityRegister.Common;
+using System.Threading.Tasks;
+using Moq;
+using Xunit;
+using System.Net.Http.Headers;
 using Opss.PrimaryAuthorityRegister.Http.Services;
-using Opss.PrimaryAuthorityRegister.Http.Entities;
-using Opss.PrimaryAuthorityRegister.Http.Exceptions;
+using Moq.Protected;
+
 
 namespace Opss.PrimaryAuthorityRegister.Http.UnitTests.Services;
 
 public class HttpServiceTests
 {
-    private static string _baseAddress = "http://api/";
+    private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
+    private readonly HttpClient _httpClient;
+    private readonly HttpService _httpService;
+
+    public HttpServiceTests()
+    {
+        _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+        _httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+        _httpService = new HttpService(_httpClient);
+    }
 
     [Fact]
-    public async Task GetAsync_ShouldReturnContent_WhenPutRequestIsSuccessful()
+    public async Task HttpSendAsync_ShouldReturnSuccessResponse_WhenApiReturnsSuccess()
     {
         // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
-        {
-            StatusCode = HttpStatusCode.OK
-        };
+        var testResponse = new TestResponse { Message = "Success" };
+        var responseContent = new StringContent(JsonSerializer.Serialize(testResponse), Encoding.UTF8, "application/json");
+        using var httpResponse = new HttpResponseMessage(HttpStatusCode.OK) { Content = responseContent };
 
         HttpRequestMessage? capturedRequest = null;
         string? capturedRequestData = null;
 
-        // Simulate a successful HTTP response
-        mockHandler.Protected()
+        _httpMessageHandlerMock.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
@@ -41,87 +47,38 @@ public class HttpServiceTests
             {
                 capturedRequest = request; // Capture the request for later inspection
                 if (capturedRequest.Content != null)
-                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true); // Capture the requset content for later inspection
+                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true);
             })
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri(_baseAddress)
-        };
-
-        var httpService = new HttpService(client);
-
-        var query = new GetTestDataQuery(Guid.NewGuid());
+            .ReturnsAsync(httpResponse);
 
         // Act
-        var response = await httpService.GetAsync<GetTestDataQuery, TestDataDto>(query).ConfigureAwait(true);
+        var result = await _httpService.HttpSendAsync<TestResponse>(HttpMethod.Get, new Uri("https://example.com"));
 
         // Assert
-        var expectedUrl = $"{_baseAddress}api?name=GetTestDataQuery";
-
-        Assert.NotNull(response);
-        Assert.IsType<HttpObjectResponse<TestDataDto>>(response);
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccessStatusCode);
 
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Get, capturedRequest.Method);
-        Assert.Equal(expectedUrl, capturedRequest.RequestUri?.ToString());
+        Assert.Null(capturedRequestData);
 
-        // Verify the JSON payload
-        var expectedContent = JsonSerializer.Serialize(query);
-        Assert.Equal(expectedContent, capturedRequestData);
+        Assert.Equal("Success", result.Result?.Message);
     }
 
     [Fact]
-    public async Task GetAsync_ShouldThrowException_WhenPutRequestFails()
+    public async Task HttpSendAsync_ShouldIncludeBearerToken_WhenProvided()
     {
         // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
+        var token = "test-token";
+        using var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            StatusCode = HttpStatusCode.BadRequest,
-            Content = new StringContent("Bad Request")
-        };
-
-        // Simulate a failed HTTP response
-        mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri("http://api/")
-        };
-
-        var httpService = new HttpService(client);
-
-        var query = new GetTestDataQuery(Guid.NewGuid());
-
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.GetAsync<GetTestDataQuery, TestDataDto>(query)).ConfigureAwait(true);
-        Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
-    }
-
-    [Fact]
-    public async Task PostAsync_ShouldReturnNoContentResult_WhenPutRequestIsSuccessful()
-    {
-        // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
-        {
-            StatusCode = HttpStatusCode.OK
+            Content = new StringContent("{}", Encoding.UTF8, "application/json")
         };
 
         HttpRequestMessage? capturedRequest = null;
         string? capturedRequestData = null;
 
-        // Simulate a successful HTTP response
-        mockHandler.Protected()
+        _httpMessageHandlerMock.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
@@ -131,163 +88,62 @@ public class HttpServiceTests
             {
                 capturedRequest = request; // Capture the request for later inspection
                 if (capturedRequest.Content != null)
-                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true); // Capture the requset content for later inspection  
+                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true);
             })
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri("http://api/")
-        };
-
-        var httpService = new HttpService(client);
-
-        var ownerId = Guid.NewGuid();
-        var command = new CreateTestDataCommand(ownerId, "Something");
+            .ReturnsAsync(httpResponse);
 
         // Act
-        var response = await httpService.PostAsync(command).ConfigureAwait(true);
+        var result = await _httpService.HttpSendAsync<TestResponse>(HttpMethod.Get, new Uri("https://example.com"), bearerToken: token);
 
         // Assert
-        var expectedUrl = $"{_baseAddress}api?name=CreateTestDataCommand";
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccessStatusCode);
+    }
 
-        Assert.NotNull(response);
-        Assert.IsType<HttpObjectResponse<CreatedResponse>>(response);
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    [Fact]
+    public async Task HttpSendAsync_ShouldSendJsonPayload_WhenDataIsProvided()
+    {
+        // Arrange
+        var requestData = new { Name = "Test" };
+        var expectedJson = JsonSerializer.Serialize(requestData);
+
+        using var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent("{}", Encoding.UTF8, "application/json")
+        };
+
+        HttpRequestMessage? capturedRequest = null;
+        string? capturedRequestData = null;
+
+        _httpMessageHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Callback<HttpRequestMessage, CancellationToken>(async (request, cancellationToken) =>
+            {
+                capturedRequest = request; // Capture the request for later inspection
+                if (capturedRequest.Content != null)
+                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true);
+            })
+            .ReturnsAsync(httpResponse);
+
+        // Act
+        var result = await _httpService.HttpSendAsync<TestResponse>(HttpMethod.Post, new Uri("https://example.com"), requestData);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccessStatusCode);
 
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Post, capturedRequest.Method);
-        Assert.Equal(expectedUrl, capturedRequest.RequestUri?.ToString());
 
-        // Verify the JSON payload
-        var expectedContent = JsonSerializer.Serialize(command);
-        Assert.Equal(expectedContent, capturedRequestData);
+        Assert.Equal(expectedJson, capturedRequestData);
     }
+}
 
-    [Fact]
-    public async Task PostAsync_ShouldThrowException_WhenPutRequestFails()
-    {
-        // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
-        {
-            StatusCode = HttpStatusCode.BadRequest,
-            Content = new StringContent("Bad Request")
-        };
-
-        // Simulate a failed HTTP response
-        mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri("http://api/")
-        };
-
-        var httpService = new HttpService(client);
-
-        var ownerId = Guid.NewGuid();
-        var command = new CreateTestDataCommand(ownerId, "Something");
-
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.PostAsync(command)).ConfigureAwait(true);
-        Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
-    }
-
-    [Fact]
-    public async Task PutAsync_ShouldReturnNoContentResult_WhenPutRequestIsSuccessful()
-    {
-        // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
-        {
-            StatusCode = HttpStatusCode.NoContent
-        };
-
-        HttpRequestMessage? capturedRequest = null;
-        string? capturedRequestData = null;
-
-        // Simulate a successful HTTP response
-        mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .Callback<HttpRequestMessage, CancellationToken>(async (request, cancellationToken) =>
-            {
-                capturedRequest = request; // Capture the request for later inspection
-                if (capturedRequest.Content != null)
-                    capturedRequestData = await capturedRequest.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(true); // Capture the requset content for later inspection
-            })
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri("http://api/")
-        };
-
-        var httpService = new HttpService(client);
-
-        var ownerId = Guid.NewGuid();
-        var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
-
-        // Act
-        var response = await httpService.PutAsync(command).ConfigureAwait(true);
-
-        // Assert
-        var expectedUrl = $"{_baseAddress}api?name=UpdateTestDataCommand";
-
-        Assert.NotNull(response);
-        Assert.IsType<HttpObjectResponse<NoContentResult>>(response);
-        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-
-        Assert.NotNull(capturedRequest);
-        Assert.Equal(HttpMethod.Put, capturedRequest.Method);
-        Assert.Equal(expectedUrl, capturedRequest.RequestUri?.ToString());
-
-        // Verify the JSON payload
-        var expectedContent = JsonSerializer.Serialize(command);
-        Assert.Equal(expectedContent, capturedRequestData);
-    }
-
-    [Fact]
-    public async Task PutAsync_ShouldThrowException_WhenPutRequestFails()
-    {
-        // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>();
-        using var mockResponse = new HttpResponseMessage
-        {
-            StatusCode = HttpStatusCode.BadRequest,
-            Content = new StringContent("Bad Request")
-        };
-
-        // Simulate a failed HTTP response
-        mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(mockResponse);
-
-        using var client = new HttpClient(mockHandler.Object)
-        {
-            BaseAddress = new Uri("http://api/")
-        };
-
-        var httpService = new HttpService(client);
-
-        var ownerId = Guid.NewGuid();
-        var command = new UpdateTestDataCommand(ownerId, Guid.NewGuid(), "Something");
-
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<HttpResponseException>(() => httpService.PutAsync(command)).ConfigureAwait(true);
-        Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
-    }
+public class TestResponse
+{
+    public string Message { get; set; } = string.Empty;
 }

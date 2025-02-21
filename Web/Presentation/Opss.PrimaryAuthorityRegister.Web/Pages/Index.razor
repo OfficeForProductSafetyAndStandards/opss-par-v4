@@ -1,8 +1,5 @@
 ﻿@page "/"
 
-@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Commands
-@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos
-@using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries
 @using System.Security.Claims
 
 @inject IStringLocalizer<Index> Loc
@@ -33,8 +30,11 @@
 
 <p>@authMessage</p>
 
-<GdsButton Href="/oidc/login" IsStartButton=@true>
-	@Loc["StartButton"]
+<GdsButton Href="/oidc/login?provider=oidc-onelogin" IsStartButton=@true>
+	@Loc["StartButton"] - onelogin
+</GdsButton>
+<GdsButton Href="/oidc/login?provider=oidc-staffsso" IsStartButton=@true>
+	@Loc["StartButton"] - staff sso
 </GdsButton>
 
 @code {

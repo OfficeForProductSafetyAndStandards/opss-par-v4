@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
+    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Cqrs\Opss.PrimaryAuthorityRegister.Cqrs.csproj" />
     <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Http\Opss.PrimaryAuthorityRegister.Http.csproj" />
   </ItemGroup>
 

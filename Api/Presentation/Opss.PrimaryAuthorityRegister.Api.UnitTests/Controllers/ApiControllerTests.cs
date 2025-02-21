@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Controllers;
-using Opss.PrimaryAuthorityRegister.Common;
+using Opss.PrimaryAuthorityRegister.Cqrs;
 
 
 namespace Opss.PrimaryAuthorityRegister.Api.UnitTests.Controllers;

@@ -1,5 +1,5 @@
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using System.Diagnostics.CodeAnalysis;
@@ -13,8 +13,8 @@ internal static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var oneLoginAuthConfigSection = builder.Configuration.GetSection("OneLoginAuth");
-        builder.Services.Configure<OpenIdConnectAuthConfig>(oneLoginAuthConfigSection);
+        var authConfigs = builder.Configuration.GetSection("OpenIdConnectAuth");
+        builder.Services.Configure<OpenIdConnectAuthConfigurations>(authConfigs);
 
         var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
         builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
@@ -50,11 +50,13 @@ internal static class Program
             return client;
         });
 
-        builder.AddOneLoginAuthentication();
-
         builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<ICqrsService, CqrsService>();
         builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+        builder.AddOidcAuthentication("OneLogin");
+        builder.AddOidcAuthentication("StaffSSO");
 
         var app = builder.Build();
 

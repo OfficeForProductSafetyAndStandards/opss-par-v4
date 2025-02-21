@@ -91,12 +91,12 @@ builder.Services.AddScoped<IHttpService, HttpService>();
 
 ### Functionality to provide the Jwt token
 ```
-public class GetJwtTokenQueryHandler : IRequestHandler<GetJwtTokenQuery, string>
+public class GetJwtQueryHandler : IRequestHandler<GetJwtQuery, string>
 {
     private readonly ITokenService _tokenService;
     private readonly IAuthenticatedUserService _oneLoginService;
 
-    public GetJwtTokenQueryHandler(
+    public GetJwtQueryHandler(
         ITokenService tokenService,
         IAuthenticatedUserService oneLoginService)
     {
@@ -104,7 +104,7 @@ public class GetJwtTokenQueryHandler : IRequestHandler<GetJwtTokenQuery, string>
         _oneLoginService = oneLoginService;
     }
 
-    public async Task<string> Handle(GetJwtTokenQuery request, CancellationToken cancellationToken)
+    public async Task<string> Handle(GetJwtQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -117,7 +117,7 @@ public class GetJwtTokenQueryHandler : IRequestHandler<GetJwtTokenQuery, string>
 
         var email = response.Result?.Email;
 
-        var token = _tokenService.GenerateJwtToken(email);
+        var token = _tokenService.GenerateJwt(email);
 
         return token;
     }

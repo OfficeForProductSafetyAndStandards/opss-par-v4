@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Authentication.OneLogin;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
 using System.Reflection;
 using System.Security.Claims;
 
@@ -30,9 +30,9 @@ public static class IServiceCollectionExtensions
 
     private static void Addauthentication(this IServiceCollection services)
     {
-        services.AddTransient<IAuthenticatedUserService, OneLoginService>();
-        services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
-        services.AddTransient<ITokenService, OneLoginTokenService>();
+        services.AddTransient<IAuthenticatedUserService, OpenIdConnectUserService>();
+        services.AddTransient<IJwtHandler, JwtHandler>();
+        services.AddTransient<ITokenService, OpenIdConnectTokenService>();
     }
 
     private static void AddAuthorisation(this IServiceCollection services)
