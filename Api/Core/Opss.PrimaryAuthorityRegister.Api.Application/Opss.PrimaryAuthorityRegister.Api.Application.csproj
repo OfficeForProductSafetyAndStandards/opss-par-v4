@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Authentication\Opss.PrimaryAuthorityRegister.Authentication.csproj" />
-    <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Common\Opss.PrimaryAuthorityRegister.Common.csproj" />
     <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Api.Domain\Opss.PrimaryAuthorityRegister.Api.Domain.csproj" />
   </ItemGroup>
 

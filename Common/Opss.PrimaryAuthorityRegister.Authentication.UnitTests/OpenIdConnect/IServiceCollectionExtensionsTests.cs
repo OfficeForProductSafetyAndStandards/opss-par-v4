@@ -12,7 +12,7 @@ public class IServiceCollectionExtensionsTests
     public void AddAuthentication_ShouldThrowException_WhenBuilderIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => IServiceCollectionExtensions.AddOidcAuthentication(null!, "OneLogin"));
+        Assert.Throws<ArgumentNullException>(() => IServiceCollectionExtensions.AddOidcAuthentication(null!, AuthenticationTestHelpers.AuthProviderKey));
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class IServiceCollectionExtensionsTests
         builder.Configuration.AddConfiguration(config);
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidOperationException>(() => builder.AddOidcAuthentication("OneLogin"));
-        Assert.Equal("Cannot load auth configuration", exception.Message);
+        var exception = Assert.Throws<InvalidOperationException>(() => builder.AddOidcAuthentication(AuthenticationTestHelpers.AuthProviderKey));
+        Assert.Equal($"Cannot load {AuthenticationTestHelpers.AuthProviderKey} auth configuration", exception.Message);
     }
 
     [Fact]
@@ -65,6 +65,7 @@ public class IServiceCollectionExtensionsTests
         var builder = WebApplication.CreateBuilder();
         builder.Configuration.AddConfiguration(config);
         builder.Services.AddHttpClient();
+        builder.Services.AddScoped((provider) => new Mock<ICqrsService>().Object);
         builder.Services.AddScoped((provider) => new Mock<IHttpService>().Object);
 
         // Act

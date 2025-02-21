@@ -5,8 +5,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
-using Opss.PrimaryAuthorityRegister.Common.ExtensionMethods;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Http.ExtensionMethods;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,13 +18,13 @@ namespace Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 
 public class OpssOpenIdConnectEvents : OpenIdConnectEvents
 {
-    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
+    private readonly OpenIdConnectAuthConfiguration _oidcAuthConfig;
     private readonly JwtAuthConfig _jwtAuthConfig;
 
     private readonly CookieOptions _cookieOptions;
-    private readonly IHttpService _httpService;
+    private readonly ICqrsService _cqrsService;
 
-    public OpssOpenIdConnectEvents(OpenIdConnectAuthConfig oidcAuthConfig, JwtAuthConfig jwtAuthConfig, IHttpService httpService)
+    public OpssOpenIdConnectEvents(OpenIdConnectAuthConfiguration oidcAuthConfig, JwtAuthConfig jwtAuthConfig, ICqrsService cqrsService)
     {
         ArgumentNullException.ThrowIfNull(oidcAuthConfig);
         ArgumentNullException.ThrowIfNull(jwtAuthConfig);
@@ -39,7 +39,7 @@ public class OpssOpenIdConnectEvents : OpenIdConnectEvents
             SameSite = SameSiteMode.Strict,
             MaxAge = TimeSpan.FromMinutes(_oidcAuthConfig.CookieMaxAge)
         };
-        _httpService = httpService;
+        _cqrsService = cqrsService;
     }
 
     private JwtSecurityToken? GetJwtSecurityToken(SigningCredentials signingCredentials)
@@ -99,7 +99,7 @@ public class OpssOpenIdConnectEvents : OpenIdConnectEvents
         var accessToken = tokens.First(t => t.Name == "access_token").Value;
         var jwtQuery = new GetJwtQuery(_oidcAuthConfig.ProviderKey, idToken, accessToken);
 
-        var response = await _httpService.GetAsync<GetJwtQuery, string>(jwtQuery).ConfigureAwait(false);
+        var response = await _cqrsService.GetAsync<GetJwtQuery, string>(jwtQuery).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode || response.Result is null)
             return;

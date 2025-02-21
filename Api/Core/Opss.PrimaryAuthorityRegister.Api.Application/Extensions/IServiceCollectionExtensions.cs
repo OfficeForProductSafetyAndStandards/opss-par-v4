@@ -6,7 +6,7 @@ using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
 using System.Reflection;
 using System.Security.Claims;
 

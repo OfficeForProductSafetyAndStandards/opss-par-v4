@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Authentication.QueryHandlers;

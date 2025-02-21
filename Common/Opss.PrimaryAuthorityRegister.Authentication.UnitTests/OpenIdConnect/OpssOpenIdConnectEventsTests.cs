@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 
@@ -18,14 +18,14 @@ namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OpenIdConnect;
 
 public class OpssOpenIdConnectEventsTests
 {
-    private readonly Mock<IHttpService> _mockHttpService;
+    private readonly Mock<ICqrsService> _mockCqrsService;
     private readonly OpssOpenIdConnectEvents _events;
 
     public OpssOpenIdConnectEventsTests()
     {
-        _mockHttpService = new Mock<IHttpService>();
+        _mockCqrsService = new Mock<ICqrsService>();
 
-        _events = new OpssOpenIdConnectEvents(AuthenticationTestHelpers.ProviderAuthConfig, AuthenticationTestHelpers.JwtConfig, _mockHttpService.Object);
+        _events = new OpssOpenIdConnectEvents(AuthenticationTestHelpers.ProviderAuthConfig, AuthenticationTestHelpers.JwtConfig, _mockCqrsService.Object);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class OpssOpenIdConnectEventsTests
             new RemoteAuthenticationOptions(),
             new AuthenticationTicket(new ClaimsPrincipal(), authProperties, ""));
 
-        _mockHttpService
+        _mockCqrsService
             .Setup(h => h.GetAsync<GetJwtQuery, string>(It.IsAny<GetJwtQuery>()))
             .ReturnsAsync(new HttpObjectResponse<string>(new HttpResponseMessage(System.Net.HttpStatusCode.OK), jwt));
 
@@ -89,7 +89,7 @@ public class OpssOpenIdConnectEventsTests
             new RemoteAuthenticationOptions(),
             new AuthenticationTicket(new ClaimsPrincipal(), authProperties, ""));
 
-        _mockHttpService
+        _mockCqrsService
             .Setup(h => h.GetAsync<GetJwtQuery, string>(It.IsAny<GetJwtQuery>()))
             .ReturnsAsync(new HttpObjectResponse<string>(
                 new HttpResponseMessage(HttpStatusCode.BadRequest),
@@ -119,7 +119,7 @@ public class OpssOpenIdConnectEventsTests
             new RemoteAuthenticationOptions(),
             new AuthenticationTicket(new ClaimsPrincipal(), authProperties, ""));
 
-        _mockHttpService
+        _mockCqrsService
             .Setup(h => h.GetAsync<GetJwtQuery, string>(It.IsAny<GetJwtQuery>()))
             .ReturnsAsync(new HttpObjectResponse<string>(
                 new HttpResponseMessage(HttpStatusCode.BadRequest),
@@ -235,7 +235,7 @@ public class OpssOpenIdConnectEventsTests
 
         var config = AuthenticationTestHelpers.ProviderAuthConfig;
         config.RsaPrivateKey = null;
-        var events = new OpssOpenIdConnectEvents(config, AuthenticationTestHelpers.JwtConfig, _mockHttpService.Object);
+        var events = new OpssOpenIdConnectEvents(config, AuthenticationTestHelpers.JwtConfig, _mockCqrsService.Object);
         await events.AuthorizationCodeReceived(context);
 
         Assert.Null(context.TokenEndpointRequest.ClientAssertion);

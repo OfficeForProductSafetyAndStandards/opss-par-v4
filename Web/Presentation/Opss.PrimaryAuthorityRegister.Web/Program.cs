@@ -51,6 +51,7 @@ internal static class Program
         });
 
         builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<ICqrsService, CqrsService>();
         builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

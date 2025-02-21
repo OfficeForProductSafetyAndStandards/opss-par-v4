@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Behaviour;
 

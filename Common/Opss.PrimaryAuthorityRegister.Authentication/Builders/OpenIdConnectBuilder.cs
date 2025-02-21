@@ -7,22 +7,22 @@ using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
-using Opss.PrimaryAuthorityRegister.Common.ExtensionMethods;
+using Opss.PrimaryAuthorityRegister.Http.ExtensionMethods;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.Builders;
 
 public class OpenIdConnectBuilder
 {
-    private readonly OpenIdConnectAuthConfig _oidcAuthConfig;
+    private readonly OpenIdConnectAuthConfiguration _oidcAuthConfig;
     private readonly JwtAuthConfig _jwtAuthConfig;
-    private readonly IHttpService _httpService;
+    private readonly ICqrsService _cqrsService;
 
-    public OpenIdConnectBuilder(OpenIdConnectAuthConfig oidcAuthConfig, JwtAuthConfig jwtAuthConfig, IHttpService httpService)
+    public OpenIdConnectBuilder(OpenIdConnectAuthConfiguration oidcAuthConfig, JwtAuthConfig jwtAuthConfig, ICqrsService cqrsService)
     {
         _oidcAuthConfig = oidcAuthConfig;
         _jwtAuthConfig = jwtAuthConfig;
-        _httpService = httpService;
+        _cqrsService = cqrsService;
     }
 
     public static void ConfigureAuthentication(AuthenticationOptions options)
@@ -61,7 +61,7 @@ public class OpenIdConnectBuilder
 
         options.ResponseType = OpenIdConnectResponseType.Code;
         options.ResponseMode = OpenIdConnectResponseMode.Query;
-        options.Events = new OpssOpenIdConnectEvents(_oidcAuthConfig, _jwtAuthConfig, _httpService);
+        options.Events = new OpssOpenIdConnectEvents(_oidcAuthConfig, _jwtAuthConfig, _cqrsService);
 
         options.CallbackPath = _oidcAuthConfig.CallbackPath;
 

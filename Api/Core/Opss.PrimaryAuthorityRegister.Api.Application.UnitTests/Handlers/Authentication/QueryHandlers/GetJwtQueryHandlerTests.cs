@@ -2,7 +2,7 @@
 using Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Authentication.QueryHandlers;
 using Opss.PrimaryAuthorityRegister.Authentication.Entities;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
 using Opss.PrimaryAuthorityRegister.Http.Problem;

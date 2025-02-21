@@ -17,7 +17,7 @@ internal static class AuthenticationTestHelpers
         MinutesUntilExpiration = 30
     };
 
-    internal static OpenIdConnectAuthConfig ProviderAuthConfig = new OpenIdConnectAuthConfig
+    internal static OpenIdConnectAuthConfiguration ProviderAuthConfig = new OpenIdConnectAuthConfiguration
     {
         ProviderKey = AuthProviderKey,
         AuthorityUri = new Uri("https://example.com"),
@@ -35,7 +35,7 @@ internal static class AuthenticationTestHelpers
     };
 
     internal static OpenIdConnectAuthConfigurations ProviderAuthConfigurations = new OpenIdConnectAuthConfigurations(
-        new Dictionary<string, OpenIdConnectAuthConfig> {
+        new Dictionary<string, OpenIdConnectAuthConfiguration> {
         {
             AuthProviderKey, ProviderAuthConfig
         }
