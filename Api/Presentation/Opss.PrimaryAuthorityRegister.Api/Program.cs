@@ -39,6 +39,7 @@ internal static class Program
             return client;
         });
 
+        builder.Services.AddScoped<ICqrsService, CqrsService>();
         builder.Services.AddScoped<IHttpService, HttpService>();
 
         builder.AddOidcAuthentication("OneLogin");
