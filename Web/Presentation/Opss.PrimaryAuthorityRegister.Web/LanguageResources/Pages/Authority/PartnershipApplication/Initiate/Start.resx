@@ -126,4 +126,25 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Primary Authority Register - Apply for new partnership</value>
   </data>
+  <data name="Para_1" xml:space="preserve">
+    <value>This form allows you to submit an application for a Primary Authority partnership with a chosen partner.</value>
+  </data>
+  <data name="Para_2" xml:space="preserve">
+    <value>Before starting a new application, you must have been in contact with the partner and have a written summary document detailing the partnership.</value>
+  </data>
+  <data name="Para_3" xml:space="preserve">
+    <value>After you submit the application, the partner has eight weeks to review it.</value>
+  </data>
+  <data name="Heading_2" xml:space="preserve">
+    <value>For this application you will need the following:</value>
+  </data>
+  <data name="Bullet_1" xml:space="preserve">
+    <value>A summary document detailing the partnership.</value>
+  </data>
+  <data name="Bullet_2" xml:space="preserve">
+    <value>The partner’s address and contact details.</value>
+  </data>
+  <data name="Bullet_3" xml:space="preserve">
+    <value>The local authority's contact details for each regulatory area.</value>
+  </data>
 </root>
