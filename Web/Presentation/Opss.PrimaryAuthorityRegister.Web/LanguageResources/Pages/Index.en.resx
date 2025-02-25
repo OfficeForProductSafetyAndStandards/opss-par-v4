@@ -123,6 +123,27 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Start Page</value>
   </data>
+  <data name="Para_1" xml:space="preserve">
+    <value>para 1</value>
+  </data>
+  <data name="Para_2_1" xml:space="preserve">
+    <value>para 2 1</value>
+  </data>
+  <data name="Para_2_2" xml:space="preserve">
+    <value> para 2 2</value>
+  </data>
+  <data name="Para_3_1" xml:space="preserve">
+    <value>para 3 1</value>
+  </data>
+  <data name="Para_3_2" xml:space="preserve">
+    <value> para 3 2</value>
+  </data>
+  <data name="Para_4_1" xml:space="preserve">
+    <value>para 4 1</value>
+  </data>
+  <data name="Para_4_2" xml:space="preserve">
+    <value> para 4 2</value>
+  </data>
   <data name="StartButton" xml:space="preserve">
     <value>Start now</value>
   </data>

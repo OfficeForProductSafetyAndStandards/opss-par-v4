@@ -1,59 +1,29 @@
 ﻿@page "/"
 
-@using System.Security.Claims
-
 @inject IStringLocalizer<Index> Loc
-@inject NavigationManager Nav
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
 <GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
-<AuthorizeView>
-	<Authorized>
-		<p class="govuk-body">
-			Your claims:
-			<dl>
-				@foreach (Claim claim in context.User.Claims)
-				{
-					<dt>@claim.Type</dt>
-					<dd>@claim.Value</dd>
-				}
-			</dl>
-
-		</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Please log in.</p>
-    </NotAuthorized>
-</AuthorizeView>
-
-<p>@authMessage</p>
+<p class="govuk-body">@Loc["Para_1"]</p>
+<p class="govuk-body"><strong>@Loc["Para_2_1"]</strong>@Loc["Para_2_2"]</p>
+<p class="govuk-body"><strong>@Loc["Para_3_1"]</strong>@Loc["Para_3_2"]</p>
+<p class="govuk-body"><strong>@Loc["Para_4_1"]</strong>@Loc["Para_4_2"]</p>
+<ul class="govuk-list govuk-list--bullet">
+	<li>@Loc["Bullet_1"]</li>
+	<li>@Loc["Bullet_2"]</li>
+	<li>@Loc["Bullet_3"]</li>
+</ul>
+<p class="govuk-body">@Loc["Para_5"]</p>
+<p class="govuk-inset-text">@Loc["Inset_1"]<strong>@Loc["Inset_2"]</strong>@Loc["Inset_3"]</p>
 
 <GdsButton Href="/oidc/login?provider=oidc-onelogin" IsStartButton=@true>
-	@Loc["StartButton"] - onelogin
-</GdsButton>
-<GdsButton Href="/oidc/login?provider=oidc-staffsso" IsStartButton=@true>
-	@Loc["StartButton"] - staff sso
+	@Loc["StartButton"]
 </GdsButton>
 
-@code {
-	private string authMessage = "The user is NOT authenticated.";
+<GdsHeading HeadingLevel=2 Classes=@HeadingSize.Medium>@Loc["Heading_2"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_6"]</p>
 
-	[CascadingParameter]
-	private Task<AuthenticationState>? authenticationState { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		if (authenticationState is not null)
-		{
-			var authState = await authenticationState;
-			var user = authState?.User;
-
-			if (user?.Identity is not null && user.Identity.IsAuthenticated)
-			{
-				authMessage = $"{user.Identity.Name} is authenticated.";
-			}
-		}
-	}
-}
+<GdsHeading HeadingLevel=3 Classes=@HeadingSize.Small>@Loc["Heading_3"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_7_1"]<a href="mailto:pa@businessandtrade.gov.uk" class="govuk-link govuk-link--no-visited-state">pa@businessandtrade.gov.uk</a>@Loc["Para_7_2"]</p>
