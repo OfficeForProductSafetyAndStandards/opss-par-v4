@@ -139,13 +139,7 @@
     <value>Primary Authorities / Local Authorities</value>
   </data>
   <data name="Inset_1" xml:space="preserve">
-    <value>If you have received an email inviting you to join the Primary Authority Register, you must use </value>
-  </data>
-  <data name="Inset_2" xml:space="preserve">
-    <value>the same email address</value>
-  </data>
-  <data name="Inset_3" xml:space="preserve">
-    <value> when creating your account in order to be connected to your invite.</value>
+    <value>If you have received an email inviting you to join the Primary Authority Register, you must use &lt;strong&gt;the same email address&lt;/strong&gt; when creating your account in order to be connected to your invite.</value>
   </data>
   <data name="PageHeading" xml:space="preserve">
     <value>Primary Authority Register</value>
@@ -156,23 +150,14 @@
   <data name="Para_1" xml:space="preserve">
     <value>This service supports the operation of the partnerships in the Primary authority scheme. It allows organisations to receive assured and tailored advice on meeting regulations through direct or co-ordinated partnerships with local authorities.</value>
   </data>
-  <data name="Para_2_1" xml:space="preserve">
-    <value>Organisations</value>
+  <data name="Para_2" xml:space="preserve">
+    <value>&lt;strong&gt;Organisations&lt;/strong&gt; can use this service to view details of their specific partnerships.</value>
   </data>
-  <data name="Para_2_2" xml:space="preserve">
-    <value> can use this service to view details of their specific partnerships.</value>
+  <data name="Para_3" xml:space="preserve">
+    <value>&lt;strong&gt;Enforcement Authorities&lt;/strong&gt; can use this service to view, share or manage information on partnerships to guide enforcement work across the UK.</value>
   </data>
-  <data name="Para_3_1" xml:space="preserve">
-    <value>Enforcement Authorities</value>
-  </data>
-  <data name="Para_3_2" xml:space="preserve">
-    <value> can use this service to view, share or manage information on partnerships to guide enforcement work across the UK.</value>
-  </data>
-  <data name="Para_4_1" xml:space="preserve">
-    <value>Primary Authorities</value>
-  </data>
-  <data name="Para_4_2" xml:space="preserve">
-    <value> must use this service to:</value>
+  <data name="Para_4" xml:space="preserve">
+    <value>&lt;strong&gt;Primary Authorities&lt;/strong&gt; must use this service to:</value>
   </data>
   <data name="Para_5" xml:space="preserve">
     <value>You will need a GOV.UK One Login to use this service. If you do not have a GOV.UK One Logon, you can create one.</value>
@@ -197,5 +182,8 @@
   </data>
   <data name="StartButton" xml:space="preserve">
     <value>Start now</value>
+  </data>
+  <data name="PA_Email_Address" xml:space="preserve">
+    <value>pa@businessandtrade.gov.uk</value>
   </data>
 </root>
