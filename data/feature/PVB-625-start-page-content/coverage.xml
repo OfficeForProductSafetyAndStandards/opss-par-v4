@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage line-rate="0.9726027397260274" branch-rate="0.86" complexity="203" version="1.9" timestamp="1740587902" lines-covered="639" lines-valid="657" branches-covered="86" branches-valid="100">
+<coverage line-rate="0.9421613394216134" branch-rate="0.83" complexity="203" version="1.9" timestamp="1740588000" lines-covered="619" lines-valid="657" branches-covered="83" branches-valid="100">
   <sources>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/</source>
-    <source>/</source>
-    <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/</source>
+    <source>/home/runner/work/opss-par-v4/opss-par-v4/Api/Core/Opss.PrimaryAuthorityRegister.Api.Domain/</source>
   </sources>
   <packages>
     <package line-rate="0.9296482412060302" branch-rate="0.9038461538461539" complexity="86" name="Opss.PrimaryAuthorityRegister.Api.Application">
@@ -1462,7 +1461,7 @@
         </class>
       </classes>
     </package>
-    <package line-rate="1" branch-rate="0.5" complexity="22" name="Opss.PrimaryAuthorityRegister.Http">
+    <package line-rate="0.7701149425287356" branch-rate="0.125" complexity="22" name="Opss.PrimaryAuthorityRegister.Http">
       <classes>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Http.Services.HttpService" filename="Common/Opss.PrimaryAuthorityRegister.Http/Services/HttpService.cs">
           <methods>
@@ -1518,9 +1517,9 @@
             <line number="28" hits="1" branch="False" />
           </lines>
         </class>
-        <class line-rate="1" branch-rate="0.5" complexity="10" name="Opss.PrimaryAuthorityRegister.Http.Factories.HttpObjectResponseFactory" filename="Common/Opss.PrimaryAuthorityRegister.Http/Factories/HttpObjectResponseFactory.cs">
+        <class line-rate="0.5833333333333334" branch-rate="0.125" complexity="10" name="Opss.PrimaryAuthorityRegister.Http.Factories.HttpObjectResponseFactory" filename="Common/Opss.PrimaryAuthorityRegister.Http/Factories/HttpObjectResponseFactory.cs">
           <methods>
-            <method line-rate="1" branch-rate="0.5" complexity="8" name="TryRetrieveProblem" signature="(System.Net.Http.HttpResponseMessage)">
+            <method line-rate="0.5" branch-rate="0.125" complexity="8" name="TryRetrieveProblem" signature="(System.Net.Http.HttpResponseMessage)">
               <lines>
                 <line number="80" hits="1" branch="False" />
                 <line number="84" hits="1" branch="False" />
@@ -1537,29 +1536,29 @@
                 <line number="97" hits="1" branch="False" />
                 <line number="99" hits="1" branch="False" />
                 <line number="101" hits="1" branch="False" />
-                <line number="109" hits="1" branch="False" />
-                <line number="113" hits="1" branch="False" />
-                <line number="114" hits="1" branch="False" />
-                <line number="115" hits="1" branch="False" />
-                <line number="118" hits="1" branch="True" condition-coverage="50% (2/4)">
+                <line number="109" hits="0" branch="False" />
+                <line number="113" hits="0" branch="False" />
+                <line number="114" hits="0" branch="False" />
+                <line number="115" hits="0" branch="False" />
+                <line number="118" hits="0" branch="True" condition-coverage="0% (0/4)">
                   <conditions>
-                    <condition number="54" type="jump" coverage="50%" />
-                    <condition number="65" type="jump" coverage="50%" />
+                    <condition number="54" type="jump" coverage="0%" />
+                    <condition number="65" type="jump" coverage="0%" />
                   </conditions>
                 </line>
-                <line number="120" hits="1" branch="False" />
-                <line number="122" hits="1" branch="True" condition-coverage="50% (1/2)">
+                <line number="120" hits="0" branch="False" />
+                <line number="122" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
-                    <condition number="87" type="jump" coverage="50%" />
+                    <condition number="87" type="jump" coverage="0%" />
                   </conditions>
                 </line>
-                <line number="124" hits="1" branch="False" />
-                <line number="126" hits="1" branch="False" />
-                <line number="128" hits="1" branch="False" />
-                <line number="130" hits="1" branch="False" />
+                <line number="124" hits="0" branch="False" />
+                <line number="126" hits="0" branch="False" />
+                <line number="128" hits="0" branch="False" />
+                <line number="130" hits="0" branch="False" />
               </lines>
             </method>
-            <method line-rate="1" branch-rate="1" complexity="1" name="Problem" signature="(Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails)">
+            <method line-rate="0.5" branch-rate="1" complexity="1" name="Problem" signature="(Opss.PrimaryAuthorityRegister.Http.Problem.ProblemDetails)">
               <lines>
                 <line number="134" hits="1" branch="False" />
                 <line number="136" hits="1" branch="False" />
@@ -1570,15 +1569,15 @@
                 <line number="141" hits="1" branch="False" />
                 <line number="143" hits="1" branch="False" />
                 <line number="144" hits="1" branch="False" />
-                <line number="148" hits="1" branch="False" />
-                <line number="150" hits="1" branch="False" />
-                <line number="151" hits="1" branch="False" />
-                <line number="152" hits="1" branch="False" />
-                <line number="153" hits="1" branch="False" />
-                <line number="154" hits="1" branch="False" />
-                <line number="155" hits="1" branch="False" />
-                <line number="157" hits="1" branch="False" />
-                <line number="158" hits="1" branch="False" />
+                <line number="148" hits="0" branch="False" />
+                <line number="150" hits="0" branch="False" />
+                <line number="151" hits="0" branch="False" />
+                <line number="152" hits="0" branch="False" />
+                <line number="153" hits="0" branch="False" />
+                <line number="154" hits="0" branch="False" />
+                <line number="155" hits="0" branch="False" />
+                <line number="157" hits="0" branch="False" />
+                <line number="158" hits="0" branch="False" />
               </lines>
             </method>
             <method line-rate="1" branch-rate="1" complexity="1" name=".cctor" signature="()">
@@ -1618,26 +1617,26 @@
             <line number="97" hits="1" branch="False" />
             <line number="99" hits="1" branch="False" />
             <line number="101" hits="1" branch="False" />
-            <line number="109" hits="1" branch="False" />
-            <line number="113" hits="1" branch="False" />
-            <line number="114" hits="1" branch="False" />
-            <line number="115" hits="1" branch="False" />
-            <line number="118" hits="1" branch="True" condition-coverage="50% (2/4)">
+            <line number="109" hits="0" branch="False" />
+            <line number="113" hits="0" branch="False" />
+            <line number="114" hits="0" branch="False" />
+            <line number="115" hits="0" branch="False" />
+            <line number="118" hits="0" branch="True" condition-coverage="0% (0/4)">
               <conditions>
-                <condition number="54" type="jump" coverage="50%" />
-                <condition number="65" type="jump" coverage="50%" />
+                <condition number="54" type="jump" coverage="0%" />
+                <condition number="65" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="120" hits="1" branch="False" />
-            <line number="122" hits="1" branch="True" condition-coverage="50% (1/2)">
+            <line number="120" hits="0" branch="False" />
+            <line number="122" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
-                <condition number="87" type="jump" coverage="50%" />
+                <condition number="87" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="124" hits="1" branch="False" />
-            <line number="126" hits="1" branch="False" />
-            <line number="128" hits="1" branch="False" />
-            <line number="130" hits="1" branch="False" />
+            <line number="124" hits="0" branch="False" />
+            <line number="126" hits="0" branch="False" />
+            <line number="128" hits="0" branch="False" />
+            <line number="130" hits="0" branch="False" />
             <line number="134" hits="1" branch="False" />
             <line number="136" hits="1" branch="False" />
             <line number="137" hits="1" branch="False" />
@@ -1647,15 +1646,15 @@
             <line number="141" hits="1" branch="False" />
             <line number="143" hits="1" branch="False" />
             <line number="144" hits="1" branch="False" />
-            <line number="148" hits="1" branch="False" />
-            <line number="150" hits="1" branch="False" />
-            <line number="151" hits="1" branch="False" />
-            <line number="152" hits="1" branch="False" />
-            <line number="153" hits="1" branch="False" />
-            <line number="154" hits="1" branch="False" />
-            <line number="155" hits="1" branch="False" />
-            <line number="157" hits="1" branch="False" />
-            <line number="158" hits="1" branch="False" />
+            <line number="148" hits="0" branch="False" />
+            <line number="150" hits="0" branch="False" />
+            <line number="151" hits="0" branch="False" />
+            <line number="152" hits="0" branch="False" />
+            <line number="153" hits="0" branch="False" />
+            <line number="154" hits="0" branch="False" />
+            <line number="155" hits="0" branch="False" />
+            <line number="157" hits="0" branch="False" />
+            <line number="158" hits="0" branch="False" />
           </lines>
         </class>
         <class line-rate="1" branch-rate="1" complexity="1" name="Opss.PrimaryAuthorityRegister.Http.ExtensionMethods.UriExtensions" filename="Common/Opss.PrimaryAuthorityRegister.Http/ExtensionMethods/UriExtensions.cs">
@@ -2140,7 +2139,7 @@
     </package>
     <package line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application">
       <classes>
-        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="home/runner/work/opss-par-v4/opss-par-v4/Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
+        <class line-rate="1" branch-rate="1" complexity="2" name="Opss.PrimaryAuthorityRegister.Web.Application.Services.CookieService" filename="Web/Core/Opss.PrimaryAuthorityRegister.Web.Application/Services/CookieService.cs">
           <methods>
             <method line-rate="1" branch-rate="1" complexity="2" name="SetCultureCookie" signature="(Microsoft.AspNetCore.Http.HttpContext)">
               <lines>
