@@ -1,0 +1,24 @@
+﻿@if (LocalizedContent != null)
+{
+	@((MarkupString)LocalizedContent.ToString())
+}
+else if(Content != null)
+{
+	@((MarkupString)Content)
+}
+
+@code {
+    #region Public Parameters
+    /// <summary>
+	/// Content to render as markup. If this is set, it will be used instead of <see cref="LocalizedContent"/>.
+	/// </summary>
+	[Parameter]
+    public string? Content { get; set; }
+
+    /// <summary>
+	/// Localized content to render as markup. If this is set, it will be used instead of <see cref="Content"/>.
+	/// </summary>
+	[Parameter]
+    public LocalizedString? LocalizedContent { get; set; }
+    #endregion
+}

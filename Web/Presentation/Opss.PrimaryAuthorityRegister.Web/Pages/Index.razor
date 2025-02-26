@@ -1,59 +1,40 @@
 ﻿@page "/"
 
-@using System.Security.Claims
+@layout TwoThirdsOneThirdLayout
 
 @inject IStringLocalizer<Index> Loc
-@inject NavigationManager Nav
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
 <GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
-<AuthorizeView>
-	<Authorized>
-		<p class="govuk-body">
-			Your claims:
-			<dl>
-				@foreach (Claim claim in context.User.Claims)
-				{
-					<dt>@claim.Type</dt>
-					<dd>@claim.Value</dd>
-				}
-			</dl>
+<p class="govuk-body">@Loc["Para_1"]</p>
 
-		</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Please log in.</p>
-    </NotAuthorized>
-</AuthorizeView>
+<p class="govuk-body"><OpssMarkupString LocalizedContent=@Loc["Para_2"]/></p>
+<p class="govuk-body"><OpssMarkupString LocalizedContent=@Loc["Para_3"]/></p>
+<p class="govuk-body govuk-!-margin-bottom-1"><OpssMarkupString LocalizedContent=@Loc["Para_4"]/></p>
+<ul class="govuk-list govuk-list--bullet">
+	<li>@Loc["Bullet_1"]</li>
+	<li>@Loc["Bullet_2"]</li>
+	<li>@Loc["Bullet_3"]</li>
+</ul>
 
-<p>@authMessage</p>
+<p class="govuk-body">@Loc["Para_5"]</p>
+
+<GdsInsetText><OpssMarkupString LocalizedContent=@Loc["Inset_1"]/></GdsInsetText>
 
 <GdsButton Href="/oidc/login?provider=oidc-onelogin" IsStartButton=@true>
-	@Loc["StartButton"] - onelogin
-</GdsButton>
-<GdsButton Href="/oidc/login?provider=oidc-staffsso" IsStartButton=@true>
-	@Loc["StartButton"] - staff sso
+	@Loc["StartButton"]
 </GdsButton>
 
-@code {
-	private string authMessage = "The user is NOT authenticated.";
+<GdsHeading HeadingLevel=2 Classes=@HeadingSize.Medium>@Loc["Heading_2"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_6"]</p>
 
-	[CascadingParameter]
-	private Task<AuthenticationState>? authenticationState { get; set; }
+<GdsHeading HeadingLevel=3 Classes=@($"{HeadingSize.Small} govuk-!-margin-bottom-1")>@Loc["Heading_3"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_7_1"]<a href="mailto:@Loc["PA_Email_Address"]" class="govuk-link govuk-link--no-visited-state">@Loc["PA_Email_Address"]</a>@Loc["Para_7_2"]</p>
 
-	protected override async Task OnInitializedAsync()
-	{
-		if (authenticationState is not null)
-		{
-			var authState = await authenticationState;
-			var user = authState?.User;
+<GdsHeading HeadingLevel=3 Classes=@($"{HeadingSize.Small} govuk-!-margin-bottom-1")>@Loc["Heading_4"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_8_1"]<a href="mailto:@Loc["PA_Email_Address"]" class="govuk-link govuk-link--no-visited-state">@Loc["PA_Email_Address"]</a>@Loc["Para_8_2"]</p>
 
-			if (user?.Identity is not null && user.Identity.IsAuthenticated)
-			{
-				authMessage = $"{user.Identity.Name} is authenticated.";
-			}
-		}
-	}
-}
+<GdsHeading HeadingLevel=3 Classes=@($"{HeadingSize.Small} govuk-!-margin-bottom-1")>@Loc["Heading_5"]</GdsHeading>
+<p class="govuk-body">@Loc["Para_9"]</p>
