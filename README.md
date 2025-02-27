@@ -61,6 +61,6 @@ After completing all the steps, restart your computer and try running Docker Com
 - Set your starup project to `Opss.PrimaryAuthorityRegister.Api`. 
 - Then using the `Package Manager Console` set the default project to `Api\Infrastructure\Opss.PrimaryAuthorityRegister.Persistance`.
 - Create the migration: `Add-Migration <Migration Name>`
-- Apply the migration `Update-Database`
+- You do not need to apply the migration `Update-Database` as this will be done automatically when you run the solution
 
 See the README.md in `Opss.PrimaryAuthorityRegister.Api.Persistance\Migrations` for information on customising migrations.
