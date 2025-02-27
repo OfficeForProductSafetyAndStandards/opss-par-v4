@@ -55,9 +55,9 @@ public class WebApplicationExtensionsTests
         var configData = new Dictionary<string, string>
         {
             {"SeedData:Identities:0:Email", "richard.priddy@businessandtrade.gov.uk" },
-            {"SeedData:Identities:0:Role", "Authority"},
+            {"SeedData:Identities:0:Role", IdentityConstants.Roles.AuthorityMember},
             {"SeedData:Identities:1:Email", "scott.wakefield@businessandtrade.gov.uk"},
-            {"SeedData:Identities:1:Role", "LAU"}
+            {"SeedData:Identities:1:Role", IdentityConstants.Roles.LAU}
         };
 
         var config = new ConfigurationBuilder()
@@ -94,9 +94,9 @@ public class WebApplicationExtensionsTests
         var configData = new Dictionary<string, string>
         {
             {"SeedData:Identities:0:Email", "richard.priddy@businessandtrade.gov.uk" },
-            {"SeedData:Identities:0:Role", "Authority"},
+            {"SeedData:Identities:0:Role", IdentityConstants.Roles.AuthorityMember},
             {"SeedData:Identities:1:Email", "scott.wakefield@businessandtrade.gov.uk"},
-            {"SeedData:Identities:1:Role", "LAU"}
+            {"SeedData:Identities:1:Role", IdentityConstants.Roles.LAU}
         };
 
         var config = new ConfigurationBuilder()
@@ -135,9 +135,9 @@ public class WebApplicationExtensionsTests
         var configData = new Dictionary<string, string>
         {
             {"SeedData:Identities:0:Email", "richard.priddy@businessandtrade.gov.uk" },
-            {"SeedData:Identities:0:Role", "Authority"},
+            {"SeedData:Identities:0:Role", IdentityConstants.Roles.AuthorityMember },
             {"SeedData:Identities:1:Email", "scott.wakefield@businessandtrade.gov.uk"},
-            {"SeedData:Identities:1:Role", "LAU"}
+            {"SeedData:Identities:1:Role", IdentityConstants.Roles.LAU}
         };
 
         var config = new ConfigurationBuilder()
