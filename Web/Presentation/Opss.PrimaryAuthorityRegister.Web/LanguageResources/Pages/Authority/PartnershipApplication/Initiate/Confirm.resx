@@ -126,4 +126,22 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Primary Authority Register - Confirm partnership agreement</value>
   </data>
+  <data name="Continue_Button_Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Criteria1_Checkbox_Text" xml:space="preserve">
+    <value>The organisation is eligible to enter into a partnership</value>
+  </data>
+  <data name="Criteria2_Checkbox_Text" xml:space="preserve">
+    <value>My local authority is suitable for nomination as the Primary authority</value>
+  </data>
+  <data name="Criteria3_Checkbox_Text" xml:space="preserve">
+    <value>A written summary detailing the partnership has been created</value>
+  </data>
+  <data name="Criteria_Error_Text" xml:space="preserve">
+    <value>Confirm all criteria</value>
+  </data>
+  <data name="Criteria_Text" xml:space="preserve">
+    <value>Confirm that you meet the below criteria before continuing.</value>
+  </data>
 </root>

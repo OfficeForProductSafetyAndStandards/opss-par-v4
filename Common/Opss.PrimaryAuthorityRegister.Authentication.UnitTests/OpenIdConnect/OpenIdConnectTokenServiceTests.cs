@@ -33,24 +33,6 @@ public class OpenIdConnectTokenServiceTests
             _mockAuthenticatedUserService.Object);
     }
 
-    // TODO
-    //[Fact]
-    //public void GenerateJwt_ShouldReturnValidJwt()
-    //{
-    //    // Arrange
-    //    string email = "test@example.com";
-    //
-    //    // Act
-    //    string token = _mockJwtService.GenerateJwt(email);
-    //
-    //    // Assert
-    //    Assert.NotNull(token);
-    //    var handler = new JwtSecurityTokenHandler();
-    //    var jwt = handler.ReadJwtToken(token);
-    //    Assert.Equal(AuthenticationTestHelpers.JwtConfig.IssuerUri.ToString(), jwt.Issuer);
-    //    Assert.Equal(AuthenticationTestHelpers.JwtConfig.AudienceUri.ToString(), jwt.Audiences.First());
-    //    Assert.Contains(jwt.Claims, c => c.Type == JwtRegisteredClaimNames.Email && c.Value == email);
-    //}
 
     [Fact]
     public async Task ValidateTokenAsync_InvalidSigningKeys_ShouldThrowAuthenticationException()

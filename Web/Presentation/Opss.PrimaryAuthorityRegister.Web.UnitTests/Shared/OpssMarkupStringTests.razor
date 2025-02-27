@@ -1,0 +1,55 @@
+﻿@using Microsoft.Extensions.Localization
+@inherits BunitContext
+
+<h3>Given an OpssMarkupString</h3>
+
+@code {
+    [Fact]
+    public void WhenContentSet_ThenRendersContent()
+    {
+        // Arrange
+		var markup = "<strong>hi</strong>";
+
+        // Act
+        var cut = Render(@<OpssMarkupString Content=@markup />);
+
+        // Assert
+        cut.MarkupMatches(((MarkupString)markup).ToString());
+    }
+
+    [Fact]
+    public void WhenLocalizedContentSet_ThenRendersLocalizedContent()
+    {
+        // Arrange
+        var localizedString = new LocalizedString("para", "something <strong>strong</strong>");
+
+        // Act
+        var cut = Render(@<OpssMarkupString LocalizedContent=@localizedString />);
+
+        // Assert
+        cut.MarkupMatches(((MarkupString)localizedString.ToString()).ToString());
+    }
+
+    [Fact]
+    public void WhenBothContent_AndLocalizedContentSet_RendersLocalizedContent()
+    {
+        // Arrange
+        var localizedString = new LocalizedString("para", "something <strong>strong</strong>");
+
+        // Act
+        var cut = Render(@<OpssMarkupString Content="something <br> else" LocalizedContent=@localizedString />);
+
+        // Assert
+        cut.MarkupMatches(((MarkupString)localizedString.ToString()).ToString());
+    }
+    
+    [Fact]
+    public void WhenNeitherContent_NorLocalizedContentSet_ThenRendersNothing()
+    {
+        // Arrange & Act
+        var cut = Render(@<OpssMarkupString  />);
+
+        // Assert
+        cut.MarkupMatches(string.Empty);
+    }
+}

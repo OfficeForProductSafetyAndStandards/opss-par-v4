@@ -1,13 +1,33 @@
 ﻿@page "/authority/partnership-application/initiate/start"
 
 @inject IStringLocalizer<Start> Loc
+@inject NavigationManager NavManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel="1" Classes=@HeadingSize.Large>
-	@Loc["PageHeading"]
-</GdsHeading>
+<GdsHeading HeadingLevel="1" Classes=@HeadingSize.Large>@Loc["PageHeading"]</GdsHeading>
+
+<p class="govuk-body">@Loc["Para_1"]</p>
+<p class="govuk-body">@Loc["Para_2"]</p>
+<p class="govuk-body">@Loc["Para_3"]</p>
+
+<GdsHeading HeadingLevel="3" Classes=@HeadingSize.Small>@Loc["Heading_2"]</GdsHeading>
+
+<ul class="govuk-list govuk-list--bullet">
+	<li>@Loc["Bullet_1"]</li>
+	<li>@Loc["Bullet_2"]</li>
+	<li>@Loc["Bullet_3"]</li>
+</ul>
+
+<GdsButton Id="start-button" 
+		   IsStartButton=@true 
+		   @onclick=OnStartClick>
+	@Loc["Start_Button_Text"]
+</GdsButton>
 
 @code {
-
+	private void OnStartClick(MouseEventArgs e)
+	{
+		NavManager.NavigateTo("/authority/partnership-application/initiate/confirm");
+	}
 }
