@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Application.Settings;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
+using Opss.PrimaryAuthorityRegister.Common.Constants;
 using Opss.PrimaryAuthorityRegister.Common.Exceptions;
-using IdentityConstants = Opss.PrimaryAuthorityRegister.Common.Constants.IdentityConstants;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
 

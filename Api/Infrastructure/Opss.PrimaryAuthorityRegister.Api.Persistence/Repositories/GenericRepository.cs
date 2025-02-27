@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+﻿using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Common;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 using System.Collections.ObjectModel;

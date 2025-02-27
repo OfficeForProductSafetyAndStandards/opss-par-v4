@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
-using Opss.PrimaryAuthorityRegister.Authentication.Jwt;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
@@ -29,10 +28,28 @@ public class OpenIdConnectTokenServiceTests
 
         _tokenService = new OpenIdConnectTokenService(
             Options.Create(AuthenticationTestHelpers.ProviderAuthConfigurations),
-            _mockJwtHandler.Object, 
+            Options.Create(AuthenticationTestHelpers.JwtConfig),
+            _mockJwtHandler.Object,
             _mockAuthenticatedUserService.Object);
     }
 
+    [Fact]
+    public void GenerateJwt_ShouldReturnValidJwt()
+    {
+        // Arrange
+        string email = "test@example.com";
+
+        // Act
+        string token = _tokenService.GenerateJwt(email);
+
+        // Assert
+        Assert.NotNull(token);
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(token);
+        Assert.Equal(AuthenticationTestHelpers.JwtConfig.IssuerUri.ToString(), jwt.Issuer);
+        Assert.Equal(AuthenticationTestHelpers.JwtConfig.AudienceUri.ToString(), jwt.Audiences.First());
+        Assert.Contains(jwt.Claims, c => c.Type == JwtRegisteredClaimNames.Email && c.Value == email);
+    }
 
     [Fact]
     public async Task ValidateTokenAsync_InvalidSigningKeys_ShouldThrowAuthenticationException()
