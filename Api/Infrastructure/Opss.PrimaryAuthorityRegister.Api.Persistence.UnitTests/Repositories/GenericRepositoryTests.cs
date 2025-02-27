@@ -1,15 +1,23 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
+using Opss.PrimaryAuthorityRegister.Common.Providers;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
 public class GenericRepositoryTests
 {
+    private readonly DateTimeOverrideProvider _dateTimeProvider;
+
+    public GenericRepositoryTests()
+    {
+        _dateTimeProvider = new DateTimeOverrideProvider();
+    }
+
     [Fact]
     public async Task Entities_ShouldReturnDataset()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();
@@ -29,7 +37,7 @@ public class GenericRepositoryTests
     public async Task AddAsync_ShouldAddEntityToDbContext()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();
@@ -48,7 +56,7 @@ public class GenericRepositoryTests
     public async Task DeleteAsync_ShouldRemoveEntityFromDbContext()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();
@@ -68,7 +76,7 @@ public class GenericRepositoryTests
     public async Task DeleteByIdAsync_ShouldRemoveEntityFromDbContextById()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();
@@ -88,7 +96,7 @@ public class GenericRepositoryTests
     public async Task GetByIdAsync_ShouldReturnEntityById()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();
@@ -108,7 +116,7 @@ public class GenericRepositoryTests
     public async Task UpdateAsync_ShouldUpdateEntityInDbContext()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         var repository = new GenericRepository<TestData>(context);
 
         var ownerId = Guid.NewGuid();

@@ -1,4 +1,4 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
+﻿namespace Opss.PrimaryAuthorityRegister.Common.Exceptions;
 
 public class ServiceNotFoundException : Exception
 {

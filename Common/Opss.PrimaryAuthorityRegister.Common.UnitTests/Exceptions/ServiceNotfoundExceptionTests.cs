@@ -1,4 +1,4 @@
-﻿using Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
+﻿using Opss.PrimaryAuthorityRegister.Common.Exceptions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Exceptions;
 

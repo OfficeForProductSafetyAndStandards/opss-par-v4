@@ -3,16 +3,20 @@ using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Factories;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Opss.PrimaryAuthorityRegister.Http.Services;
 
 public class HttpService : IHttpService
 {
     private readonly HttpClient _httpClient;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HttpService(HttpClient httpClient)
+    public HttpService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
     {
         _httpClient = httpClient;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
@@ -37,7 +41,15 @@ public class HttpService : IHttpService
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
         }
+        else
+        {
+            var parToken = await _httpContextAccessor.HttpContext.GetTokenAsync("par_token").ConfigureAwait(false);
 
+            if (!string.IsNullOrEmpty(parToken))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", parToken);
+            }
+        }
         var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
         var result = await HttpObjectResponseFactory.DetermineSuccess<TResponse>(response).ConfigureAwait(false);

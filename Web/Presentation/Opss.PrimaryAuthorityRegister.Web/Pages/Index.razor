@@ -1,9 +1,12 @@
 ﻿@page "/"
 
 @using System.Security.Claims
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries.Dtos
 
 @inject IStringLocalizer<Index> Loc
 @inject NavigationManager Nav
+@inject ICqrsService Cqrs
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
@@ -22,10 +25,10 @@
 			</dl>
 
 		</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Please log in.</p>
-    </NotAuthorized>
+	</Authorized>
+	<NotAuthorized>
+		<p>Please log in.</p>
+	</NotAuthorized>
 </AuthorizeView>
 
 <p>@authMessage</p>
@@ -37,8 +40,12 @@
 	@Loc["StartButton"] - staff sso
 </GdsButton>
 
+<GdsButton OnClick=click>Go</GdsButton> @data
+
 @code {
 	private string authMessage = "The user is NOT authenticated.";
+	private string data = "";
+	private string roles = "";
 
 	[CascadingParameter]
 	private Task<AuthenticationState>? authenticationState { get; set; }
@@ -53,7 +60,20 @@
 			if (user?.Identity is not null && user.Identity.IsAuthenticated)
 			{
 				authMessage = $"{user.Identity.Name} is authenticated.";
+
+				roles = string.Join(", ", user?.Claims.Where(i => i.Type == ClaimTypes.Role).Select(i => i.Value));
 			}
 		}
+	}
+
+	public async void click()
+	{
+		var authState = await authenticationState;
+		var user = authState?.User;
+		
+		
+		var d = await Cqrs.GetAsync<GetTestDataQuery, TestDataDto>(new GetTestDataQuery(new Guid("0194930a-6ba0-037b-7ec5-9d388ac613a2")));
+
+		data = d.Result.Data;
 	}
 }

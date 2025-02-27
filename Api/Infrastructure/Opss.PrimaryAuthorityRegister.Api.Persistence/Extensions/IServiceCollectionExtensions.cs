@@ -22,9 +22,9 @@ public static class IServiceCollectionExtensions
 
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection") 
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Configuration missing value for DefaultConnection connection string");
-
+        
         services.AddDbContextPool<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString, ConfigureSqlOptions)
         );
@@ -34,7 +34,8 @@ public static class IServiceCollectionExtensions
     {
         services
             .AddTransient<IUnitOfWork, UnitOfWork>()
-            .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
+            .AddTransient<IUserIdentityRepository, UserIdentityRepository>();
     }
 
     private static void ConfigureSqlOptions(NpgsqlDbContextOptionsBuilder sqlOptions)

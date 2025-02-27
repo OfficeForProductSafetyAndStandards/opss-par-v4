@@ -10,6 +10,9 @@ using Opss.PrimaryAuthorityRegister.Cqrs;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries.Dtos;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Commands;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Http.UnitTests.Services;
 
@@ -50,7 +53,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri(_baseAddress)
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var query = new GetTestDataQuery(Guid.NewGuid());
@@ -99,7 +103,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var query = new GetTestDataQuery(Guid.NewGuid());
@@ -142,7 +147,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var ownerId = Guid.NewGuid();
@@ -192,7 +198,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var ownerId = Guid.NewGuid();
@@ -236,7 +243,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var ownerId = Guid.NewGuid();
@@ -286,7 +294,8 @@ public class CqrsServiceTests
             BaseAddress = new Uri("http://api/")
         };
 
-        var httpService = new HttpService(client);
+        var contextAccessor = CreateMockHttpContextAccessor("A-Token");
+        var httpService = new HttpService(client, contextAccessor.Object);
         var cqrsService = new CqrsService(httpService);
 
         var ownerId = Guid.NewGuid();
@@ -295,5 +304,47 @@ public class CqrsServiceTests
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() => cqrsService.PutAsync(command)).ConfigureAwait(true);
         Assert.Contains("Unknown error occurred", exception.Message, StringComparison.InvariantCulture);
+    }
+
+    public static Mock<IHttpContextAccessor> CreateMockHttpContextAccessor(string tokenValue)
+    {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockHttpContext = new Mock<HttpContext>();
+        var mockServiceProvider = new Mock<IServiceProvider>();
+        var mockAuthService = new Mock<IAuthenticationService>();
+
+        // Create authentication properties and manually store the token in Items
+        var authProperties = new AuthenticationProperties();
+        authProperties.Items[".Token.par_token"] = tokenValue;  // Correct way to store tokens
+
+        // Create an authentication ticket with these properties
+        var authTicket = new AuthenticationTicket(
+            new ClaimsPrincipal(new ClaimsIdentity()),
+            authProperties,
+            "Bearer");
+
+        var authResult = AuthenticateResult.Success(authTicket);
+
+        // Mock IAuthenticationService.AuthenticateAsync() to return the authentication result
+        mockAuthService
+            .Setup(s => s.AuthenticateAsync(It.IsAny<HttpContext>(), It.IsAny<string>()))
+            .ReturnsAsync(authResult);
+
+        // Setup service provider to return the authentication service
+        mockServiceProvider
+            .Setup(sp => sp.GetService(typeof(IAuthenticationService)))
+            .Returns(mockAuthService.Object);
+
+        // Setup HttpContext to return the service provider
+        mockHttpContext
+            .Setup(ctx => ctx.RequestServices)
+            .Returns(mockServiceProvider.Object);
+
+        // Setup IHttpContextAccessor to return the mocked HttpContext
+        mockHttpContextAccessor
+            .Setup(a => a.HttpContext)
+            .Returns(mockHttpContext.Object);
+
+        return mockHttpContextAccessor;
     }
 }
