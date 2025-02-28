@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage line-rate="0.9842615012106537" branch-rate="0.8505747126436781" complexity="305" version="1.9" timestamp="1740675151" lines-covered="813" lines-valid="826" branches-covered="148" branches-valid="174">
+<coverage line-rate="0.9842615012106537" branch-rate="0.8505747126436781" complexity="305" version="1.9" timestamp="1740737338" lines-covered="813" lines-valid="826" branches-covered="148" branches-valid="174">
   <sources>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/Common/Opss.PrimaryAuthorityRegister.Common/</source>
     <source>/home/runner/work/opss-par-v4/opss-par-v4/</source>
