@@ -1,6 +1,6 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Authorisation.AttributeBasedResourceClaimProvider_Tests;
 

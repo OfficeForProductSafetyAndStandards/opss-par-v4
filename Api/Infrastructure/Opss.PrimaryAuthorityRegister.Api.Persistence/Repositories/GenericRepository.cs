@@ -1,6 +1,7 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Common;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
+using System.Collections.ObjectModel;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
@@ -14,6 +15,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditabl
     }
 
     public IQueryable<T> Entities => _dbContext.Set<T>();
+
+    public ReadOnlyCollection<T> Local()
+    {
+        return new ReadOnlyCollection<T>(_dbContext.Set<T>().Local.ToList());
+    }
 
     public async Task<T> AddAsync(T entity)
     {

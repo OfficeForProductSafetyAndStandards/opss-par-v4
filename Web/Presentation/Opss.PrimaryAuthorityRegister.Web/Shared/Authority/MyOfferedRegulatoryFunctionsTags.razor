@@ -1,6 +1,7 @@
-﻿@using Opss.PrimaryAuthorityRegister.Common.Requests.Common.Authority.Queries
+﻿@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
 
-@inject IHttpService _httpClient
+
+@inject ICqrsService _cqrsService
 
 @foreach (var function in regulatoryFunctions)
 {
@@ -14,7 +15,7 @@
 	{
 		if (!firstRender) return;
 
-		var response = await _httpClient.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(new GetMyOfferedRegulatoryFunctionsQuery());
+		var response = await _cqrsService.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(new GetMyOfferedRegulatoryFunctionsQuery());
 		regulatoryFunctions.Clear();
 
 		if (response.Result != null)

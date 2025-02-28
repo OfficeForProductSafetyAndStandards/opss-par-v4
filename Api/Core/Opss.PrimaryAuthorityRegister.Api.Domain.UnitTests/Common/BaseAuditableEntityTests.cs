@@ -4,7 +4,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Domain.UnitTests.Common;
 
 public class BaseAuditableEntityTests
 {
-    private class TestAuditableEntity : BaseAuditableEntity
+    private sealed class TestAuditableEntity : BaseAuditableEntity
     {
         // Concrete implementation for testing
     }

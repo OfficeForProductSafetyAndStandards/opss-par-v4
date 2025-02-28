@@ -1,4 +1,6 @@
-﻿using Opss.PrimaryAuthorityRegister.Api.Domain.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Opss.PrimaryAuthorityRegister.Api.Domain.Common.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 
@@ -13,6 +15,12 @@ public interface IGenericRepository<T> where T : class, IEntity
     /// Provide access to a queryable list of entities.
     /// </summary>
     IQueryable<T> Entities { get; }
+
+    /// <summary>
+    /// Provides access to non-commited data
+    /// </summary>
+    /// <returns>Local changes waiting to be committed</returns>
+    ReadOnlyCollection<T> Local();
 
     /// <summary>
     /// Return an item by it's Id.

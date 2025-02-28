@@ -1,11 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Opss.PrimaryAuthorityRegister.Api.Application.Authentication;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
+using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
+using Opss.PrimaryAuthorityRegister.Authentication.ServiceProviders;
+using Opss.PrimaryAuthorityRegister.Authentication.TokenHandler;
 using System.Reflection;
-using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Extensions;
 
@@ -22,6 +23,15 @@ public static class IServiceCollectionExtensions
     public static void AddApplicationLayer(this IServiceCollection services)
     {
         services.AddAuthorisation();
+        services.Addauthentication();
+    }
+
+    private static void Addauthentication(this IServiceCollection services)
+    {
+        services.AddTransient<IAuthenticatedUserService, OpenIdConnectUserService>();
+        services.AddTransient<IJwtHandler, JwtHandler>();
+        services.AddTransient<ITokenService, OpenIdConnectTokenService>();
+        services.AddTransient<IUserClaimsService, UserClaimsService>();
     }
 
     private static void AddAuthorisation(this IServiceCollection services)
@@ -34,16 +44,7 @@ public static class IServiceCollectionExtensions
         services.AddHttpContextAccessor();
 
         // Add ClaimsPrincipal.
-        services.AddScoped(provider =>
-        {
-            return GenerateTempIdentity();
-#pragma warning disable S125 // Sections of code should not be commented out
-            // Code is commented out until authentication is implemented.
-            // var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
-            // return httpContextAccessor.HttpContext?.User ?? GenerateTempIdentity();
-#pragma warning restore S125 // Sections of code should not be commented out
-        }
-);
+        services.AddScoped(UserClaimsServiceProvider.BuildClaims);
 
         services.AddMediatR(cfg =>
         {
@@ -71,27 +72,5 @@ public static class IServiceCollectionExtensions
         {
             services.AddTransient(interfaceType, implementation);
         }
-    }
-
-    private static ClaimsPrincipal GenerateTempIdentity()
-    {
-        var claimsIdentity = new ClaimsIdentity(
-                                                Array.Empty<Claim>(),
-                                                "Bearer",
-                                                ClaimTypes.Name,
-                                                ClaimTypes.Role
-                                            );
-
-        // Optionally add a name claim
-        claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, "User"));
-        claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"*", "Authority"));
-        // give the user claims to that test data owner.
-        claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"Owner/e3e695cc-ca85-43d8-9add-aa004eea5be5", "Create"));
-        claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"Owner/e3e695cc-ca85-43d8-9add-aa004eea5be5", "Write"));
-        claimsIdentity.AddClaim(new Claim(PermissionAttribute.PermissionClaimType, $"Owner/e3e695cc-ca85-43d8-9add-aa004eea5be5", "Read"));
-
-        var principal = new ClaimsPrincipal(claimsIdentity);
-
-        return principal;
     }
 }

@@ -1,3 +1,7 @@
+using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
+using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
+using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using System.Diagnostics.CodeAnalysis;
 
@@ -10,13 +14,32 @@ internal static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var authConfigs = builder.Configuration.GetSection("OpenIdConnectAuth");
+        builder.Services.Configure<OpenIdConnectAuthConfigurations>(authConfigs);
+
+        var jwtAuthConfigSection = builder.Configuration.GetSection("JwtAuth");
+        builder.Services.Configure<JwtAuthConfig>(jwtAuthConfigSection);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: "_parAllowOrigins",
+                policy =>
+                {
+                    policy.WithOrigins("https://oidc.integration.account.gov.uk");
+                });
+        });
+
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
 
         builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
         builder.Services.AddControllers();
-        
+
+        builder.Services.AddAuthentication();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddAuthorizationCore();
+
         builder.Services.AddHttpClient();
         builder.Services.AddScoped(sp =>
         {
@@ -29,8 +52,12 @@ internal static class Program
         });
 
         builder.Services.AddScoped<ICookieService, CookieService>();
+        builder.Services.AddScoped<ICqrsService, CqrsService>();
         builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+        builder.AddOidcAuthentication("OneLogin");
+        builder.AddOidcAuthentication("StaffSSO");
 
         var app = builder.Build();
 
@@ -47,6 +74,10 @@ internal static class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseAuthentication();
+        app.MapControllers();
+
+        app.UseCors("_parAllowOrigins");
 
         UseLocalization(app);
 
@@ -66,6 +97,5 @@ internal static class Program
 
         app.UseRequestLocalization(localizationOptions);
 
-        app.MapControllers();
     }
 }

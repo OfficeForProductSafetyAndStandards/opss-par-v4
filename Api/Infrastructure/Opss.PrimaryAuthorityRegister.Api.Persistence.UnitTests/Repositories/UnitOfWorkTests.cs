@@ -1,14 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Moq;
-using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+﻿using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
+using Opss.PrimaryAuthorityRegister.Common.Providers;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Repositories;
 
 public class UnitOfWorkTests
 {
+    private readonly DateTimeOverrideProvider _dateTimeProvider;
+
+    public UnitOfWorkTests()
+    {
+        _dateTimeProvider = new DateTimeOverrideProvider();
+    }
+
     [Fact]
     public void Constructor_ShouldThrowArgumentNullException_WhenDbContextIsNull()
     {
@@ -20,7 +26,7 @@ public class UnitOfWorkTests
     public void Repository_ShouldReturnGenericRepositoryInstance()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act
@@ -35,7 +41,7 @@ public class UnitOfWorkTests
     public void Repository_ShouldCacheRepositoryInstance()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act
@@ -50,7 +56,7 @@ public class UnitOfWorkTests
     public async Task Save_ShouldCommitChangesToDatabase()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         var ownerId = Guid.NewGuid();
@@ -68,7 +74,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedAddChanges()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         var ownerId = Guid.NewGuid();
@@ -87,7 +93,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedUpdateChanges()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         var ownerId = Guid.NewGuid();
@@ -110,7 +116,7 @@ public class UnitOfWorkTests
     public async Task Rollback_ShouldRevertUnsavedDeleteChanges()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         var ownerId = Guid.NewGuid();
@@ -131,7 +137,7 @@ public class UnitOfWorkTests
     public void Dispose_ShouldDisposeDbContext()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
         var ownerId = Guid.NewGuid();
 
@@ -146,7 +152,7 @@ public class UnitOfWorkTests
     public void Dispose_ShouldBeIdempotent()
     {
         // Arrange
-        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions);
+        using var context = new ApplicationDbContext(InMemoryDatabaseTestHelpers.InMemoryOptions, _dateTimeProvider);
         using var unitOfWork = new UnitOfWork(context);
 
         // Act

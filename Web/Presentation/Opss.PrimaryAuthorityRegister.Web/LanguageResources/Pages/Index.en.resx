@@ -117,19 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Button_TryGet" xml:space="preserve">
-    <value>Try Get</value>
+  <data name="Bullet_1" xml:space="preserve">
+    <value>apply for new partnerships.</value>
   </data>
-  <data name="Button_TryPost" xml:space="preserve">
-    <value>Try Post</value>
+  <data name="Bullet_2" xml:space="preserve">
+    <value>notify primary authorities of proposed enforcement actions against organisations in partnerships.</value>
   </data>
-  <data name="Button_TryPut" xml:space="preserve">
-    <value>Try Put</value>
+  <data name="Bullet_3" xml:space="preserve">
+    <value>submit and publish inspection plans.</value>
   </data>
-  <data name="Hello" xml:space="preserve">
-    <value>Hello, World!</value>
+  <data name="Heading_2" xml:space="preserve">
+    <value>Need an account?</value>
+  </data>
+  <data name="Heading_3" xml:space="preserve">
+    <value>Organisations</value>
+  </data>
+  <data name="Heading_4" xml:space="preserve">
+    <value>Enforcement Authorities</value>
+  </data>
+  <data name="Heading_5" xml:space="preserve">
+    <value>Primary Authorities / Local Authorities</value>
+  </data>
+  <data name="Inset_1" xml:space="preserve">
+    <value>If you have received an email inviting you to join the Primary Authority Register, you must use &lt;strong&gt;the same email address&lt;/strong&gt; when creating your account in order to be connected to your invite.</value>
+  </data>
+  <data name="PageHeading" xml:space="preserve">
+    <value>Primary Authority Register</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>Index</value>
+    <value>Start Page</value>
+  </data>
+  <data name="Para_1" xml:space="preserve">
+    <value>This service supports the operation of the partnerships in the Primary authority scheme. It allows organisations to receive assured and tailored advice on meeting regulations through direct or co-ordinated partnerships with local authorities.</value>
+  </data>
+  <data name="Para_2" xml:space="preserve">
+    <value>&lt;strong&gt;Organisations&lt;/strong&gt; can use this service to view details of their specific partnerships.</value>
+  </data>
+  <data name="Para_3" xml:space="preserve">
+    <value>&lt;strong&gt;Enforcement Authorities&lt;/strong&gt; can use this service to view, share or manage information on partnerships to guide enforcement work across the UK.</value>
+  </data>
+  <data name="Para_4" xml:space="preserve">
+    <value>&lt;strong&gt;Primary Authorities&lt;/strong&gt; must use this service to:</value>
+  </data>
+  <data name="Para_5" xml:space="preserve">
+    <value>You will need a GOV.UK One Login to use this service. If you do not have a GOV.UK One Logon, you can create one.</value>
+  </data>
+  <data name="Para_6" xml:space="preserve">
+    <value>To get access to the Primary Authority Register:</value>
+  </data>
+  <data name="Para_7_1" xml:space="preserve">
+    <value>Call 0121 345 1201 or e-mail </value>
+  </data>
+  <data name="Para_7_2" xml:space="preserve">
+    <value> to be guided through the registration process.</value>
+  </data>
+  <data name="Para_8_1" xml:space="preserve">
+    <value>Call 0121 345 1201 or e-mail </value>
+  </data>
+  <data name="Para_8_2" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Para_9" xml:space="preserve">
+    <value>Contact the local administrator at your local authority.</value>
+  </data>
+  <data name="StartButton" xml:space="preserve">
+    <value>Start now</value>
+  </data>
+  <data name="PA_Email_Address" xml:space="preserve">
+    <value>pa@businessandtrade.gov.uk</value>
   </data>
 </root>

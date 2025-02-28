@@ -2,7 +2,7 @@
 using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Behaviour;
-using Opss.PrimaryAuthorityRegister.Common.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Behaviour;
 

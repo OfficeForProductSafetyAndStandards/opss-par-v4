@@ -16,3 +16,5 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8080"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

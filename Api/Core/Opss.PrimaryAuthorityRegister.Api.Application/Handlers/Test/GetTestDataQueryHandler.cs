@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Test.Queries.Dtos;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries.Dtos;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Test;
 

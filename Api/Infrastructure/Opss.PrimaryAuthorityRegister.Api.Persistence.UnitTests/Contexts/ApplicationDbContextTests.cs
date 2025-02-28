@@ -1,15 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
+using Opss.PrimaryAuthorityRegister.Common.Providers;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Contexts;
 
 public class ApplicationDbContextTests
 {
+    private readonly DateTimeOverrideProvider _dateTimeProvider;
+
+    public ApplicationDbContextTests()
+    {
+            _dateTimeProvider = new DateTimeOverrideProvider();
+    }
+
     private static DbContextOptions<ApplicationDbContext> GetInMemoryOptions()
     {
         return new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString()) // Unique database name for isolation
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
     }
 
@@ -20,7 +28,7 @@ public class ApplicationDbContextTests
         var options = GetInMemoryOptions();
 
         // Act
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(options, _dateTimeProvider);
 
         // Assert
         Assert.NotNull(context);
@@ -32,7 +40,7 @@ public class ApplicationDbContextTests
     {
         // Arrange
         var options = GetInMemoryOptions();
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(options, _dateTimeProvider);
 
         // Act
         var dbSet = context.TestData;
@@ -47,7 +55,7 @@ public class ApplicationDbContextTests
     {
         // Arrange
         var options = GetInMemoryOptions();
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(options, _dateTimeProvider);
 
         var ownerId = Guid.NewGuid();
         var testData = new TestData(ownerId, "Data");
@@ -65,7 +73,7 @@ public class ApplicationDbContextTests
     {
         // Arrange
         var options = GetInMemoryOptions();
-        using var context = new ApplicationDbContext(options);
+        using var context = new ApplicationDbContext(options, _dateTimeProvider);
         using var tokenSource = new CancellationTokenSource();
 
         var cancellationToken = tokenSource.Token;

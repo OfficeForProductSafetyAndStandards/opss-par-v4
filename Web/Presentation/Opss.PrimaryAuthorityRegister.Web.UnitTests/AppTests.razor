@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
+@using Opss.PrimaryAuthorityRegister.Http.Services
 @using Opss.PrimaryAuthorityRegister.Web.Application.Services
 
 @inherits BunitContext
@@ -7,11 +9,15 @@
     [Fact]
     public void CultureCookie_IsSetOnInitialization()
     {
+        this.AddAuthorization();
+
         // Arrange
         var mockHttpService = new Mock<IHttpService>();
         var mockCookieService = new Mock<ICookieService>();
+        var mockCqrsService = new Mock<ICqrsService>();
         Services.AddSingleton(mockHttpService.Object);
         Services.AddSingleton(mockCookieService.Object);
+        Services.AddSingleton(mockCqrsService.Object);
         Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
 
         // Act

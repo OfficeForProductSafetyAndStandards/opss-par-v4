@@ -1,0 +1,124 @@
+﻿@inherits BunitContext
+
+@code {
+	const string tasklistUrl = "/authority/partnership-application/initiate/task-list";
+
+	[Fact]
+	public void WhenNoCriteriaSelected_ThenErrorMessagesAreShown_AndThenDoesNotNavigateToTaskList()
+	{
+		// Arrange
+		Services.AddLocalization();
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
+
+		// Act
+		var confirmButton = confirm.Find("#confirm-button");
+		confirmButton.Click();
+
+		// Assert
+		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
+		confirm
+			.Find(".govuk-error-summary")
+			.MarkupMatches(
+				@<div class="govuk-error-summary" data-module="govuk-error-summary">
+					<div role="alert">
+						<h2 class="govuk-error-summary__title">There is a problem</h2>
+						<div class="govuk-error-summary__body">
+							<ul class="govuk-list govuk-error-summary__list">
+								<li><a href="#confirm-criteria">Criteria_Error_Text</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>);
+
+		confirm
+			.Find("#confirm-criteria-error")
+			.MarkupMatches(
+				@<p id="confirm-criteria-error" class="govuk-error-message ">
+					<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
+				</p>);
+	}
+
+	[Theory]
+	[InlineData(new[] { 1, 2 })]
+	[InlineData(new[] { 2, 3 })]
+	[InlineData(new[] { 1, 3 })]
+	[InlineData(new[] { 1 })]
+	[InlineData(new[] { 2 })]
+	[InlineData(new[] { 3 })]
+	public void WhenNotAllCriteriaSelected_ThenErrorMessagesAreShown_AndThenDoesNotNavigateToTaskList(int[] values)
+	{
+		// Arrange
+		Services.AddLocalization();
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
+		var checkboxes = confirm.FindAll("[name=confirm-criteria]");
+		var confirmButton = confirm.Find("#confirm-button");
+
+		// Act
+		foreach (var checkbox in checkboxes)
+		{
+			if (values.Contains(Int32.Parse(checkbox.GetAttribute("Value"))))
+			{
+				checkbox.Input(new() { Value = true });
+			}
+		}
+
+		confirmButton.Click();
+
+		// Assert
+		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
+		confirm
+		.Find(".govuk-error-summary")
+		.MarkupMatches(
+			@<div class="govuk-error-summary" data-module="govuk-error-summary">
+				<div role="alert">
+					<h2 class="govuk-error-summary__title">There is a problem</h2>
+					<div class="govuk-error-summary__body">
+						<ul class="govuk-list govuk-error-summary__list">
+							<li><a href="#confirm-criteria">Criteria_Error_Text</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>);
+
+		confirm
+		.Find("#confirm-criteria-error")
+		.MarkupMatches(
+			@<p id="confirm-criteria-error" class="govuk-error-message ">
+				<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
+			</p>);
+	}
+
+	[Fact]
+	public void WhenAllCriteriaSelected_ThenNoErrorMessagesAreShown_AndThenNavigatesToTaskList()
+	{
+		// Arrange 
+		Services.AddLocalization();
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
+		var checkboxes = confirm.FindAll("[name=confirm-criteria]");
+		var confirmButton = confirm.Find("#confirm-button");
+
+		// Act 
+		foreach (var checkbox in checkboxes)
+		{
+			checkbox.Input(new() { Value = true });
+		}
+
+		confirmButton.Click();
+
+		// Assert
+		Assert.Throws<Bunit.ElementNotFoundException>(() => 
+		{ 
+			var element = confirm.Find(".govuk-error-summary");
+		});
+
+		Assert.Throws<Bunit.ElementNotFoundException>(() =>
+		{
+			var element = confirm.Find("#confirm-criteria-error");
+		});
+
+		Assert.EndsWith(tasklistUrl, navigationManager.Uri);
+	}
+}

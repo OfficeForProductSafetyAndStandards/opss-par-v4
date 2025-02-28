@@ -2,8 +2,10 @@
 
 @using System.Net.Http;
 @using Opss.DesignSystem.Frontend.Blazor.Components.Classes
-@using Opss.PrimaryAuthorityRegister.Common.Requests.Common.Authority.Queries
-@using Opss.PrimaryAuthorityRegister.Web.Application.Entities
+
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
+@using Opss.PrimaryAuthorityRegister.Http.Entities
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
 @using Opss.PrimaryAuthorityRegister.Web.Application.Services
 @using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
 
@@ -12,7 +14,7 @@
 	public void GivenQueryReturnsResults_ThenAListOfRegulatoryFunctionsIsRendered()
 	{
 		// Arrange
-		var mockHttpService = new Mock<IHttpService>(MockBehavior.Strict);
+		var mockHttpService = new Mock<ICqrsService>(MockBehavior.Strict);
 
 		var mockResponse = new HttpObjectResponse<List<string>>(
 								new HttpResponseMessage(),

@@ -1,6 +1,6 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Fakes;
-using Opss.PrimaryAuthorityRegister.Common.AuthorisationAttributes;
+using Opss.PrimaryAuthorityRegister.Cqrs.AuthorisationAttributes;
 using System.Security;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;

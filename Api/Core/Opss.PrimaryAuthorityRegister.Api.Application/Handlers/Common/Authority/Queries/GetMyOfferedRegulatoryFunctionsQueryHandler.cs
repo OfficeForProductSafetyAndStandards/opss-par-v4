@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Opss.PrimaryAuthorityRegister.Common.Requests.Common.Authority.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Authority.Queries;
 
