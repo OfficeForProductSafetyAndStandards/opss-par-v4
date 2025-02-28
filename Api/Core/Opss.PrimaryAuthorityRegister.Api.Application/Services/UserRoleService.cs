@@ -6,18 +6,18 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Services;
 
 public class UserRoleService : IUserRoleService
 {
-    private readonly IUserIdentityRepository _repository;
+    private readonly IUserIdentityRepository _userIdentityRepository;
 
-    public UserRoleService(IUserIdentityRepository unitOfWork)
+    public UserRoleService(IUserIdentityRepository userIdentityRepository)
     {
-        _repository = unitOfWork;
+        _userIdentityRepository = userIdentityRepository;
     }
 
     public AuthenticatedUserIdentity? GetUserWithRolesByEmailAddress(string? email)
     {
         if (email is null) return null;
 
-        var identity = _repository.GetUserIdentiyByEmail(email);
+        var identity = _userIdentityRepository.GetUserIdentiyByEmail(email);
 
         if (identity is null) return null;
 
