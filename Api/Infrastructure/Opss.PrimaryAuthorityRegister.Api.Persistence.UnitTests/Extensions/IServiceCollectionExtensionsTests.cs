@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using MediatR;
-using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
+using Opss.PrimaryAuthorityRegister.Common.Providers;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Extensions;
 
@@ -15,7 +14,8 @@ public class IServiceCollectionExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
-
+        services.AddSingleton<IDateTimeProvider, DateTimeOverrideProvider>();
+        
         // Create a mock IConfiguration to return the connection string
         var configurationMock = new Mock<IConfiguration>();
         var connectionStringsMock = new Mock<IConfigurationSection>();

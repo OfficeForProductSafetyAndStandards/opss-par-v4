@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
-using Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
+using Opss.PrimaryAuthorityRegister.Common.Exceptions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
 

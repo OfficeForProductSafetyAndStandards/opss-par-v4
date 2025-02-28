@@ -29,7 +29,7 @@ public class OpenIdConnectTokenServiceTests
         _tokenService = new OpenIdConnectTokenService(
             Options.Create(AuthenticationTestHelpers.ProviderAuthConfigurations),
             Options.Create(AuthenticationTestHelpers.JwtConfig),
-            _mockJwtHandler.Object, 
+            _mockJwtHandler.Object,
             _mockAuthenticatedUserService.Object);
     }
 

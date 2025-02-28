@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Opss.PrimaryAuthorityRegister.Authentication.Jwt;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
@@ -9,14 +10,17 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Authentication.
 public class GetJwtQueryHandler : IRequestHandler<GetJwtQuery, string>
 {
     private readonly ITokenService _tokenService;
+    private readonly IJwtService _jwtService;
     private readonly IAuthenticatedUserService _oneLoginService;
 
     public GetJwtQueryHandler(
         ITokenService tokenService,
-        IAuthenticatedUserService oneLoginService)
+        IAuthenticatedUserService oneLoginService,
+        IJwtService jwtService)
     {
         _tokenService = tokenService;
         _oneLoginService = oneLoginService;
+        _jwtService = jwtService;
     }
 
     public async Task<string> Handle(GetJwtQuery request, CancellationToken cancellationToken)
@@ -27,12 +31,12 @@ public class GetJwtQueryHandler : IRequestHandler<GetJwtQuery, string>
         var response = await _oneLoginService.GetUserInfo(request.ProviderKey, request.AccessToken).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpResponseException(response.StatusCode, response.Problem.Detail);
+            throw new HttpResponseException(response.StatusCode, response.Problem?.Detail);
         }
 
         var email = response.Result?.Email;
 
-        var token = _tokenService.GenerateJwt(email);
+        var token = _jwtService.GenerateJwt(email);
 
         return token;
     }

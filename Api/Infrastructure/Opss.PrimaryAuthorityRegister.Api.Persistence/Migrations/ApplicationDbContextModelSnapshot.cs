@@ -17,10 +17,34 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Roles");
+                });
 
             modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.TestData", b =>
                 {
@@ -48,6 +72,60 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TestData");
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.UserIdentity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("varchar(320)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.ToTable("UserIdentities");
+                });
+
+            modelBuilder.Entity("RoleUserIdentity", b =>
+                {
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserIdentitiesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RolesId", "UserIdentitiesId");
+
+                    b.HasIndex("UserIdentitiesId");
+
+                    b.ToTable("RoleUserIdentity");
+                });
+
+            modelBuilder.Entity("RoleUserIdentity", b =>
+                {
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.UserIdentity", null)
+                        .WithMany()
+                        .HasForeignKey("UserIdentitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

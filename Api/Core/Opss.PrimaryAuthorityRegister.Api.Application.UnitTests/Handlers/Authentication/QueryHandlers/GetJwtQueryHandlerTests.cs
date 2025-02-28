@@ -1,6 +1,8 @@
 ﻿using Moq;
+using Newtonsoft.Json.Linq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Authentication.QueryHandlers;
 using Opss.PrimaryAuthorityRegister.Authentication.Entities;
+using Opss.PrimaryAuthorityRegister.Authentication.Jwt;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
@@ -12,6 +14,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Authe
 
 public class GetJwtQueryHandlerTests
 {
+    private readonly Mock<IJwtService> _mockJwtService;
     private readonly Mock<ITokenService> _tokenServiceMock;
     private readonly Mock<IAuthenticatedUserService> _oneLoginServiceMock;
     private readonly GetJwtQueryHandler _handler;
@@ -20,7 +23,8 @@ public class GetJwtQueryHandlerTests
     {
         _tokenServiceMock = new Mock<ITokenService>();
         _oneLoginServiceMock = new Mock<IAuthenticatedUserService>();
-        _handler = new GetJwtQueryHandler(_tokenServiceMock.Object, _oneLoginServiceMock.Object);
+        _mockJwtService = new Mock<IJwtService>();
+        _handler = new GetJwtQueryHandler(_tokenServiceMock.Object, _oneLoginServiceMock.Object, _mockJwtService.Object);
     }
 
     [Fact]
@@ -39,7 +43,7 @@ public class GetJwtQueryHandlerTests
                           .Returns(Task.CompletedTask);
         _oneLoginServiceMock.Setup(os => os.GetUserInfo(query.ProviderKey, query.AccessToken))
                             .ReturnsAsync(userInfoResponse);
-        _tokenServiceMock.Setup(ts => ts.GenerateJwt("test@example.com"))
+        _mockJwtService.Setup(ts => ts.GenerateJwt("test@example.com"))
                           .Returns(expectedToken);
 
         // Act

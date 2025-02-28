@@ -13,8 +13,10 @@
         // Arrange
         var mockHttpService = new Mock<IHttpService>();
         var mockCookieService = new Mock<ICookieService>();
+        var mockCqrsService = new Mock<ICqrsService>();
         Services.AddSingleton(mockHttpService.Object);
         Services.AddSingleton(mockCookieService.Object);
+        Services.AddSingleton(mockCqrsService.Object);
         Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
 
         // Act

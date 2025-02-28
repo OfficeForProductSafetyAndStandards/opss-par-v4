@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Opss.PrimaryAuthorityRegister.Api.Persistence.Exceptions;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Extensions;
+using Opss.PrimaryAuthorityRegister.Common.Exceptions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Extensions;
 
