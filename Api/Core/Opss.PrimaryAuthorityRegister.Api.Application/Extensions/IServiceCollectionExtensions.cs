@@ -2,6 +2,7 @@
 using Opss.PrimaryAuthorityRegister.Api.Application.Authentication;
 using Opss.PrimaryAuthorityRegister.Api.Application.Authorisation;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Authorisation;
+using Opss.PrimaryAuthorityRegister.Api.Application.Services;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceInterfaces;
 using Opss.PrimaryAuthorityRegister.Authentication.ServiceProviders;
@@ -39,12 +40,14 @@ public static class IServiceCollectionExtensions
         var assembly = typeof(IServiceCollectionExtensions).Assembly;
         services.AddAllTypesOf<IResourceKeyExpander>(assembly);
 
+
         services.AddTransient<IResourceClaimProvider, AttributeBasedResourceClaimProvider>();
         services.AddTransient<IClaimChecker, ClaimChecker>();
         services.AddHttpContextAccessor();
 
         // Add ClaimsPrincipal.
         services.AddScoped(UserClaimsServiceProvider.BuildClaims);
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         services.AddMediatR(cfg =>
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Common.Interfaces;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 
@@ -27,7 +28,7 @@ public interface IGenericRepository<T> where T : class, IEntity
     /// </summary>
     /// <param name="Id">The item to find.</param>
     /// <returns>If found, the item, otherwise nul.</returns>
-    Task<T?> GetByIdAsync(Guid Id);
+    Task<T?> GetByIdAsync(Guid Id, params Expression<Func<T, object>>[] includes);
 
     /// <summary>
     /// Add an item to the repository.

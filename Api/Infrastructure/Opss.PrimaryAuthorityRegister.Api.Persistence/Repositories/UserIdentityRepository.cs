@@ -16,6 +16,7 @@ public class UserIdentityRepository : IUserIdentityRepository
     {
         return _repository.Entities
                           .Include(u => u.Roles)
+                          .Include(u => u.AuthorityUser)
                           .SingleOrDefault(u => u.EmailAddress == email);
     }
 }

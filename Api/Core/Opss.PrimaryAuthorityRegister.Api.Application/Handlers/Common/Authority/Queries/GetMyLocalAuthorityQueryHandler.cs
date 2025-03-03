@@ -7,24 +7,24 @@ using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Authority.Queries;
 
-public class GetMyOfferedRegulatoryFunctionsQueryHandler 
-    : IRequestHandler<GetMyOfferedRegulatoryFunctionsQuery, List<MyOfferedRegulatoryFunctionDto>>
+public class GetMyLocalAuthorityQueryHandler
+    : IRequestHandler<GetMyLocalAuthorityQuery, MyLocalAuthorityDto>
 {
     private readonly IGenericRepository<Domain.Entities.Authority> _authorityRepository;
     private readonly ClaimsPrincipal _claimsPrincipal;
 
-    public GetMyOfferedRegulatoryFunctionsQueryHandler(
+    public GetMyLocalAuthorityQueryHandler(
         IGenericRepository<Domain.Entities.Authority> authorityRepository,
-        ClaimsPrincipal currentUserService)
+        ClaimsPrincipal claimsPrincipal)
     {
         _authorityRepository = authorityRepository;
-        _claimsPrincipal = currentUserService;
+        _claimsPrincipal = claimsPrincipal;
     }
-    public async Task<List<MyOfferedRegulatoryFunctionDto>> Handle(
-        GetMyOfferedRegulatoryFunctionsQuery request, 
+    public async Task<MyLocalAuthorityDto> Handle(
+        GetMyLocalAuthorityQuery request,
         CancellationToken cancellationToken)
     {
-        if (_claimsPrincipal == null) 
+        if (_claimsPrincipal == null)
             throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized, "You are not authenticated");
 
         var authorityId = _claimsPrincipal.GetAuthorityId();
@@ -35,9 +35,8 @@ public class GetMyOfferedRegulatoryFunctionsQueryHandler
         if (authority == null)
             throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized, "Your assigned authority cannot be found");
 
-        var regulatoryFunctions = authority.RegulatoryFunctions.Select(f => 
-            new MyOfferedRegulatoryFunctionDto(f.Id, f.Name)).ToList();
+        var localAuthority = new MyLocalAuthorityDto(authority.Name);
 
-        return regulatoryFunctions;
+        return localAuthority;
     }
 }

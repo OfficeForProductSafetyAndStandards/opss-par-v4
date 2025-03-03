@@ -1,4 +1,6 @@
-﻿namespace Opss.PrimaryAuthorityRegister.Common.Constants;
+﻿using System.Collections.Immutable;
+
+namespace Opss.PrimaryAuthorityRegister.Common.Constants;
 
 public static class IdentityConstants
 {

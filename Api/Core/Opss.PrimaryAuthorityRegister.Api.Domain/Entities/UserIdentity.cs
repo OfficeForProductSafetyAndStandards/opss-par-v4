@@ -7,6 +7,7 @@ public class UserIdentity : BaseAuditableEntity, IAuthenticatedUserIdentity<Role
 {
     public string EmailAddress { get; set; }
     public IReadOnlyCollection<Role> Roles => _roles;
+    public virtual AuthorityUser? AuthorityUser { get; private set; }
 
     private readonly List<Role> _roles;
 

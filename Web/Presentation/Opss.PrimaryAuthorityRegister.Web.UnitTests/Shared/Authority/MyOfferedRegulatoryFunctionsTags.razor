@@ -16,13 +16,16 @@
 		// Arrange
 		var mockHttpService = new Mock<ICqrsService>(MockBehavior.Strict);
 
-		var mockResponse = new HttpObjectResponse<List<string>>(
+		var mockResponse = new HttpObjectResponse<List<MyOfferedRegulatoryFunctionDto>>(
 								new HttpResponseMessage(),
-								new List<string> { "Item1", "Item2", "Item3" }
+								new List<MyOfferedRegulatoryFunctionDto> {
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item1"),
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item2"), 
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item3") }
 							);
 
 		mockHttpService
-			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
+			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<MyOfferedRegulatoryFunctionDto>>(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
 			.ReturnsAsync(mockResponse);
 
 		Services.AddSingleton(mockHttpService.Object);

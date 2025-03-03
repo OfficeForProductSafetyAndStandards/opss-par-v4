@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Cqrs\Opss.PrimaryAuthorityRegister.Cqrs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Update="SonarAnalyzer.CSharp" Version="10.6.0.109712" />
   </ItemGroup>
 

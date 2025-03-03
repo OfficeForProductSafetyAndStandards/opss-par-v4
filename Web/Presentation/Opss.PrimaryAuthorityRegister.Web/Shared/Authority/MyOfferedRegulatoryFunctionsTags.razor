@@ -5,7 +5,9 @@
 
 @foreach (var function in regulatoryFunctions)
 {
-	<GdsTag Classes=@($"max-width-fit-content govuk-!-static-margin-right-3 {TagClasses.Turquoise}")>@function</GdsTag>
+	<GdsTag Classes=@($"max-width-fit-content govuk-!-static-margin-right-3 {TagClasses.Turquoise}")>
+		@function
+	</GdsTag>
 }
 
 @code {
@@ -15,11 +17,12 @@
 	{
 		if (!firstRender) return;
 
-		var response = await _cqrsService.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<string>>(new GetMyOfferedRegulatoryFunctionsQuery());
+		var response = await _cqrsService.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<MyOfferedRegulatoryFunctionDto>>(
+			new GetMyOfferedRegulatoryFunctionsQuery());
 		regulatoryFunctions.Clear();
 
 		if (response.Result != null)
-			regulatoryFunctions.AddRange(response.Result);
+			regulatoryFunctions.AddRange(response.Result.Select(f => f.Name));
 
 		StateHasChanged();
 	}

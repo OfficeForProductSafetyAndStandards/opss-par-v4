@@ -1,9 +1,7 @@
 ﻿@page "/authority/partnership-application/initiate/task-list"
 
-@using Microsoft.AspNetCore.Html
 @using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
 
-@inject HttpClient _httpClient
 @inject IStringLocalizer<TaskList> Loc
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
@@ -11,7 +9,7 @@
 <div class="govuk-grid-row">
 	<div class="govuk-grid-column-full">
 		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
-			<GdsCaption Classes=@CaptionSize.Large>LA Name Placeholder</GdsCaption>
+			<GdsCaption Classes=@CaptionSize.Large><MyLocalAuthoirtyName /></GdsCaption>
 			@Loc["PageTitle"]
 		</GdsHeading>
 	</div>
@@ -36,5 +34,4 @@
 </div>
 
 @code {
-
 }

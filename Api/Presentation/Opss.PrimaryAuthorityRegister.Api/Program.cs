@@ -53,12 +53,16 @@ internal static class Program
             return client;
         });
 
+        // Authentication Services
         builder.Services.AddScoped<IUserRoleService, UserRoleService>();
-        builder.Services.AddScoped<ICqrsService, CqrsService>();
-        builder.Services.AddScoped<IHttpService, HttpService>();
         builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
         builder.Services.AddScoped<IJwtService, JwtService>();
 
+        // HTTP Services
+        builder.Services.AddScoped<ICqrsService, CqrsService>();
+        builder.Services.AddScoped<IHttpService, HttpService>();
+
+        // Common Services
         builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
 
         builder.AddOidcAuthentication("OneLogin");

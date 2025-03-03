@@ -8,7 +8,6 @@ public class Role : BaseAuditableEntity, IAuthenticatedUserRole
 {
     public string Name { get; set; }
 
-    [JsonIgnore]
     public IReadOnlyCollection<UserIdentity> UserIdentities => _userIdentities;
 
     private List<UserIdentity> _userIdentities;

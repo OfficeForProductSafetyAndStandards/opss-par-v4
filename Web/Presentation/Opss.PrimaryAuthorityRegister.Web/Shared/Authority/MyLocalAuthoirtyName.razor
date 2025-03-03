@@ -1,0 +1,22 @@
+﻿@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
+
+@inject ICqrsService _cqrsService
+
+@localAuthoirtyName
+
+@code {
+	private string localAuthoirtyName = string.Empty;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender) return;
+
+		var response = await _cqrsService.GetAsync<GetMyLocalAuthorityQuery, MyLocalAuthorityDto>(
+			new GetMyLocalAuthorityQuery());
+		
+		if (response.Result != null)
+			localAuthoirtyName = response.Result.Name;
+
+		StateHasChanged();
+	}
+}
