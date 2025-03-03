@@ -1,4 +1,5 @@
 ﻿@page "/authority/partnership-application/initiate/start"
+@attribute [Authorize(Roles = $"{IdentityConstants.Roles.AuthorityManager}, {IdentityConstants.Roles.AuthorityMember}")]
 
 @inject IStringLocalizer<Start> Loc
 @inject NavigationManager NavManager

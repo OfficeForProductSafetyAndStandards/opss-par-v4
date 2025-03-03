@@ -1,4 +1,5 @@
 ﻿@page "/authority/partnership-application/initiate/confirm"
+@attribute [Authorize(Roles = $"{IdentityConstants.Roles.AuthorityManager}, {IdentityConstants.Roles.AuthorityMember}")]
 
 @inject IStringLocalizer<Confirm> Loc
 @inject NavigationManager navigationManager
