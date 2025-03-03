@@ -25,7 +25,9 @@
 							);
 
 		mockHttpService
-			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<MyOfferedRegulatoryFunctionDto>>(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
+			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, 
+											  List<MyOfferedRegulatoryFunctionDto>>
+												(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
 			.ReturnsAsync(mockResponse);
 
 		Services.AddSingleton(mockHttpService.Object);
