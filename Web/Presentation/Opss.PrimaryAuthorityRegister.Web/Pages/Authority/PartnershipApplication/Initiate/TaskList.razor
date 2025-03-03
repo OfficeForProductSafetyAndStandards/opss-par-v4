@@ -1,5 +1,5 @@
 ﻿@page "/authority/partnership-application/initiate/task-list"
-@attribute [Authorize(Roles = $"{IdentityConstants.Roles.AuthorityManager}, {IdentityConstants.Roles.AuthorityMember}")]
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
 @using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
 

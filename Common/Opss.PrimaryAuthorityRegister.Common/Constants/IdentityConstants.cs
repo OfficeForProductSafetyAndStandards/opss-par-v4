@@ -30,4 +30,14 @@ public static class IdentityConstants
             LAU
         };
     }
+
+    public static class Policies
+    {
+        public const string Authority = "Authority";
+
+        public readonly static Dictionary<string, string[]> Configuration = new Dictionary<string, string[]>
+        {
+            {  Authority, [Roles.AuthorityManager, Roles.AuthorityMember] }
+        };
+    }
 }

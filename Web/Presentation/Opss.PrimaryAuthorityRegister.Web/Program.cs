@@ -1,5 +1,6 @@
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
+using Opss.PrimaryAuthorityRegister.Common.Constants;
 using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
@@ -58,6 +59,12 @@ internal static class Program
 
         builder.AddOidcAuthentication("OneLogin");
         builder.AddOidcAuthentication("StaffSSO");
+
+        builder.Services.AddAuthorization(config =>
+        {
+            foreach (var policy in IdentityConstants.Policies.Configuration)
+                config.AddPolicy(policy.Key, p => p.RequireRole(policy.Value));
+        });
 
         var app = builder.Build();
 

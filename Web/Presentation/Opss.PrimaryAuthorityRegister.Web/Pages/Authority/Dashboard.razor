@@ -1,5 +1,5 @@
 ﻿@page "/authority/"
-@attribute [Authorize(Roles = $"{IdentityConstants.Roles.AuthorityManager}, {IdentityConstants.Roles.AuthorityMember}")]
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
 @inject IStringLocalizer<Dashboard> Loc
 @inject NavigationManager NavManager
