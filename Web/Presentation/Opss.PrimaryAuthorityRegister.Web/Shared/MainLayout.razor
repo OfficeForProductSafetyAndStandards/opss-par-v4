@@ -32,7 +32,7 @@
 <NavMenu />
 
 <div class="govuk-width-container app-width-container">
-	<GdsPhaseBanner>
+	<GdsPhaseBanner Attributes=@(new Dictionary<string, object>{{"role","status"}})>
 		<TagTemplate>
 			<GdsTag>@Loc["ServicePhase"]</GdsTag>
 		</TagTemplate>
