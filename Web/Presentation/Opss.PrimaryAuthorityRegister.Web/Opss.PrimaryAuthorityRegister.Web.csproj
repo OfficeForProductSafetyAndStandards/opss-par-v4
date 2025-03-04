@@ -26,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="LanguageResources\Shared\MainLayout.en.resx" />
+    <EmbeddedResource Remove="Language\Shared\MainLayout.en.resx" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="LanguageResources\Shared\MainLayout.en.resx" />
+    <None Include="Language\Shared\MainLayout.en.resx" />
   </ItemGroup>
 
   <ItemGroup>

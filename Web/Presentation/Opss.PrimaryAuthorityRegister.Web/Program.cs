@@ -34,7 +34,7 @@ internal static class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
 
-        builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Language");
         builder.Services.AddControllers();
 
         builder.Services.AddAuthentication();
