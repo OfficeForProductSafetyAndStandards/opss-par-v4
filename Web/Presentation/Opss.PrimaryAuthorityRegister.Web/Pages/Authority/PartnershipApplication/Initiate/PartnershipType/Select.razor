@@ -1,0 +1,74 @@
+﻿@page "/authority/partnership-application/initiate/partnership-type/select"
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
+
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.PartnershipApplication.Commands
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+
+@inject IStringLocalizer<Select> Loc
+@inject ICqrsService CqrsService
+@inject NavigationManager NavManager
+
+<PageTitle>@Loc["PageTitle"]</PageTitle>
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-full">
+
+		@if (pageHasErrors)
+		{
+			<GdsErrorSummary>
+				<GdsErrorSummaryItem Href="#partnership-type">
+					@Loc["Partnership_Type_Error_Text"]
+				</GdsErrorSummaryItem>
+			</GdsErrorSummary>
+		}
+
+		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
+			@Loc["PageHeading"]
+		</GdsHeading>
+
+		<GdsDetails SummaryText=@Loc["Details_SummaryText"]>
+			<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_1"] /></p>
+			<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_2"] /></p>
+		</GdsDetails>
+
+		<GdsRadios Name="partnership-type"
+				   ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)
+				   @bind-Value=@selectedPartnershipType>
+			<ChildContent>
+				<GdsRadio Value=@PartnershipConstants.PartnershipType.Direct>
+					@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Direct]
+				</GdsRadio>
+				<GdsRadio Value=@PartnershipConstants.PartnershipType.Coordinated>
+					@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Coordinated]
+				</GdsRadio>
+			</ChildContent>
+		</GdsRadios>
+
+		<GdsButton Id="continue-button" OnClick=@OnContinueClick>
+			@Loc["Button_Continue"]
+		</GdsButton>
+	</div>
+</div>
+
+@code {
+	#region Private Properties
+	private string selectedPartnershipType = string.Empty;
+	private RenderFragment? errorMessage;
+	private bool pageHasErrors = false;
+	#endregion
+
+	protected override void OnInitialized()
+	{
+		errorMessage =@<GdsErrorMessage>@Loc["Partnership_Type_Error_Text"]</GdsErrorMessage>;
+		base.OnInitialized();
+	}
+
+	public async void OnContinueClick(){
+		pageHasErrors = string.IsNullOrEmpty(selectedPartnershipType);
+		if (pageHasErrors) return;
+
+		var response = await CqrsService.PostAsync(new CreatePartnershipApplicationCommand(selectedPartnershipType));
+
+		NavManager.NavigateTo("/authority/partnership-application/initiate/task-list?applicationId=" + response.Result.Id);
+	}
+}

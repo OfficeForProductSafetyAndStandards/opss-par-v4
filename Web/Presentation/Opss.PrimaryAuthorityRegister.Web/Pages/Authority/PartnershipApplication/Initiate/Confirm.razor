@@ -55,11 +55,9 @@
 	private void OnConfirmAgreement(MouseEventArgs e)
 	{
 		pageHasErrors = selectedCriteria.Count != 3;
+		if (pageHasErrors) return;
 
-		if (!pageHasErrors)
-		{
-			navigationManager.NavigateTo("/authority/partnership-application/initiate/task-list");
-		}
+		navigationManager.NavigateTo("/authority/partnership-application/initiate/task-list");
 	}
 	#endregion
 
