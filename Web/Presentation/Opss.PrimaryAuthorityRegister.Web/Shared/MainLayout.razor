@@ -32,17 +32,18 @@
 <NavMenu />
 
 <div class="govuk-width-container app-width-container">
-	<GdsPhaseBanner Attributes=@(new Dictionary<string, object>{{"role","status"}})>
-		<TagTemplate>
-			<GdsTag>@Loc["ServicePhase"]</GdsTag>
-		</TagTemplate>
-		<ChildContent>
-			@Loc["PhaseBanner_1"] <a class="govuk-link" href="#">@Loc["PhaseBanner_2_FeedbackLinkText"]</a> @Loc["PhaseBanner_3"]
-		</ChildContent>
-	</GdsPhaseBanner>
+	<aside>
+		<GdsPhaseBanner>
+			<TagTemplate>
+				<GdsTag>@Loc["ServicePhase"]</GdsTag>
+			</TagTemplate>
+			<ChildContent>
+				@Loc["PhaseBanner_1"] <a class="govuk-link" href="#">@Loc["PhaseBanner_2_FeedbackLinkText"]</a> @Loc["PhaseBanner_3"]
+			</ChildContent>
+		</GdsPhaseBanner>
 
-	<SectionOutlet SectionName="before-content" />
-
+		<SectionOutlet SectionName="before-content" />
+	</aside>
 	<main class="govuk-main-wrapper app-main-class" id="main-content">
 		@Body
 	</main>
