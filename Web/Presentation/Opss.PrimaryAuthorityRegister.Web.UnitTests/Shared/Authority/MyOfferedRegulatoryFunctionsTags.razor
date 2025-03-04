@@ -1,0 +1,47 @@
+﻿@inherits BunitContext
+
+@using System.Net.Http;
+@using Opss.DesignSystem.Frontend.Blazor.Components.Classes
+
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
+@using Opss.PrimaryAuthorityRegister.Http.Entities
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
+@using Opss.PrimaryAuthorityRegister.Web.Application.Services
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+
+@code {
+	[Fact]
+	public void GivenQueryReturnsResults_ThenAListOfRegulatoryFunctionsIsRendered()
+	{
+		// Arrange
+		var mockHttpService = new Mock<ICqrsService>(MockBehavior.Strict);
+
+		var mockResponse = new HttpObjectResponse<List<MyOfferedRegulatoryFunctionDto>>(
+								new HttpResponseMessage(),
+								new List<MyOfferedRegulatoryFunctionDto> {
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item1"),
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item2"), 
+									new MyOfferedRegulatoryFunctionDto(Guid.NewGuid(),"Item3") }
+							);
+
+		mockHttpService
+			.Setup(service => service.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, 
+											  List<MyOfferedRegulatoryFunctionDto>>
+												(It.IsAny<GetMyOfferedRegulatoryFunctionsQuery>()))
+			.ReturnsAsync(mockResponse);
+
+		Services.AddSingleton(mockHttpService.Object);
+
+		var component = Render(@<MyOfferedRegulatoryFunctionsTags />);
+
+		var listItems = component.FindAll("strong");
+		Assert.Equal(3, listItems.Count);
+		Assert.Contains("Item1", listItems[0].TextContent);
+		Assert.Contains("Item2", listItems[1].TextContent);
+		Assert.Contains("Item3", listItems[2].TextContent);
+
+		foreach(var item in listItems){
+			Assert.Contains(TagClasses.Turquoise, item.GetAttribute("class"));
+		}
+	}
+}

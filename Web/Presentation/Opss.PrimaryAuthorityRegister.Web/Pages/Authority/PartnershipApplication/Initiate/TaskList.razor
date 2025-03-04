@@ -1,0 +1,38 @@
+﻿@page "/authority/partnership-application/initiate/task-list"
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
+
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+
+@inject IStringLocalizer<TaskList> Loc
+
+<PageTitle>@Loc["PageTitle"]</PageTitle>
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-full">
+		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
+			<GdsCaption Classes=@CaptionSize.Large><MyLocalAuthoirtyName /></GdsCaption>
+			@Loc["PageTitle"]
+		</GdsHeading>
+	</div>
+</div>
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-full">
+		<MyOfferedRegulatoryFunctionsTags />
+	</div>
+</div>
+
+<div class="govuk-grid-row govuk-!-static-margin-top-5">
+	<div class="govuk-grid-column-full">
+		<p class="govuk-body">
+			@Loc["CompletedSections_Prefix"]
+			<span class="govuk-!-font-weight-bold">0</span>
+			@Loc["CompletedSections_Of"]
+			<span class="govuk-!-font-weight-bold">6</span>
+			@Loc["CompletedSections_Suffix"]
+		</p>
+	</div>
+</div>
+
+@code {
+}

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Moq;
-using Xunit;
-using System.Net.Http.Headers;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using Moq.Protected;
 using Microsoft.AspNetCore.Http;

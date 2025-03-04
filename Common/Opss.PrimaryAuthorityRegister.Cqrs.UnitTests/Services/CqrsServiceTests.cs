@@ -6,13 +6,13 @@ using System.Text.Json;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
-using Opss.PrimaryAuthorityRegister.Cqrs;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries.Dtos;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Queries;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Test.Commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Http.UnitTests.Services;
 

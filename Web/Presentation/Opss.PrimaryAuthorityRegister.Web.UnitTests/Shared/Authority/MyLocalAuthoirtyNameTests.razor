@@ -1,0 +1,34 @@
+﻿@inherits BunitContext
+
+@using System.Net.Http;
+@using Opss.DesignSystem.Frontend.Blazor.Components.Classes
+
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
+@using Opss.PrimaryAuthorityRegister.Http.Entities
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
+@using Opss.PrimaryAuthorityRegister.Web.Application.Services
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+
+@code {
+	[Fact]
+	public void GivenQueryReturnsResults_ThenMyAuthorityNameIsRendered()
+	{
+		// Arrange
+		var mockHttpService = new Mock<ICqrsService>(MockBehavior.Strict);
+
+		var mockResponse = new HttpObjectResponse<MyLocalAuthorityDto>(
+								new HttpResponseMessage(),
+								new MyLocalAuthorityDto("Authority")
+							);
+
+		mockHttpService
+			.Setup(service => service.GetAsync<GetMyLocalAuthorityQuery, MyLocalAuthorityDto>(It.IsAny<GetMyLocalAuthorityQuery>()))
+			.ReturnsAsync(mockResponse);
+
+		Services.AddSingleton(mockHttpService.Object);
+
+		var component = Render(@<MyLocalAuthoirtyName />);
+
+		component.MarkupMatches("Authority");
+	}
+}

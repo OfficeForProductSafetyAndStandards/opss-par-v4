@@ -21,5 +21,9 @@ public class UserIdentityEntityTypeConfiguration : IEntityTypeConfiguration<User
         builder.HasIndex(u => u.EmailAddress).IsUnique();
 
         builder.HasMany(u => u.Roles).WithMany(r => r.UserIdentities);
+        builder.HasOne(u => u.AuthorityUser)
+               .WithOne(c => c.UserIdentity)
+               .HasForeignKey<AuthorityUser>()
+               .IsRequired(false);
     }
 }

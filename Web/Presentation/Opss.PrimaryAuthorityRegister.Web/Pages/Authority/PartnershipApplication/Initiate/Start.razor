@@ -1,4 +1,5 @@
 ﻿@page "/authority/partnership-application/initiate/start"
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
 @inject IStringLocalizer<Start> Loc
 @inject NavigationManager NavManager

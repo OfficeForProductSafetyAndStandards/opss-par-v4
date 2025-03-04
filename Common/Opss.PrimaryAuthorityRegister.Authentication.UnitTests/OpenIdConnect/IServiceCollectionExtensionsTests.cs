@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.Services;
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OpenIdConnect;
 

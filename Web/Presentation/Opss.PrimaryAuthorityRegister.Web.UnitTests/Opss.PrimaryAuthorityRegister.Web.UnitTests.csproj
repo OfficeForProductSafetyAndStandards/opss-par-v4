@@ -35,6 +35,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\Opss.PrimaryAuthorityRegister.Cqrs\Opss.PrimaryAuthorityRegister.Cqrs.csproj" />
 	  <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Web\Opss.PrimaryAuthorityRegister.Web.csproj" />
 	</ItemGroup>
 

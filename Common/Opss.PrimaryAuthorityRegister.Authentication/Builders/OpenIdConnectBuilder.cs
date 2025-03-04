@@ -7,8 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.ExtensionMethods;
-using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.Builders;
 
