@@ -15,6 +15,8 @@
 	public void WhenPartnershipTypeNotSelected_ThenErrorMessageIsShown_AndThenDoesNotNavigateToTaskList()
 	{
 		// Arrange
+		var mockCqrs = new Mock<ICqrsService>();
+		Services.AddScoped<ICqrsService>((p) => mockCqrs.Object);
 		Services.AddLocalization();
 		var navigationManager = Services.GetRequiredService<NavigationManager>();
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.PartnershipType.Select>();
@@ -33,7 +35,9 @@
 			<h2 class="govuk-error-summary__title">There is a problem</h2>
 			<div class="govuk-error-summary__body">
 				<ul class="govuk-list govuk-error-summary__list">
-					<li><a href="#partnership-type">Partnership_Type_Error_Text</a></li>
+					<li>
+						<a href="#partnership-type">Partnership_Type_Error_Text</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -51,15 +55,15 @@
 	[Theory]
 	[InlineData(PartnershipConstants.PartnershipType.Direct)]
 	[InlineData(PartnershipConstants.PartnershipType.Coordinated)]
-	public void WhenPartnershipTypeSelected_ThenCreatePartnershipCommandIsExecuted_AndRedirectsToTaskList(string partnershipType)
+	public async Task WhenPartnershipTypeSelected_ThenCreatePartnershipCommandIsExecuted_AndRedirectsToTaskList(string partnershipType)
 	{
 		// Arrange
-		var mockCqrs = new Mock<ICqrsService>();
+		var mockCqrs = new Mock<ICqrsService>(MockBehavior.Strict);
 		var expectedCommand = new CreatePartnershipApplicationCommand(partnershipType);
 		var createdResponse = new CreatedResponse() { Id = Guid.NewGuid() };
 
 		mockCqrs
-			.Setup(h => h.PostAsync(expectedCommand))
+			.Setup(h => h.PostAsync(It.IsAny<CreatePartnershipApplicationCommand>()))
 			.ReturnsAsync(new HttpObjectResponse<CreatedResponse>(
 					new HttpResponseMessage(System.Net.HttpStatusCode.OK), createdResponse));
 		Services.AddScoped<ICqrsService>((p) => mockCqrs.Object);
@@ -71,9 +75,9 @@
 		var continueButton = page.Find("#continue-button");
 
 		// Act
-		radio.Input(new() { Value = true });
+		await radio.InputAsync(new() { Value = true });
 
-		continueButton.Click();
+		await continueButton.ClickAsync(new MouseEventArgs());
 
 		// Assert
 		Assert.Throws<Bunit.ElementNotFoundException>(() =>
@@ -86,6 +90,7 @@
 			var element = page.Find("#confirm-criteria-error");
 		});
 
+		mockCqrs.Verify(c => c.PostAsync(It.Is<CreatePartnershipApplicationCommand>(t => t.PartnershipType == partnershipType)), Times.Once);
 		Assert.EndsWith(tasklistUrl + "?applicationId=" + createdResponse.Id.ToString(), navigationManager.Uri);
 	}
 }

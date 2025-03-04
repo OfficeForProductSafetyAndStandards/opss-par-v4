@@ -16,6 +16,8 @@ public class PartnershipApplicationEntityTypeConfiguration : IEntityTypeConfigur
         builder.Property(a => a.CreatedDate).HasColumnType("timestamptz").IsRequired(false);
         builder.Property(a => a.UpdatedDate).HasColumnType("timestamptz").IsRequired(false);
 
+        builder.Property(a => a.PartnershipType).HasColumnType("varchar(128)").IsRequired(true);
+
         builder.HasOne(u => u.Authority)
                .WithMany(o => o.PartnershipApplications)
                .HasForeignKey(u => u.AuthorityId)

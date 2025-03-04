@@ -141,4 +141,7 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Primary Authority Register - Select partnership type</value>
   </data>
+  <data name="Partnership_Type_Error_Text" xml:space="preserve">
+    <value>Select partnership type</value>
+  </data>
 </root>

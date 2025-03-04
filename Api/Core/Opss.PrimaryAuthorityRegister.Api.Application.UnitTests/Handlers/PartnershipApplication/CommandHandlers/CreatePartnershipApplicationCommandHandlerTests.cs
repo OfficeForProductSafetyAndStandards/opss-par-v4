@@ -19,7 +19,7 @@ public class CreatePartnershipApplicationCommandHandlerTests
 
     public CreatePartnershipApplicationCommandHandlerTests()
     {
-        _mockUnitOfWork = new Mock<IUnitOfWork>();
+        _mockUnitOfWork = new Mock<IUnitOfWork>(MockBehavior.Strict);
     }
 
     [Fact]
@@ -66,16 +66,16 @@ public class CreatePartnershipApplicationCommandHandlerTests
     public async Task GivenNoAuthorityFound_WhenHandlingRequest_ThenUnauthorizedExceptionThrown()
     {
         // Arrange
-        var claimsPrincipal = new ClaimsPrincipal();
-        claimsPrincipal.AddIdentity(new ClaimsIdentity(new List<Claim>
+        _claimsPrincipal = new ClaimsPrincipal();
+        _claimsPrincipal.AddIdentity(new ClaimsIdentity(new List<Claim>
         {
             new Claim(Claims.Authority, Guid.NewGuid().ToString())
         }));
         _handler = new CreatePartnershipApplicationCommandHandler(_mockUnitOfWork.Object, _claimsPrincipal);
 
         var authorityRepo = new Mock<IGenericRepository<Authority>>();
-        authorityRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<Expression<Func<Authority, object>>[]>()))
-                     .Returns(() => null);
+        authorityRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+                     .ReturnsAsync(() => null);
 
         _mockUnitOfWork.Setup(u => u.Repository<Authority>())
                        .Returns(authorityRepo.Object);
@@ -92,33 +92,38 @@ public class CreatePartnershipApplicationCommandHandlerTests
     public async Task GivenValidCommand_WhenHandlingRequest_ThenPartnershipApplicationIsCreated()
     {
         // Arrange
-        var claimsPrincipal = new ClaimsPrincipal();
-        claimsPrincipal.AddIdentity(new ClaimsIdentity(new List<Claim>
+        var authorityId = Guid.NewGuid();
+        _claimsPrincipal = new ClaimsPrincipal();
+        _claimsPrincipal.AddIdentity(new ClaimsIdentity(new List<Claim>
         {
-            new Claim(Claims.Authority, Guid.NewGuid().ToString())
+            new Claim(Claims.Authority, authorityId.ToString())
         }));
         _handler = new CreatePartnershipApplicationCommandHandler(_mockUnitOfWork.Object, _claimsPrincipal);
 
         var authorityRepo = new Mock<IGenericRepository<Authority>>();
         var authority = new Authority("Authority");
-        authorityRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<Expression<Func<Authority, object>>[]>()))
+        authorityRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => authority);
 
         _mockUnitOfWork.Setup(u => u.Repository<Authority>())
                        .Returns(authorityRepo.Object);
 
-        var expectedApplication = new Api.Domain.Entities.PartnershipApplication();
-        var partnershipApplicationRepo = new Mock<IGenericRepository<Api.Domain.Entities.PartnershipApplication>>();
-        partnershipApplicationRepo.Setup(r => r.AddAsync(expectedApplication))
+        var expectedApplication = new Domain.Entities.PartnershipApplication(
+            authorityId, 
+            PartnershipConstants.PartnershipType.Direct);
+        var partnershipApplicationRepo = new Mock<IGenericRepository<Domain.Entities.PartnershipApplication>>();
+        partnershipApplicationRepo.Setup(r => r.AddAsync(It.IsAny<Domain.Entities.PartnershipApplication>()))
             .ReturnsAsync(expectedApplication);
-        _mockUnitOfWork.Setup(u => u.Repository<Api.Domain.Entities.PartnershipApplication>())
+        _mockUnitOfWork.Setup(u => u.Repository<Domain.Entities.PartnershipApplication>())
                        .Returns(partnershipApplicationRepo.Object);
 
         var command = new CreatePartnershipApplicationCommand(PartnershipConstants.PartnershipType.Direct);
         var response = await _handler.Handle(command, CancellationToken.None);
 
-        _mockUnitOfWork.Verify(u => u.Save(It.IsAny<CancellationToken>()), Times.Once);
-        partnershipApplicationRepo.Verify(r => r.AddAsync(expectedApplication), Times.Once);
+        partnershipApplicationRepo.Verify(
+            repo => repo.AddAsync(
+                It.Is<Domain.Entities.PartnershipApplication>(
+                    d => d.PartnershipType == command.PartnershipType)), Times.Once);
 
         Assert.Equal(expectedApplication.Id, response);
     }

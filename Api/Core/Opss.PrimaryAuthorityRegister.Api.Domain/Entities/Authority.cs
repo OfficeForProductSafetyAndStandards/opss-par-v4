@@ -18,13 +18,13 @@ public class Authority : BaseAuditableEntity
         Name = name;
         _regulatoryFunctions = new List<RegulatoryFunction>();
         _authorityUsers = new List<AuthorityUser>();
+        _partnershipApplications = new List<PartnershipApplication>();
     }
 
-    public Authority(string name, RegulatoryFunction[] regulatoryFunctions) : base()
+    public Authority(string name, RegulatoryFunction[] regulatoryFunctions) 
+        : this(name)
     {
-        Name = name;
-        _regulatoryFunctions = new List<RegulatoryFunction>(regulatoryFunctions);
-        _authorityUsers = new List<AuthorityUser>();
+        _regulatoryFunctions.AddRange(regulatoryFunctions);
     }
 
     public void AddUser(UserIdentity user)
@@ -42,8 +42,10 @@ public class Authority : BaseAuditableEntity
         _regulatoryFunctions.Add(regulatoryFunction);
     }
 
-    public void AddPartnershipApplication(PartnershipApplication function)
+    public void AddPartnershipApplication(PartnershipApplication application)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(application);
+
+        _partnershipApplications.Add(application);
     }
 }
