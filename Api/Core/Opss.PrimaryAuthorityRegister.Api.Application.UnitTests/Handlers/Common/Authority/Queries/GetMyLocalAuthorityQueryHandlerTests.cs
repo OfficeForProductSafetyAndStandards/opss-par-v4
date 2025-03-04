@@ -1,7 +1,6 @@
 ﻿using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Authority.Queries;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
-using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
@@ -10,12 +9,12 @@ using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Common.Authority.Queries;
 
-public class GetMyOfferedRegulatoryFunctionsQueryHandlerTests
+public class GetMyLocalAuthorityQueryHandlerTests
 {
     private readonly Mock<IGenericRepository<Domain.Entities.Authority>> _repo;
     private ClaimsPrincipal? _claimsPrincipal;
 
-    public GetMyOfferedRegulatoryFunctionsQueryHandlerTests()
+    public GetMyLocalAuthorityQueryHandlerTests()
     {
         _repo = new Mock<IGenericRepository<Domain.Entities.Authority>>();
     }
@@ -25,11 +24,11 @@ public class GetMyOfferedRegulatoryFunctionsQueryHandlerTests
     {
         // Arrange
         _claimsPrincipal = null;
-        var handler = new GetMyOfferedRegulatoryFunctionsQueryHandler(_repo.Object, _claimsPrincipal);
+        var handler = new GetMyLocalAuthorityQueryHandler(_repo.Object, _claimsPrincipal);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
-                                handler.Handle(new GetMyOfferedRegulatoryFunctionsQuery(),
+                                handler.Handle(new GetMyLocalAuthorityQuery(),
                                 CancellationToken.None));
 
         Assert.Equal("You are not authenticated", exception.Message);
@@ -40,11 +39,11 @@ public class GetMyOfferedRegulatoryFunctionsQueryHandlerTests
     {
         // Arrange
         _claimsPrincipal = new ClaimsPrincipal();
-        var handler = new GetMyOfferedRegulatoryFunctionsQueryHandler(_repo.Object, _claimsPrincipal);
+        var handler = new GetMyLocalAuthorityQueryHandler(_repo.Object, _claimsPrincipal);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
-                                handler.Handle(new GetMyOfferedRegulatoryFunctionsQuery(),
+                                handler.Handle(new GetMyLocalAuthorityQuery(),
                                 CancellationToken.None));
 
         Assert.Equal("You are not assigned to an authority", exception.Message);
@@ -56,18 +55,18 @@ public class GetMyOfferedRegulatoryFunctionsQueryHandlerTests
         // Arrange
         var claimsPrincipal = new ClaimsPrincipal();
         claimsPrincipal.AddIdentity(new ClaimsIdentity(new List<Claim>
-        { 
+        {
             new Claim(Claims.Authority, Guid.NewGuid().ToString())
         }));
 
         _repo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
             .Returns(() => null);
-        
-        var handler = new GetMyOfferedRegulatoryFunctionsQueryHandler(_repo.Object, claimsPrincipal);
+
+        var handler = new GetMyLocalAuthorityQueryHandler(_repo.Object, claimsPrincipal);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
-                                handler.Handle(new GetMyOfferedRegulatoryFunctionsQuery(),
+                                handler.Handle(new GetMyLocalAuthorityQuery(),
                                 CancellationToken.None));
 
         Assert.Equal("Your assigned authority cannot be found", exception.Message);
@@ -83,28 +82,19 @@ public class GetMyOfferedRegulatoryFunctionsQueryHandlerTests
             new Claim(Claims.Authority, Guid.NewGuid().ToString())
         }));
 
-        var authority = new Mock<Domain.Entities.Authority>("Authority");
-        authority.SetupGet(a => a.RegulatoryFunctions)
-            .Returns(new List<RegulatoryFunction>
-            {
-                new RegulatoryFunction("Environmental Health"),
-                new RegulatoryFunction("Trading Standards")
-            });
+        var authority = new Domain.Entities.Authority("Authority");
 
         _repo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<Expression<Func<Domain.Entities.Authority, object>>[]>()))
-            .ReturnsAsync(() => authority.Object);
+            .ReturnsAsync(() => authority);
 
-        var handler = new GetMyOfferedRegulatoryFunctionsQueryHandler(_repo.Object, claimsPrincipal);
+        var handler = new GetMyLocalAuthorityQueryHandler(_repo.Object, claimsPrincipal);
 
         // Act
-        var result = await handler.Handle(new GetMyOfferedRegulatoryFunctionsQuery(), CancellationToken.None);
+        var result = await handler.Handle(new GetMyLocalAuthorityQuery(), CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);
-
-        var results = result.Select(r => r.Name);
-
-        Assert.Contains("Environmental Health", results);
-        Assert.Contains("Trading Standards", results);
+        Assert.Equal("Authority", result.Name);
     }
 }
+
