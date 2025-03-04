@@ -22,6 +22,91 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthorityRegulatoryFunction", b =>
+                {
+                    b.Property<Guid>("AuthoritiesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RegulatoryFunctionsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AuthoritiesId", "RegulatoryFunctionsId");
+
+                    b.HasIndex("RegulatoryFunctionsId");
+
+                    b.ToTable("AuthorityRegulatoryFunction");
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Authority", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authority");
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.AuthorityUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AuthorityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<Guid?>("UserIdentityId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorityId");
+
+                    b.HasIndex("UserIdentityId")
+                        .IsUnique();
+
+                    b.ToTable("AuthorityUser");
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.RegulatoryFunction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamptz");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegulatoryFunction");
+                });
+
             modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -113,6 +198,36 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Migrations
                     b.ToTable("RoleUserIdentity");
                 });
 
+            modelBuilder.Entity("AuthorityRegulatoryFunction", b =>
+                {
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Authority", null)
+                        .WithMany()
+                        .HasForeignKey("AuthoritiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.RegulatoryFunction", null)
+                        .WithMany()
+                        .HasForeignKey("RegulatoryFunctionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.AuthorityUser", b =>
+                {
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Authority", "Authority")
+                        .WithMany("AuthorityUsers")
+                        .HasForeignKey("AuthorityId");
+
+                    b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.UserIdentity", "UserIdentity")
+                        .WithOne("AuthorityUser")
+                        .HasForeignKey("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.AuthorityUser", "UserIdentityId");
+
+                    b.Navigation("Authority");
+
+                    b.Navigation("UserIdentity");
+                });
+
             modelBuilder.Entity("RoleUserIdentity", b =>
                 {
                     b.HasOne("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Role", null)
@@ -126,6 +241,16 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Migrations
                         .HasForeignKey("UserIdentitiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.Authority", b =>
+                {
+                    b.Navigation("AuthorityUsers");
+                });
+
+            modelBuilder.Entity("Opss.PrimaryAuthorityRegister.Api.Domain.Entities.UserIdentity", b =>
+                {
+                    b.Navigation("AuthorityUser");
                 });
 #pragma warning restore 612, 618
         }

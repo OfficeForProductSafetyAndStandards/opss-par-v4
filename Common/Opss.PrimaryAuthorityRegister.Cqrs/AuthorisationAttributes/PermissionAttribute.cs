@@ -18,13 +18,25 @@ public sealed class PermissionAttribute : ClaimRequiredAttribute
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PermissionAttribute"/> class. 
-    /// Initializes a new instance of the PermissionForAttribute.
     /// </summary>
     /// <param name="permission">The named permission that is required.</param>
     public PermissionAttribute(string permission)
         : base(PermissionClaimType, "*", permission)
     {
         this.permission = permission;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PermissionAttribute"/> class. 
+    /// </summary>
+    /// <param name="permissions">
+    ///     Joins supplied permissions with a | which is expanded with 
+    ///     the  <see cref="MultiplePermissionResourceKeyExpander"/> 
+    /// </param>
+    public PermissionAttribute(params string[] permissions)
+        : base(PermissionClaimType, "*", string.Join("|", permissions))
+    {
+        permission = string.Join("|", permissions);
     }
 
     /// <summary>
@@ -37,4 +49,6 @@ public sealed class PermissionAttribute : ClaimRequiredAttribute
             return permission;
         }
     }
+
+    public string[] Permissions { get { return permission.Split("|"); } }
 }

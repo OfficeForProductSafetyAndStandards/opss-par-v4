@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Opss.PrimaryAuthorityRegister.Cqrs;
+using Opss.PrimaryAuthorityRegister.Http;
 
-namespace Opss.PrimaryAuthorityRegister.Cqrs.UnitTests;
+namespace Opss.PrimaryAuthorityRegister.Http.UnitTests;
 
 public class ResponsesTests
 {

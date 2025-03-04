@@ -71,7 +71,7 @@ public class ClaimRequiredAttribute : AuthrosationAttributeBaseAttribute
                                                         if (property == null)
                                                         {
                                                             throw new InvalidOperationException(
-                                                                    "{resource.GetType()}'s ClaimRequiredAttribute missing property: {propertyName}");
+                                                                    $"{resource.GetType()}'s ClaimRequiredAttribute missing property: {propertyName}");
                                                         }
 
                                                         var propertyValue = property.GetValue(resource, null);

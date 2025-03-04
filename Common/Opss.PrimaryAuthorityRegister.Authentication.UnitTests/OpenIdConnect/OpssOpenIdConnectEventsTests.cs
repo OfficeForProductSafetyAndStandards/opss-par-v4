@@ -11,8 +11,8 @@ using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Authentication.Queries;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
-using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.OpenIdConnect;
 

@@ -1,0 +1,29 @@
+﻿@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Authority.Queries
+
+
+@inject ICqrsService _cqrsService
+
+@foreach (var function in regulatoryFunctions)
+{
+	<GdsTag Classes=@($"max-width-fit-content govuk-!-static-margin-right-3 {TagClasses.Turquoise}")>
+		@function
+	</GdsTag>
+}
+
+@code {
+	private readonly List<string> regulatoryFunctions = new List<string>();
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender) return;
+
+		var response = await _cqrsService.GetAsync<GetMyOfferedRegulatoryFunctionsQuery, List<MyOfferedRegulatoryFunctionDto>>(
+			new GetMyOfferedRegulatoryFunctionsQuery());
+		regulatoryFunctions.Clear();
+
+		if (response.Result != null)
+			regulatoryFunctions.AddRange(response.Result.Select(f => f.Name));
+
+		StateHasChanged();
+	}
+}

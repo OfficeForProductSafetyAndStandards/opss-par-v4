@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Opss.PrimaryAuthorityRegister.Authentication.Builders;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
-using Opss.PrimaryAuthorityRegister.Http.Services;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 

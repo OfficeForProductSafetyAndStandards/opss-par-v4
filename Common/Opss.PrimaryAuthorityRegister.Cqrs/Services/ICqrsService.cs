@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
-using Opss.PrimaryAuthorityRegister.Cqrs;
 using Opss.PrimaryAuthorityRegister.Cqrs.RequestInterfaces;
+using Opss.PrimaryAuthorityRegister.Http;
 
-namespace Opss.PrimaryAuthorityRegister.Http.Services;
+namespace Opss.PrimaryAuthorityRegister.Cqrs.Services;
 
 public interface ICqrsService
 {

@@ -1,7 +1,9 @@
-﻿using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
 using Opss.PrimaryAuthorityRegister.Api.Domain.Common;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 
@@ -45,9 +47,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseAuditabl
         return Task.CompletedTask;
     }
 
-    public async Task<T?> GetByIdAsync(Guid Id)
+    public async Task<T?> GetByIdAsync(Guid Id, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbContext.Set<T>().FindAsync(Id).ConfigureAwait(false);
+        IQueryable<T> query = _dbContext.Set<T>();
+
+        if (includes != null)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+
+        return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == Id).ConfigureAwait(false);
     }
 
     public Task UpdateAsync(T entity)

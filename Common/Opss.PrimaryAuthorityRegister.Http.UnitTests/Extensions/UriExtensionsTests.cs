@@ -1,6 +1,6 @@
 ﻿using Opss.PrimaryAuthorityRegister.Http.ExtensionMethods;
 
-namespace Opss.PrimaryAuthorityRegister.Cqrs.UnitTests.Extensions;
+namespace Opss.PrimaryAuthorityRegister.Http.UnitTests.Extensions;
 
 public class UriExtensionsTests
 {

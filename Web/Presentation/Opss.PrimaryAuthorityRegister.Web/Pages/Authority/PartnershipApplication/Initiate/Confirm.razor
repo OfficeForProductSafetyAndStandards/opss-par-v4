@@ -1,4 +1,5 @@
 ﻿@page "/authority/partnership-application/initiate/confirm"
+@attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
 @inject IStringLocalizer<Confirm> Loc
 @inject NavigationManager navigationManager

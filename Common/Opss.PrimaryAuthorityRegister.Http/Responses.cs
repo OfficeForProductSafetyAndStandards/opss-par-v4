@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Opss.PrimaryAuthorityRegister.Cqrs;
+namespace Opss.PrimaryAuthorityRegister.Http;
 
 public static class Responses
 {

@@ -6,8 +6,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Moq;
 using Opss.PrimaryAuthorityRegister.Authentication.Builders;
 using Opss.PrimaryAuthorityRegister.Authentication.Constants;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.ExtensionMethods;
-using Opss.PrimaryAuthorityRegister.Http.Services;
 
 namespace Opss.PrimaryAuthorityRegister.Authentication.UnitTests.Builders;
 
