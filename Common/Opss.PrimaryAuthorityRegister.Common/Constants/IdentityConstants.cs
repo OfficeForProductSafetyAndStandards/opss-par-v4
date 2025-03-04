@@ -29,6 +29,11 @@ public static class IdentityConstants
             SecretaryOfState,
             LAU
         };
+
+        public readonly static string[] Authority =
+        {
+            AuthorityManager, AuthorityMember
+        };
     }
 
     public static class Policies
@@ -37,7 +42,7 @@ public static class IdentityConstants
 
         public readonly static Dictionary<string, string[]> Configuration = new Dictionary<string, string[]>
         {
-            {  Authority, [Roles.AuthorityManager, Roles.AuthorityMember] }
+            {  Authority, Roles.Authority }
         };
     }
 }

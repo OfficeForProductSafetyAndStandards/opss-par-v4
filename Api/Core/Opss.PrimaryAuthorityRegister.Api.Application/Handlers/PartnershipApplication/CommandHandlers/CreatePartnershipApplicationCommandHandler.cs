@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.PartnershipApplication.Commands;
 using System.Security.Claims;
 
-namespace Opss.PrimaryAuthorityRegister.Cqrs.Requests.PartnershipApplication.Commands;
+namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.PartnershipApplication.CommandHandlers;
 
 public class CreatePartnershipApplicationCommandHandler : IRequestHandler<CreatePartnershipApplicationCommand, Guid>
 {

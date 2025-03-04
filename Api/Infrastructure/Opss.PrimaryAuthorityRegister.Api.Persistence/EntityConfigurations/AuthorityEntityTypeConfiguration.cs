@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Domain.EntityConfigurations;
+namespace Opss.PrimaryAuthorityRegister.Api.Persistence.EntityConfigurations;
 
 public class AuthorityEntityTypeConfiguration : IEntityTypeConfiguration<Authority>
 {
