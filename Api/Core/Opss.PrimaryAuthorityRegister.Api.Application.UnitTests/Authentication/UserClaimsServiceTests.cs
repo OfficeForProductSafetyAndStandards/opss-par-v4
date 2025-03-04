@@ -49,7 +49,7 @@ public class UserClaimsServiceTests
     }
 
     [Fact]
-    public void GetUserClaims_ShouldReturnAuthorityIdClaimClaim_WhenAuthorityUserFound()
+    public void GetUserClaims_ShouldReturnAuthorityIdClaim_WhenAuthorityUserFound()
     {
         // Arrange
         string email = "user@example.com";
