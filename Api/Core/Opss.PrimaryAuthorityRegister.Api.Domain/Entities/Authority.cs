@@ -7,9 +7,11 @@ public class Authority : BaseAuditableEntity
     public string Name { get; set; }
     public virtual IReadOnlyCollection<RegulatoryFunction> RegulatoryFunctions => _regulatoryFunctions;
     public virtual IReadOnlyCollection<AuthorityUser> AuthorityUsers => _authorityUsers;
+    public virtual IReadOnlyCollection<PartnershipApplication> PartnershipApplications => _partnershipApplications;
 
     private readonly List<RegulatoryFunction> _regulatoryFunctions;
     private readonly List<AuthorityUser> _authorityUsers;
+    private readonly List<PartnershipApplication> _partnershipApplications;
 
     public Authority(string name) : base()
     {
@@ -38,5 +40,10 @@ public class Authority : BaseAuditableEntity
         ArgumentNullException.ThrowIfNull(regulatoryFunction);
 
         _regulatoryFunctions.Add(regulatoryFunction);
+    }
+
+    public void AddPartnershipApplication(PartnershipApplication function)
+    {
+        throw new NotImplementedException();
     }
 }

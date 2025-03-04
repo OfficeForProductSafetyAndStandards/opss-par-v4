@@ -1,0 +1,91 @@
+﻿@using Opss.PrimaryAuthorityRegister.Common.Constants
+@using Opss.PrimaryAuthorityRegister.Cqrs.Requests.PartnershipApplication.Commands
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
+@using Opss.PrimaryAuthorityRegister.Http
+@using Opss.PrimaryAuthorityRegister.Http.Entities
+@using System.Net.Http
+@using System.Net
+@using Opss.PrimaryAuthorityRegister.Http.Problem
+@inherits BunitContext
+
+@code {
+	const string tasklistUrl = "/authority/partnership-application/initiate/task-list";
+
+	[Fact]
+	public void WhenPartnershipTypeNotSelected_ThenErrorMessageIsShown_AndThenDoesNotNavigateToTaskList()
+	{
+		// Arrange
+		Services.AddLocalization();
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.PartnershipType.Select>();
+
+		// Act
+		var continueButton = page.Find("#continue-button");
+		continueButton.Click();
+
+		// Assert
+		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
+		page
+		.Find(".govuk-error-summary")
+		.MarkupMatches(
+	@<div class="govuk-error-summary" data-module="govuk-error-summary">
+		<div role="alert">
+			<h2 class="govuk-error-summary__title">There is a problem</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					<li><a href="#partnership-type">Partnership_Type_Error_Text</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>);
+
+		page
+	.Find("#partnership-type-error")
+		.MarkupMatches(
+	@<p id="partnership-type-error" class="govuk-error-message ">
+		<span class="govuk-visually-hidden">Error:</span>Partnership_Type_Error_Text
+	</p>
+	);
+	}
+
+	[Theory]
+	[InlineData(PartnershipConstants.PartnershipType.Direct)]
+	[InlineData(PartnershipConstants.PartnershipType.Coordinated)]
+	public void WhenPartnershipTypeSelected_ThenCreatePartnershipCommandIsExecuted_AndRedirectsToTaskList(string partnershipType)
+	{
+		// Arrange
+		var mockCqrs = new Mock<ICqrsService>();
+		var expectedCommand = new CreatePartnershipApplicationCommand(partnershipType);
+		var createdResponse = new CreatedResponse() { Id = Guid.NewGuid() };
+
+		mockCqrs
+			.Setup(h => h.PostAsync(expectedCommand))
+			.ReturnsAsync(new HttpObjectResponse<CreatedResponse>(
+					new HttpResponseMessage(System.Net.HttpStatusCode.OK), createdResponse));
+		Services.AddScoped<ICqrsService>((p) => mockCqrs.Object);
+		Services.AddLocalization();
+
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.PartnershipType.Select>();
+		var radio = page.Find($"[value={partnershipType}]");
+		var continueButton = page.Find("#continue-button");
+
+		// Act
+		radio.Input(new() { Value = true });
+
+		continueButton.Click();
+
+		// Assert
+		Assert.Throws<Bunit.ElementNotFoundException>(() =>
+		{
+			var element = page.Find(".govuk-error-summary");
+		});
+
+		Assert.Throws<Bunit.ElementNotFoundException>(() =>
+		{
+			var element = page.Find("#confirm-criteria-error");
+		});
+
+		Assert.EndsWith(tasklistUrl + "?applicationId=" + createdResponse.Id.ToString(), navigationManager.Uri);
+	}
+}
