@@ -1,8 +1,9 @@
 ﻿using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
+using Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
 using Opss.PrimaryAuthorityRegister.Common.Providers;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
+namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Repositories;
 
 public class GenericRepositoryTests
 {

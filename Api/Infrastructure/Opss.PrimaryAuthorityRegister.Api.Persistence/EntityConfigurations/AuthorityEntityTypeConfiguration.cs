@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Domain.EntityConfigurations;
+namespace Opss.PrimaryAuthorityRegister.Api.Persistence.EntityConfigurations;
 
 public class AuthorityEntityTypeConfiguration : IEntityTypeConfiguration<Authority>
 {
@@ -25,5 +25,10 @@ public class AuthorityEntityTypeConfiguration : IEntityTypeConfiguration<Authori
 
         builder.HasMany(a => a.RegulatoryFunctions)
                .WithMany(f => f.Authorities);
+
+        builder.HasMany(a => a.PartnershipApplications)
+               .WithOne(f => f.Authority)
+               .HasForeignKey(f => f.AuthorityId)
+               .IsRequired();
     }
 }

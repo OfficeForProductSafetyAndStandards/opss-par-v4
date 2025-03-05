@@ -13,8 +13,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Opss.PrimaryAuthorityRegister.Cqrs.Services;
+using Opss.PrimaryAuthorityRegister.Http;
 
-namespace Opss.PrimaryAuthorityRegister.Http.UnitTests.Services;
+namespace Opss.PrimaryAuthorityRegister.Cqrs.UnitTests.Services;
 
 public class CqrsServiceTests
 {

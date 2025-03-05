@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Api\Core\Opss.PrimaryAuthorityRegister.Api.Application\Opss.PrimaryAuthorityRegister.Api.Application.csproj" />
     <ProjectReference Include="..\Opss.PrimaryAuthorityRegister.Cqrs\Opss.PrimaryAuthorityRegister.Cqrs.csproj" />
   </ItemGroup>
 
