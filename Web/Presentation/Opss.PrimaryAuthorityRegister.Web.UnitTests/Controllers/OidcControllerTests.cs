@@ -87,5 +87,16 @@ public class OidcControllerTests
         Assert.Contains("oidc-onelogin", result.AuthenticationSchemes);
         Assert.Equal("/home", result.Properties.RedirectUri);
     }
+
+    [Fact]
+    public void WhenCallingPostLogin_AndAgreedTandCs_ThenRedirectsToDashboard()
+    {
+        // Arrange
+        // Act
+        var result = _controller.PostLogin() as RedirectResult;
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("/authority", result.Url);
+    }
 }
 

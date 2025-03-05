@@ -37,4 +37,11 @@ public class OidcController : ControllerBase
         var props = new AuthenticationProperties { RedirectUri = returnUrl.ToString() };
         return SignOut(props, CookieAuthenticationDefaults.AuthenticationScheme, provider);
     }
+
+    [Authorize]
+    [HttpGet("post-login")]
+    public IActionResult PostLogin()
+    {
+        return Redirect("/authority");
+    }
 }
