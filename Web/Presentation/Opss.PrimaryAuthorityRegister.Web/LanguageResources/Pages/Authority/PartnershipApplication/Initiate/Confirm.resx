@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Guidance" xml:space="preserve">
-    <value>Before you can start a new application, you must have been in contact with the organization and have a written summary document detailing the partnership. </value>
+    <value>Before starting a new application, you must have been in contact with the partner and have a written summary document detailing the partnership.</value>
   </data>
   <data name="PageHeading" xml:space="preserve">
     <value>Confirm agreement to apply for partnership</value>
