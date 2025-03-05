@@ -1,12 +1,12 @@
-﻿using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Persistence.EntityConfigurations;
 
-public class AuthorityUserEntityTypeConfiguration : IEntityTypeConfiguration<AuthorityUser>
+public class PartnershipApplicationEntityTypeConfiguration : IEntityTypeConfiguration<PartnershipApplication>
 {
-    public void Configure(EntityTypeBuilder<AuthorityUser> builder)
+    public void Configure(EntityTypeBuilder<PartnershipApplication> builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
@@ -16,13 +16,10 @@ public class AuthorityUserEntityTypeConfiguration : IEntityTypeConfiguration<Aut
         builder.Property(a => a.CreatedDate).HasColumnType("timestamptz").IsRequired(false);
         builder.Property(a => a.UpdatedDate).HasColumnType("timestamptz").IsRequired(false);
 
-        builder.HasOne(a => a.UserIdentity)
-               .WithOne(f => f.AuthorityUser)
-               .HasForeignKey<UserIdentity>()
-               .IsRequired(false);
+        builder.Property(a => a.PartnershipType).HasColumnType("varchar(128)").IsRequired(true);
 
         builder.HasOne(u => u.Authority)
-               .WithMany(o => o.AuthorityUsers)
+               .WithMany(o => o.PartnershipApplications)
                .HasForeignKey(u => u.AuthorityId)
                .IsRequired(false);
     }

@@ -73,4 +73,26 @@ public class AuthorityTests
 
         Assert.Throws<ArgumentNullException>(() => authority.AddRegulatoryFunction(null));
     }
+
+    [Fact]
+    public void GivenAuthority_WhenAddingPartnershipApplication_ThenPartnershipApplicationAdded()
+    {
+        var name = "Authority";
+        var authority = new Authority(name);
+
+        var function = new PartnershipApplication();
+
+        authority.AddPartnershipApplication(function);
+
+        Assert.Contains(function, authority.PartnershipApplications);
+    }
+
+    [Fact]
+    public void GivenAuthority_WhenAddingNullPartnershipApplication_ThenArgumentNullExceptionThrown()
+    {
+        var name = "Authority";
+        var authority = new Authority(name);
+
+        Assert.Throws<ArgumentNullException>(() => authority.AddPartnershipApplication(null));
+    }
 }

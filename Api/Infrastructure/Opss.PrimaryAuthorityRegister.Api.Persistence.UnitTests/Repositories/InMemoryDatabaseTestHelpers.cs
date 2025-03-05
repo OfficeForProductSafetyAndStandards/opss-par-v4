@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Opss.PrimaryAuthorityRegister.Api.Persistence.Contexts;
 
-namespace Opss.PrimaryAuthorityRegister.Api.Persistence.Repositories;
+namespace Opss.PrimaryAuthorityRegister.Api.Persistence.UnitTests.Repositories;
 
 internal static class InMemoryDatabaseTestHelpers
 {
