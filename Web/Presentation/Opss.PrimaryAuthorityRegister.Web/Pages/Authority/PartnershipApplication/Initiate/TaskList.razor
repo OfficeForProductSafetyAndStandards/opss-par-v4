@@ -1,9 +1,13 @@
 ﻿@page "/authority/partnership-application/initiate/task-list"
 @attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
+@using Microsoft.AspNetCore.WebUtilities
+@using Opss.PrimaryAuthorityRegister.Web.Application.Helpers
 @using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
 
 @inject IStringLocalizer<TaskList> Loc
+@inject IQueryHelper queryHelper
+@inject NavigationManager NavManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
@@ -11,7 +15,7 @@
 	<div class="govuk-grid-column-full">
 		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
 			<GdsCaption Classes=@CaptionSize.Large><MyLocalAuthoirtyName /></GdsCaption>
-			@Loc["PageTitle"]
+			@Loc["PageHeading"]
 		</GdsHeading>
 	</div>
 </div>
@@ -49,8 +53,33 @@
 				</StatusTemplate>
 			</GdsTaskListItem>
 		</GdsTaskList>
+		@if (!string.IsNullOrEmpty(applicationId)){
+		<h2 class="govuk-heading-m">@Loc["List_2_Heading"]</h2>
+			<GdsTaskList Id="partnership-application-task-2-list">
+				<GdsTaskListItem>
+					<TaskTitleTemplate>
+						<GdsLink Id="add-regulatory-function-contacts" Href="/authority/partnership-application/initiate/regulatory-function-contacts/list">
+							@Loc["List_2_Task_1_Title"]
+						</GdsLink>
+					</TaskTitleTemplate>
+					<StatusTemplate>
+						<GdsTag Classes=@TagClasses.Blue>@Loc["Not_Yet_Started"]</GdsTag>
+					</StatusTemplate>
+				</GdsTaskListItem>
+			</GdsTaskList>
+		}
 	</div>
 </div>
 
 @code {
+	private string? applicationId = null;
+
+	protected override void OnInitialized()
+	{
+		var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+		if(queryHelper.ParseQuery(uri.Query).TryGetValue("applicationId", out var _applicationId))
+		{
+			applicationId = _applicationId.ToString();
+		}
+	}
 }

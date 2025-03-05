@@ -3,6 +3,7 @@ using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Common.Constants;
 using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Http.Services;
+using Opss.PrimaryAuthorityRegister.Web.Application.Helpers;
 using Opss.PrimaryAuthorityRegister.Web.Application.Services;
 using System.Diagnostics.CodeAnalysis;
 
@@ -52,6 +53,7 @@ internal static class Program
             return client;
         });
 
+        builder.Services.AddSingleton<IQueryHelper, QueryHelper>();
         builder.Services.AddScoped<ICookieService, CookieService>();
         builder.Services.AddScoped<ICqrsService, CqrsService>();
         builder.Services.AddScoped<IHttpService, HttpService>();

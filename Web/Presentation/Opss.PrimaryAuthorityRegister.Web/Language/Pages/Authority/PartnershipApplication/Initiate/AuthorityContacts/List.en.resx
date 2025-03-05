@@ -117,34 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CompletedSections_Of" xml:space="preserve">
-    <value>of</value>
-  </data>
-  <data name="CompletedSections_Prefix" xml:space="preserve">
-    <value>You have completed</value>
-  </data>
-  <data name="CompletedSections_Suffix" xml:space="preserve">
-    <value>sections.</value>
-  </data>
   <data name="PageHeading" xml:space="preserve">
-    <value>Partnership Application</value>
-  </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Partnership Application</value>
-  </data>
-  <data name="List_1_Heading" xml:space="preserve">
-    <value>1. Partnership type</value>
-  </data>
-  <data name="List_1_Task_1_Title" xml:space="preserve">
-    <value>Select partnership type</value>
-  </data>
-  <data name="List_2_Heading" xml:space="preserve">
-    <value>2. Primary authority contacts</value>
-  </data>
-  <data name="List_2_Task_1_Title" xml:space="preserve">
     <value>Add regulatory function contacts</value>
   </data>
-  <data name="Not_Yet_Started" xml:space="preserve">
-    <value>Not Yet Started</value>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Primary Authority Register - Add regulatory function contacts</value>
+  </data>
+  <data name="Instructions_Para_1" xml:space="preserve">
+    <value>You must add at least one contact per regulatory function</value>
   </data>
 </root>
