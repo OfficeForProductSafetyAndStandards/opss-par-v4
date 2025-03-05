@@ -88,7 +88,7 @@ public class AuthorityTests
     }
 
     [Fact]
-    public void GivenAuthority_WhenAddingNullPartnershipApplication_ThenPartnershipApplicationAdded()
+    public void GivenAuthority_WhenAddingNullPartnershipApplication_ThenArgumentNullExceptionThrown()
     {
         var name = "Authority";
         var authority = new Authority(name);
