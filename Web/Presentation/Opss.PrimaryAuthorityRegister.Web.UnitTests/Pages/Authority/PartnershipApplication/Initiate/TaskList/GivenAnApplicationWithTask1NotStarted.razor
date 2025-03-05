@@ -1,0 +1,31 @@
+﻿@using Opss.DesignSystem.Frontend.Blazor.Components.Classes
+@using Opss.DesignSystem.Frontend.Blazor.Components.Shared
+@using Opss.PrimaryAuthorityRegister.Cqrs.Services
+@using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
+@inherits BunitContext
+
+@code {
+	[Fact]
+	public void WhenStartButtonClicked_ThenNavigatesToConfirm()
+	{
+		// Arrange
+		Services.AddLocalization();
+		var navMan = Services.GetRequiredService<NavigationManager>();
+
+		ComponentFactories.AddStub<MyLocalAuthoirtyName>();
+		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
+
+		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
+		var taskLink = page.Find("#select-partnership-type");
+		var taskTag = page.Find("#partnership-application-task-1-list-1-status strong");
+
+		var href = taskLink.Attributes["href"];
+		Assert.Equal("/authority/partnership-application/initiate/partnership-type/select", href.Value);
+		var disabled = taskLink.Attributes["disabled"];
+		Assert.Null(disabled);
+
+		var classes = taskTag.Attributes["class"];
+		Assert.Contains(TagClasses.Blue, classes.Value);
+		Assert.Equal("Not_Yet_Started", taskTag.InnerHtml);
+	}
+}
