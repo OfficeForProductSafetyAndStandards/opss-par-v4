@@ -26,10 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="LanguageResources\Pages\Authority\PartnershipApplication\Initiate\AuthorityContacts\List.en.resx" />
     <EmbeddedResource Remove="LanguageResources\Shared\MainLayout.en.resx" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="LanguageResources\Pages\Authority\PartnershipApplication\Initiate\AuthorityContacts\List.en.resx" />
     <None Include="LanguageResources\Shared\MainLayout.en.resx" />
   </ItemGroup>
 

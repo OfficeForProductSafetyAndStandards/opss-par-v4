@@ -7,13 +7,15 @@
 
 @code {
 	[Fact]
-	public void WhenStartButtonClicked_ThenNavigatesToConfirm()
+	public void ThenAddRegulatoryFunctionListIsRendered()
 	{
 		// Arrange
 		var mockQueryHelper = new Mock<IQueryHelper>();
 		mockQueryHelper.Setup(h => h.ParseQuery(It.IsAny<string>()))
 		.Returns(() => new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
-		{ });
+		{
+			{ "applicationId", Guid.NewGuid().ToString()}
+		});
 		Services.AddSingleton(mockQueryHelper.Object);
 		Services.AddLocalization();
 		var navMan = Services.GetRequiredService<NavigationManager>();
@@ -22,35 +24,16 @@
 		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
 
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
-		var taskLink = page.Find("#select-partnership-type");
-		var taskTag = page.Find("#partnership-application-task-1-list-1-status strong");
+		var taskLink = page.Find("#add-regulatory-function-contacts");
+		var taskTag = page.Find("#partnership-application-task-2-list-1-status strong");
 
 		var href = taskLink.Attributes["href"];
-		Assert.Equal("/authority/partnership-application/initiate/partnership-type/select", href?.Value);
+		Assert.Equal("/authority/partnership-application/initiate/regulatory-function-contacts/list", href?.Value);
 		var disabled = taskLink.Attributes["disabled"];
 		Assert.Null(disabled);
 
 		var classes = taskTag.Attributes["class"];
 		Assert.Contains(TagClasses.Blue, classes?.Value);
 		Assert.Equal("Not_Yet_Started", taskTag.InnerHtml);
-	}
-
-	[Fact]
-	public void ThenAddRegulatoryFunctionListIsNotRendered(){
-		// Arrange
-		var mockQueryHelper = new Mock<IQueryHelper>();
-		mockQueryHelper.Setup(h => h.ParseQuery(It.IsAny<string>()))
-		.Returns(() => new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
-		{ });
-		Services.AddSingleton(mockQueryHelper.Object);
-		Services.AddLocalization();
-		var navMan = Services.GetRequiredService<NavigationManager>();
-
-		ComponentFactories.AddStub<MyLocalAuthoirtyName>();
-		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
-
-		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
-		Assert.Throws<ElementNotFoundException>(() => page.Find("#add-regulatory-function-contacts"));
-		Assert.Throws<ElementNotFoundException>(() => page.Find("#partnership-application-task-2-list-1-status strong"));
 	}
 }
