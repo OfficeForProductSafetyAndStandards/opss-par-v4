@@ -126,5 +126,7 @@ public class OidcControllerTests
         Assert.NotNull(result);
         Assert.Equal("/terms-conditions", result.Url);
     }
+
+    // todo: another test in case result is error?
 }
 
