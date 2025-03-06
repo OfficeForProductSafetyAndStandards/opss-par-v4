@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Opss.PrimaryAuthorityRegister.Cqrs.Services;
+using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Profile.Queries;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Controllers;
 
@@ -9,6 +11,13 @@ namespace Opss.PrimaryAuthorityRegister.Web.Controllers;
 [Route("oidc")]
 public class OidcController : ControllerBase
 {
+    private readonly ICqrsService _cqrsService;
+
+    public OidcController(ICqrsService cqrsService)
+    {
+        _cqrsService = cqrsService;
+    }
+
     [HttpGet("login")]
     public ActionResult Login([FromQuery] Uri? returnUrl, [FromQuery] string provider = "oidc-onelogin")
     {
@@ -39,9 +48,15 @@ public class OidcController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("post-login")]
-    public IActionResult PostLogin()
+    [HttpGet("after-login")]
+    public async Task<IActionResult> AfterLogin()
     {
-        return Redirect("/authority");
+        var agreedTandCs = await _cqrsService.GetAsync<GetMyProfileQuery, MyProfileDto>(new GetMyProfileQuery()).ConfigureAwait(false);
+
+        if (agreedTandCs.Result.HasAcceptedTermsAndConditions)
+        {
+            return Redirect("/authority");
+        }
+        return Redirect("/terms-conditions");
     }
 }
