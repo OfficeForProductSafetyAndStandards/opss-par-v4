@@ -6,7 +6,9 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
+<GdsHeading DataTestId="page-heading" HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>
+	@Loc["PageHeading"]
+</GdsHeading>
 
 <p class="govuk-body">@Loc["Para_1"]</p>
 
@@ -23,7 +25,7 @@
 
 <GdsInsetText><OpssMarkupString LocalizedContent=@Loc["Inset_1"]/></GdsInsetText>
 
-<GdsButton Href="/oidc/login?provider=oidc-onelogin&returnUrl=/auth" IsStartButton=@true>
+<GdsButton DataTestId="start-button" Href="/oidc/login?provider=oidc-onelogin&returnUrl=/auth" IsStartButton=@true>
 	@Loc["StartButton"]
 </GdsButton>
 

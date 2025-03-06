@@ -24,8 +24,8 @@
 		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
 
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
-		var taskLink = page.Find("#add-regulatory-function-contacts");
-		var taskTag = page.Find("#partnership-application-task-2-list-1-status strong");
+		var taskLink = page.FindByDataTestId("add-regulatory-function-contacts-link");
+		var taskTag = page.FindByDataTestId("add-regulatory-function-contacts-status-tag");
 
 		var href = taskLink.Attributes["href"];
 		Assert.Equal("/authority/partnership-application/initiate/regulatory-function-contacts/list", href?.Value);

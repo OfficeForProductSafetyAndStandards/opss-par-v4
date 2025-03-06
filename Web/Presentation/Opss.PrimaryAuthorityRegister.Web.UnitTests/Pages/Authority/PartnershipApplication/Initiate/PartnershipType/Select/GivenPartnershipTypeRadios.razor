@@ -22,20 +22,20 @@
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.PartnershipType.Select>();
 
 		// Act
-		var continueButton = page.Find("#continue-button");
+		var continueButton = page.FindByDataTestId("continue-button");
 		continueButton.Click();
 
 		// Assert
 		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
 		page
-		.Find(".govuk-error-summary")
+		.FindByDataTestId("error-summary")
 		.MarkupMatches(
-	@<div class="govuk-error-summary" data-module="govuk-error-summary">
+	@<div class="govuk-error-summary" data-module="govuk-error-summary" data-testid="error-summary">
 		<div role="alert">
 			<h2 class="govuk-error-summary__title">There is a problem</h2>
 			<div class="govuk-error-summary__body">
 				<ul class="govuk-list govuk-error-summary__list">
-					<li>
+					<li data-testid="partnership-type-error-summary">
 						<a href="#partnership-type">Partnership_Type_Error_Text</a>
 					</li>
 				</ul>
@@ -44,9 +44,9 @@
 	</div>);
 
 		page
-	.Find("#partnership-type-error")
+		.FindByDataTestId("partnership-type-error-message")
 		.MarkupMatches(
-	@<p id="partnership-type-error" class="govuk-error-message ">
+	@<p id="partnership-type-error" class="govuk-error-message" data-testid="partnership-type-error-message">
 		<span class="govuk-visually-hidden">Error:</span>Partnership_Type_Error_Text
 	</p>
 	);
@@ -71,8 +71,8 @@
 
 		var navigationManager = Services.GetRequiredService<NavigationManager>();
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.PartnershipType.Select>();
-		var radio = page.Find($"[value={partnershipType}]");
-		var continueButton = page.Find("#continue-button");
+		var radio = page.FindByDataTestId($"partnership-type-{partnershipType.ToLower()}-radio");
+		var continueButton = page.FindByDataTestId("continue-button");
 
 		// Act
 		await radio.InputAsync(new() { Value = true });
@@ -82,12 +82,12 @@
 		// Assert
 		Assert.Throws<Bunit.ElementNotFoundException>(() =>
 		{
-			var element = page.Find(".govuk-error-summary");
+			var element = page.FindByDataTestId("error-summary");
 		});
 
 		Assert.Throws<Bunit.ElementNotFoundException>(() =>
 		{
-			var element = page.Find("#confirm-criteria-error");
+			var element = page.FindByDataTestId("partnership-type-error-message");
 		});
 
 		mockCqrs.Verify(c => c.PostAsync(It.Is<CreatePartnershipApplicationCommand>(t => t.PartnershipType == partnershipType)), Times.Once);

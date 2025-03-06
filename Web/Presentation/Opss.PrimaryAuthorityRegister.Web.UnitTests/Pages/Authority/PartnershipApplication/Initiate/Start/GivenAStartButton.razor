@@ -8,7 +8,7 @@
 		Services.AddLocalization();
 		var navMan = Services.GetRequiredService<NavigationManager>();
 		var start = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Start>();
-		var startButton = start.Find("#start-button");
+		var startButton = start.FindByDataTestId("start-button");
 
 		// Act
 		startButton.Click();

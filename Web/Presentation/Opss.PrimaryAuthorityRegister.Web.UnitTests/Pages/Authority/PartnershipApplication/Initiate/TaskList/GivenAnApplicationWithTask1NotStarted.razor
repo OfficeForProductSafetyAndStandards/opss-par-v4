@@ -22,8 +22,8 @@
 		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
 
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
-		var taskLink = page.Find("#select-partnership-type");
-		var taskTag = page.Find("#partnership-application-task-1-list-1-status strong");
+		var taskLink = page.FindByDataTestId("select-partnership-type-link");
+		var taskTag = page.FindByDataTestId("select-partnership-type-status-tag");
 
 		var href = taskLink.Attributes["href"];
 		Assert.Equal("/authority/partnership-application/initiate/partnership-type/select", href?.Value);
@@ -50,7 +50,7 @@
 		ComponentFactories.AddStub<MyOfferedRegulatoryFunctionsTags>();
 
 		var page = Render<Web.Pages.Authority.PartnershipApplication.Initiate.TaskList>();
-		Assert.Throws<ElementNotFoundException>(() => page.Find("#add-regulatory-function-contacts"));
-		Assert.Throws<ElementNotFoundException>(() => page.Find("#partnership-application-task-2-list-1-status strong"));
+		Assert.Throws<ElementNotFoundException>(() => page.FindByDataTestId("add-regulatory-function-contacts-link"));
+		Assert.Throws<ElementNotFoundException>(() => page.FindByDataTestId("add-regulatory-function-contacts-status-tag"));
 	}
 }

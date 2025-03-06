@@ -1,4 +1,5 @@
-﻿@inherits BunitContext
+﻿@using Opss.DesignSystem.Frontend.Blazor.Components.Shared
+@inherits BunitContext
 
 @code {
 	const string tasklistUrl = "/authority/partnership-application/initiate/task-list";
@@ -12,31 +13,33 @@
 		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
 
 		// Act
-		var confirmButton = confirm.Find("#confirm-button");
+		var confirmButton = confirm.FindByDataTestId("confirm-button");
 		confirmButton.Click();
 
 		// Assert
 		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
 		confirm
-			.Find(".govuk-error-summary")
-			.MarkupMatches(
-				@<div class="govuk-error-summary" data-module="govuk-error-summary">
-					<div role="alert">
-						<h2 class="govuk-error-summary__title">There is a problem</h2>
-						<div class="govuk-error-summary__body">
-							<ul class="govuk-list govuk-error-summary__list">
-								<li><a href="#confirm-criteria">Criteria_Error_Text</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>);
+		.FindByDataTestId("error-summary")
+		.MarkupMatches(
+	@<div class="govuk-error-summary" data-testid="error-summary" data-module="govuk-error-summary">
+		<div role="alert">
+			<h2 class="govuk-error-summary__title">There is a problem</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					<li data-testid="confirm-criteria-error-summary">
+						<a href="#confirm-criteria">Criteria_Error_Text</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>);
 
 		confirm
-			.Find("#confirm-criteria-error")
-			.MarkupMatches(
-				@<p id="confirm-criteria-error" class="govuk-error-message ">
-					<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
-				</p>);
+		.FindByDataTestId("confirm-criteria-error-message")
+		.MarkupMatches(
+	@<p id="confirm-criteria-error" class="govuk-error-message" data-testid="confirm-criteria-error-message">
+		<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
+	</p>);
 	}
 
 	[Theory]
@@ -53,7 +56,7 @@
 		var navigationManager = Services.GetRequiredService<NavigationManager>();
 		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
 		var checkboxes = confirm.FindAll("[name=confirm-criteria]");
-		var confirmButton = confirm.Find("#confirm-button");
+		var confirmButton = confirm.FindByDataTestId("confirm-button");
 
 		// Act
 		foreach (var checkbox in checkboxes)
@@ -69,38 +72,40 @@
 		// Assert
 		Assert.DoesNotContain(tasklistUrl, navigationManager.Uri);
 		confirm
-		.Find(".govuk-error-summary")
-		.MarkupMatches(
-			@<div class="govuk-error-summary" data-module="govuk-error-summary">
-				<div role="alert">
-					<h2 class="govuk-error-summary__title">There is a problem</h2>
-					<div class="govuk-error-summary__body">
-						<ul class="govuk-list govuk-error-summary__list">
-							<li><a href="#confirm-criteria">Criteria_Error_Text</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>);
+		.FindByDataTestId("error-summary")
+	.MarkupMatches(
+	@<div class="govuk-error-summary" data-testid="error-summary" data-module="govuk-error-summary">
+		<div role="alert">
+			<h2 class="govuk-error-summary__title">There is a problem</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					<li data-testid="confirm-criteria-error-summary">
+					<a href="#confirm-criteria">Criteria_Error_Text</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>);
 
 		confirm
-		.Find("#confirm-criteria-error")
-		.MarkupMatches(
-			@<p id="confirm-criteria-error" class="govuk-error-message ">
-				<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
-			</p>);
+		.FindByDataTestId("confirm-criteria-error-message")
+	.MarkupMatches(
+	@<p id="confirm-criteria-error" class="govuk-error-message" data-testid="confirm-criteria-error-message">
+		<span class="govuk-visually-hidden">Error:</span>Criteria_Error_Text
+	</p>);
 	}
 
 	[Fact]
 	public void WhenAllCriteriaSelected_ThenNoErrorMessagesAreShown_AndThenNavigatesToTaskList()
 	{
-		// Arrange 
+		// Arrange
 		Services.AddLocalization();
 		var navigationManager = Services.GetRequiredService<NavigationManager>();
 		var confirm = Render<Web.Pages.Authority.PartnershipApplication.Initiate.Confirm>();
 		var checkboxes = confirm.FindAll("[name=confirm-criteria]");
-		var confirmButton = confirm.Find("#confirm-button");
+		var confirmButton = confirm.FindByDataTestId("confirm-button");
 
-		// Act 
+		// Act
 		foreach (var checkbox in checkboxes)
 		{
 			checkbox.Input(new() { Value = true });
@@ -109,14 +114,14 @@
 		confirmButton.Click();
 
 		// Assert
-		Assert.Throws<Bunit.ElementNotFoundException>(() => 
-		{ 
-			var element = confirm.Find(".govuk-error-summary");
+		Assert.Throws<Bunit.ElementNotFoundException>(() =>
+		{
+			var element = confirm.FindByDataTestId("error-summary");
 		});
 
 		Assert.Throws<Bunit.ElementNotFoundException>(() =>
 		{
-			var element = confirm.Find("#confirm-criteria-error");
+			var element = confirm.FindByDataTestId("confirm-criteria-error-summary");
 		});
 
 		Assert.EndsWith(tasklistUrl, navigationManager.Uri);
