@@ -1,21 +1,19 @@
 ﻿@page "/authority/partnership-application/initiate/regulatory-function-contacts/list"
 @attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
+@layout TwoThirdsOneThirdLayout
+
 @inject IStringLocalizer<List> Loc
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<div class="govuk-grid-row">
-	<div class="govuk-grid-column-full">
-		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
-			@Loc["PageHeading"]
-		</GdsHeading>
+<GdsHeading DataTestId="page-heading" HeadingLevel="1" Classes="@HeadingSize.Large">
+	@Loc["PageHeading"]
+</GdsHeading>
 
-		<p class="govuk-body">
-			@Loc["Instructions_Para_1"]
-		</p>
-	</div>
-</div>
+<p class="govuk-body">
+	@Loc["Instructions_Para_1"]
+</p>
 
 @code {
 

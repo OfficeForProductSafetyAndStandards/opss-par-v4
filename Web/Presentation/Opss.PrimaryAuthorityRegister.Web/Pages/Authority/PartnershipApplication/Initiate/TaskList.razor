@@ -11,65 +11,62 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<div class="govuk-grid-row">
-	<div class="govuk-grid-column-full">
-		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
-			<GdsCaption Classes=@CaptionSize.Large><MyLocalAuthoirtyName /></GdsCaption>
-			@Loc["PageHeading"]
-		</GdsHeading>
-	</div>
-</div>
+<GdsHeading DataTestId="page-heading" HeadingLevel="1" Classes="@HeadingSize.Large">
+	<GdsCaption Classes=@CaptionSize.Large><MyLocalAuthoirtyName /></GdsCaption>
+	@Loc["PageHeading"]
+</GdsHeading>
 
-<div class="govuk-grid-row">
-	<div class="govuk-grid-column-full">
-		<MyOfferedRegulatoryFunctionsTags />
-	</div>
-</div>
+<MyOfferedRegulatoryFunctionsTags />
+<p class="govuk-body govuk-!-static-margin-top-5" data-testid="completed-steps-summary">
+	@Loc["CompletedSections_Prefix"]
+	<span class="govuk-!-font-weight-bold">0</span>
+	@Loc["CompletedSections_Of"]
+	<span class="govuk-!-font-weight-bold">6</span>
+	@Loc["CompletedSections_Suffix"]
+</p>
 
-<div class="govuk-grid-row govuk-!-static-margin-top-5">
-	<div class="govuk-grid-column-full">
-		<p class="govuk-body">
-			@Loc["CompletedSections_Prefix"]
-			<span class="govuk-!-font-weight-bold">0</span>
-			@Loc["CompletedSections_Of"]
-			<span class="govuk-!-font-weight-bold">6</span>
-			@Loc["CompletedSections_Suffix"]
-		</p>
-	</div>
-</div>
+<h2 class="govuk-heading-m">@Loc["List_1_Heading"]</h2>
+<GdsTaskList Id="partnership-application-task-1-list"
+			 DataTestId="partnership-type-task-list">
+	<GdsTaskListItem DataTestId="select-partnersip-type-task-list-item">
+		<TaskTitleTemplate>
+			<GdsLink Id="select-partnership-type"
+					 DataTestId="select-partnership-type-link"
+					 Href="/authority/partnership-application/initiate/partnership-type/select">
+				@Loc["List_1_Task_1_Title"]
+			</GdsLink>
+		</TaskTitleTemplate>
+		<StatusTemplate>
+			<GdsTag Classes=@TagClasses.Blue
+					DataTestId="select-partnership-type-status-tag">
+				@Loc["Not_Yet_Started"]
+			</GdsTag>
+		</StatusTemplate>
+	</GdsTaskListItem>
+</GdsTaskList>
 
-<div class="govuk-grid-row">
-	<div class="govuk-grid-column-full">
-		<h2 class="govuk-heading-m">@Loc["List_1_Heading"]</h2>
-		<GdsTaskList Id="partnership-application-task-1-list">
-			<GdsTaskListItem>
-				<TaskTitleTemplate>
-					<GdsLink Id="select-partnership-type" Href="/authority/partnership-application/initiate/partnership-type/select">
-						@Loc["List_1_Task_1_Title"]
-					</GdsLink>
-				</TaskTitleTemplate>
-				<StatusTemplate>
-					<GdsTag Classes=@TagClasses.Blue>@Loc["Not_Yet_Started"]</GdsTag>
-				</StatusTemplate>
-			</GdsTaskListItem>
-		</GdsTaskList>
-		@if (!string.IsNullOrEmpty(applicationId)){
-		<h2 class="govuk-heading-m">@Loc["List_2_Heading"]</h2>
-			<GdsTaskList Id="partnership-application-task-2-list">
-				<GdsTaskListItem>
-					<TaskTitleTemplate>
-						<GdsLink Id="add-regulatory-function-contacts" Href="/authority/partnership-application/initiate/regulatory-function-contacts/list">
-							@Loc["List_2_Task_1_Title"]
-						</GdsLink>
-					</TaskTitleTemplate>
-					<StatusTemplate>
-						<GdsTag Classes=@TagClasses.Blue>@Loc["Not_Yet_Started"]</GdsTag>
-					</StatusTemplate>
-				</GdsTaskListItem>
-			</GdsTaskList>
-		}
-	</div>
-</div>
+@if (!string.IsNullOrEmpty(applicationId))
+{
+	<h2 class="govuk-heading-m">@Loc["List_2_Heading"]</h2>
+	<GdsTaskList Id="partnership-application-task-2-list"
+				 DataTestId="primary-authority-contacts-task-list">
+		<GdsTaskListItem DataTestId="add-regulatory-function-contacts-task-list-item">
+			<TaskTitleTemplate>
+				<GdsLink Id="add-regulatory-function-contacts"
+						 DataTestId="add-regulatory-function-contacts-link"
+						 Href="/authority/partnership-application/initiate/regulatory-function-contacts/list">
+					@Loc["List_2_Task_1_Title"]
+				</GdsLink>
+			</TaskTitleTemplate>
+			<StatusTemplate>
+				<GdsTag Classes=@TagClasses.Blue
+						DataTestId="add-regulatory-function-contacts-status-tag">
+					@Loc["Not_Yet_Started"]
+				</GdsTag>
+			</StatusTemplate>
+		</GdsTaskListItem>
+	</GdsTaskList>
+}
 
 @code {
 	private string? applicationId = null;
@@ -77,7 +74,7 @@
 	protected override void OnInitialized()
 	{
 		var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
-		if(queryHelper.ParseQuery(uri.Query).TryGetValue("applicationId", out var _applicationId))
+		if (queryHelper.ParseQuery(uri.Query).TryGetValue("applicationId", out var _applicationId))
 		{
 			applicationId = _applicationId.ToString();
 		}

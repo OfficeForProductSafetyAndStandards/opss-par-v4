@@ -6,11 +6,12 @@
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<GdsHeading HeadingLevel="1" Classes=@HeadingSize.Large>
+<GdsHeading DataTestId="page-heading" HeadingLevel="1" Classes=@HeadingSize.Large>
 	@Loc["PageHeading"]
 </GdsHeading>
 
 <GdsButton Id="apply-button"
+		   DataTestId="apply-button"
 		   @onclick=OnPartnershipApplicationClick
 		   Classes=@ButtonStyle.Secondary>
 	@Loc["ApplyButton"]

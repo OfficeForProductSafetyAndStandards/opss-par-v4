@@ -4,51 +4,53 @@
 @using Opss.PrimaryAuthorityRegister.Cqrs.Requests.PartnershipApplication.Commands
 @using Opss.PrimaryAuthorityRegister.Web.Shared.Authority
 
+@layout TwoThirdsOneThirdLayout
+
 @inject IStringLocalizer<Select> Loc
 @inject ICqrsService CqrsService
 @inject NavigationManager NavManager
 
 <PageTitle>@Loc["PageTitle"]</PageTitle>
 
-<div class="govuk-grid-row">
-	<div class="govuk-grid-column-full">
+@if (pageHasErrors)
+{
+	<GdsErrorSummary DataTestId="error-summary">
+		<GdsErrorSummaryItem DataTestId="partnership-type-error-summary" Href="#partnership-type">
+			@Loc["Partnership_Type_Error_Text"]
+		</GdsErrorSummaryItem>
+	</GdsErrorSummary>
+}
 
-		@if (pageHasErrors)
-		{
-			<GdsErrorSummary>
-				<GdsErrorSummaryItem Href="#partnership-type">
-					@Loc["Partnership_Type_Error_Text"]
-				</GdsErrorSummaryItem>
-			</GdsErrorSummary>
-		}
+<GdsHeading DataTestId="page-heading" HeadingLevel="1" Classes="@HeadingSize.Large">
+	@Loc["PageHeading"]
+</GdsHeading>
 
-		<GdsHeading HeadingLevel="1" Classes="@HeadingSize.Large">
-			@Loc["PageHeading"]
-		</GdsHeading>
+<GdsDetails DataTestId="page-details" SummaryText=@Loc["Details_SummaryText"]>
+	<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_1"] /></p>
+	<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_2"] /></p>
+</GdsDetails>
 
-		<GdsDetails SummaryText=@Loc["Details_SummaryText"]>
-			<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_1"] /></p>
-			<p><OpssMarkupString LocalizedContent=@Loc["Details_Content_2"] /></p>
-		</GdsDetails>
+<GdsRadios Name="partnership-type"
+		   DataTestId="partnership-type"
+		   ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)
+		   @bind-Value=@selectedPartnershipType>
+	<ChildContent>
+		<GdsRadio Value=@PartnershipConstants.PartnershipType.Direct
+				  InputDataTestId="partnership-type-direct-radio">
+			@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Direct]
+		</GdsRadio>
+		<GdsRadio Value=@PartnershipConstants.PartnershipType.Coordinated
+				  InputDataTestId="partnership-type-coordinated-radio">
+			@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Coordinated]
+		</GdsRadio>
+	</ChildContent>
+</GdsRadios>
 
-		<GdsRadios Name="partnership-type"
-				   ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)
-				   @bind-Value=@selectedPartnershipType>
-			<ChildContent>
-				<GdsRadio Value=@PartnershipConstants.PartnershipType.Direct>
-					@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Direct]
-				</GdsRadio>
-				<GdsRadio Value=@PartnershipConstants.PartnershipType.Coordinated>
-					@Loc["Checkboxes_" + PartnershipConstants.PartnershipType.Coordinated]
-				</GdsRadio>
-			</ChildContent>
-		</GdsRadios>
-
-		<GdsButton Id="continue-button" OnClick=@OnContinueClick>
-			@Loc["Button_Continue"]
-		</GdsButton>
-	</div>
-</div>
+<GdsButton Id="continue-button"
+		   DataTestId="continue-button"
+		   OnClick=@OnContinueClick>
+	@Loc["Button_Continue"]
+</GdsButton>
 
 @code {
 	#region Private Properties
@@ -59,11 +61,12 @@
 
 	protected override void OnInitialized()
 	{
-		errorMessage =@<GdsErrorMessage>@Loc["Partnership_Type_Error_Text"]</GdsErrorMessage>;
+		errorMessage =@<GdsErrorMessage DataTestId="partnership-type-error-message">@Loc["Partnership_Type_Error_Text"]</GdsErrorMessage>;
 		base.OnInitialized();
 	}
 
-	public async void OnContinueClick(){
+	public async void OnContinueClick()
+	{
 		pageHasErrors = string.IsNullOrEmpty(selectedPartnershipType);
 		if (pageHasErrors) return;
 

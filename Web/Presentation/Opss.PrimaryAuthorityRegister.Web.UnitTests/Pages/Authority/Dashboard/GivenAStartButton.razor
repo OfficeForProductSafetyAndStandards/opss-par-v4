@@ -9,7 +9,7 @@
 		Services.AddLocalization();
 		var navMan = Services.GetRequiredService<NavigationManager>();
 		var dashboard = Render<Web.Pages.Authority.Dashboard>();
-		var applyButton = dashboard.Find("#apply-button");
+		var applyButton = dashboard.FindByDataTestId("apply-button");
 
 		// Act
 		applyButton.Click();

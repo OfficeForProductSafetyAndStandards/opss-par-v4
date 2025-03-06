@@ -1,6 +1,8 @@
 ﻿@page "/authority/partnership-application/initiate/confirm"
 @attribute [Authorize(Policy = IdentityConstants.Policies.Authority)]
 
+@layout TwoThirdsOneThirdLayout
+
 @inject IStringLocalizer<Confirm> Loc
 @inject NavigationManager navigationManager
 
@@ -8,33 +10,44 @@
 
 @if (pageHasErrors)
 {
-	<GdsErrorSummary>
-		<GdsErrorSummaryItem Href="#confirm-criteria">
+	<GdsErrorSummary DataTestId="error-summary">
+		<GdsErrorSummaryItem DataTestId="confirm-criteria-error-summary" Href="#confirm-criteria">
 			@Loc["Criteria_Error_Text"]
 		</GdsErrorSummaryItem>
 	</GdsErrorSummary>
 }
 
-<GdsHeading HeadingLevel="1" Classes=@HeadingSize.Large>
+<GdsHeading DataTestId="page-heading" HeadingLevel="1" Classes=@HeadingSize.Large>
 	@Loc["PageHeading"]
 </GdsHeading>
 
-<GdsInsetText>
+<GdsInsetText DataTestId="page-inset-text">
 	@Loc["Guidance"]
 </GdsInsetText> 
 
-<GdsCheckboxes Name="confirm-criteria" @bind-Values=selectedCriteria ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)>
+<GdsCheckboxes Name="confirm-criteria" 
+			   @bind-Values=selectedCriteria 
+			   DataTestId="confirm-criteria"
+			   ErrorMessageTemplate=@(pageHasErrors ? errorMessage! : null!)>
 	<LegendTemplate>
 		<p class="govuk-body">@Loc["Criteria_Text"]</p>
 	</LegendTemplate>
 	<ChildContent>
-		<GdsCheckbox Value="1">@Loc["Criteria1_Checkbox_Text"]</GdsCheckbox>
-		<GdsCheckbox Value="2">@Loc["Criteria2_Checkbox_Text"]</GdsCheckbox>
-		<GdsCheckbox Value="3">@Loc["Criteria3_Checkbox_Text"]</GdsCheckbox>
+		<GdsCheckbox Value="1" InputDataTestId="confirm-criteria-organisation-elegible">
+			@Loc["Criteria1_Checkbox_Text"]
+		</GdsCheckbox>
+		<GdsCheckbox Value="2" InputDataTestId="confirm-criteria-authority-suitable">
+			@Loc["Criteria2_Checkbox_Text"]
+		</GdsCheckbox>
+		<GdsCheckbox Value="3" InputDataTestId="confirm-criteria-summary-created">
+			@Loc["Criteria3_Checkbox_Text"]
+		</GdsCheckbox>
 	</ChildContent>
 </GdsCheckboxes>
 
-<GdsButton Id="confirm-button" OnClick=@OnConfirmAgreement>
+<GdsButton Id="confirm-button" 
+		   OnClick=@OnConfirmAgreement
+		   DataTestId="confirm-button">
 	@Loc["Continue_Button_Text"]
 </GdsButton>
 
@@ -47,7 +60,7 @@
 
 	protected override void OnInitialized()
 	{
-		errorMessage =@<GdsErrorMessage>@Loc["Criteria_Error_Text"]</GdsErrorMessage>;
+		errorMessage =@<GdsErrorMessage DataTestId="confirm-criteria-error-message">@Loc["Criteria_Error_Text"]</GdsErrorMessage>;
 		base.OnInitialized();
 	}
 
