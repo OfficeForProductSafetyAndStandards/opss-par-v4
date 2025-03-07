@@ -17,11 +17,6 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.EntityConfigurations
             builder.Property(u => u.UpdatedDate).HasColumnType("timestamptz").IsRequired(false);
             
             builder.Property(u => u.HasAcceptedTermsAndConditions).HasColumnType("boolean").IsRequired();
-            
-            builder.HasOne(u => u.UserIdentity)
-                .WithOne(f => f.UserProfile)
-                .HasForeignKey<UserIdentity>()
-                .IsRequired(false);
         }
     }
 }
