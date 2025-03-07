@@ -18,7 +18,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Persistence.EntityConfigurations
             
             builder.Property(u => u.HasAcceptedTermsAndConditions).HasColumnType("boolean").IsRequired();
             
-            builder.HasOne(a => a.UserIdentity)
+            builder.HasOne(u => u.UserIdentity)
                 .WithOne(f => f.UserProfile)
                 .HasForeignKey<UserIdentity>()
                 .IsRequired(false);
