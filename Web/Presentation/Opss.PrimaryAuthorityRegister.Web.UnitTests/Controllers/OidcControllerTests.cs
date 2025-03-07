@@ -7,6 +7,8 @@ using Opss.PrimaryAuthorityRegister.Web.Controllers;
 using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Profile.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Entities;
+using Opss.PrimaryAuthorityRegister.Http.Exceptions;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -34,7 +36,7 @@ public class OidcControllerTests
     }
 
     [Fact]
-    public void Login_WithNullReturnUrl_ShouldRedirectToRoot()
+    public void WhenLogin_WithNullReturnUrl_ShouldRedirectToRoot()
     {
         // Arrange
         _httpRequestMock.Setup(r => r.PathBase).Returns(new PathString("/"));
@@ -49,7 +51,7 @@ public class OidcControllerTests
     }
 
     [Fact]
-    public void Login_WithReturnUrl_ShouldRedirectToProvidedUrl()
+    public void WhenLogin_WithReturnUrl_ShouldRedirectToProvidedUrl()
     {
         // Arrange
         var returnUrl = new Uri("/dashboard", UriKind.Relative);
@@ -64,7 +66,7 @@ public class OidcControllerTests
     }
 
     [Fact]
-    public void Logout_WithNullReturnUrl_ShouldRedirectToRoot()
+    public void WhenLogout_WithNullReturnUrl_ShouldRedirectToRoot()
     {
         // Arrange
         _httpRequestMock.Setup(r => r.PathBase).Returns(new PathString("/"));
@@ -80,7 +82,7 @@ public class OidcControllerTests
     }
 
     [Fact]
-    public void Logout_WithReturnUrl_ShouldRedirectToProvidedUrl()
+    public void WhenLogout_WithReturnUrl_ShouldRedirectToProvidedUrl()
     {
         // Arrange
         var returnUrl = new Uri("/home", UriKind.Relative);
@@ -127,6 +129,20 @@ public class OidcControllerTests
         Assert.Equal("/terms-conditions", result.Url);
     }
 
-    // todo: another test in case result is error?
+    [Fact]
+    public async Task WhenCallingAfterLogin_AndProfileNotFound_ThenRedirectsToTandCs()
+    {
+        // Arrange
+        _cqrsServiceMock
+            .Setup(c => c.GetAsync<GetMyProfileQuery, MyProfileDto>(It.IsAny<GetMyProfileQuery>()))
+            .ThrowsAsync(new HttpResponseException(HttpStatusCode.NotFound, "some error message"));
+
+        // Act
+        var result = await _controller.AfterLogin() as RedirectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("/terms-conditions", result.Url);
+    }
 }
 

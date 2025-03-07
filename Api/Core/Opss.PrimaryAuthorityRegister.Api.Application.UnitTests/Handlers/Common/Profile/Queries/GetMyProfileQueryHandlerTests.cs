@@ -77,7 +77,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
         }
         
         [Fact]
-        public async Task GivenQuery_ThenDataReturned()
+        public async Task WhenProfileFound_ThenReturnsProfile()
         {
             // Arrange
             var userId = Guid.NewGuid();

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Opss.PrimaryAuthorityRegister.Cqrs.Services;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Profile.Queries;
+using Opss.PrimaryAuthorityRegister.Http.Exceptions;
+using System.Net;
 
 namespace Opss.PrimaryAuthorityRegister.Web.Controllers;
 
@@ -51,12 +53,20 @@ public class OidcController : ControllerBase
     [HttpGet("after-login")]
     public async Task<IActionResult> AfterLogin()
     {
-        var agreedTandCs = await _cqrsService.GetAsync<GetMyProfileQuery, MyProfileDto>(new GetMyProfileQuery()).ConfigureAwait(false);
-
-        if (agreedTandCs.Result.HasAcceptedTermsAndConditions)
+        try
         {
-            return Redirect("/authority");
+            var profile = await _cqrsService.GetAsync<GetMyProfileQuery, MyProfileDto>(new GetMyProfileQuery()).ConfigureAwait(true);
+
+            if (profile.Result?.HasAcceptedTermsAndConditions ?? false)
+            {
+                return Redirect("/authority");
+            }
+            
+            return Redirect("/terms-conditions");
         }
-        return Redirect("/terms-conditions");
+        catch (HttpResponseException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return Redirect("/terms-conditions");
+        }
     }
 }
