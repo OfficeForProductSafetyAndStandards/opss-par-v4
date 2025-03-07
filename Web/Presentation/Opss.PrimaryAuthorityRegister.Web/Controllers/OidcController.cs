@@ -49,7 +49,7 @@ public class OidcController : ControllerBase
         return SignOut(props, CookieAuthenticationDefaults.AuthenticationScheme, provider);
     }
 
-    [Authorize]
+
     [HttpGet("after-login")]
     public async Task<IActionResult> AfterLogin()
     {
