@@ -1,6 +1,12 @@
 ﻿@page "/terms-conditions"
 
-<h3>Terms And Conditions</h3>
+@layout TwoThirdsOneThirdLayout
+
+@inject IStringLocalizer<TermsAndConditions> Loc
+
+<PageTitle>@Loc["PageTitle"]</PageTitle>
+
+<GdsHeading HeadingLevel=1 Classes=@HeadingSize.ExtraLarge>@Loc["PageHeading"]</GdsHeading>
 
 @code {
     
