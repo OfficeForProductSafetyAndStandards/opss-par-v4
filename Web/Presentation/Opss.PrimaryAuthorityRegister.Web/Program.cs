@@ -84,6 +84,7 @@ internal static class Program
 
         app.UseRouting();
         app.UseAuthentication();
+        app.UseAuthorization();
         app.MapControllers();
 
         app.UseCors("_parAllowOrigins");
