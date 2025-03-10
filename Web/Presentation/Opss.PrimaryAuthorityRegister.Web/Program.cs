@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Opss.PrimaryAuthorityRegister.Authentication.Configuration;
 using Opss.PrimaryAuthorityRegister.Authentication.OpenIdConnect;
 using Opss.PrimaryAuthorityRegister.Common.Constants;
@@ -38,7 +39,7 @@ internal static class Program
         builder.Services.AddLocalization(options => options.ResourcesPath = "Language");
         builder.Services.AddControllers();
 
-        builder.Services.AddAuthentication();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthorizationCore();
 
