@@ -29,7 +29,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.
                 throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest, "Your userId was not found");
 
             var identity = await _userIdentityRepository.GetByIdAsync(userId.Value).ConfigureAwait(false);
-            if (identity == null)
+            if (identity!.UserProfile == null)
                 throw new HttpResponseException(System.Net.HttpStatusCode.NotFound, "Your profile was not found");
 
             var profileDto = new MyProfileDto(identity!.UserProfile.HasAcceptedTermsAndConditions);

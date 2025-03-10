@@ -63,9 +63,14 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
                 new (JwtRegisteredClaimNames.Sid, userId.ToString())
             }));
             
+            var userIdentityWithoutProfile = new UserIdentity("email@address.com")
+            {
+                Id = userId
+            };
+            
             _mockUserIdentityRepository
                 .Setup(r => r.GetByIdAsync(It.Is<Guid>(guid => guid == userId)))
-                .ReturnsAsync(() => null);
+                .ReturnsAsync(() => userIdentityWithoutProfile);
             
             var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
