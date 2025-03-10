@@ -25,5 +25,9 @@ public class UserIdentityEntityTypeConfiguration : IEntityTypeConfiguration<User
                .WithOne(c => c.UserIdentity)
                .HasForeignKey<AuthorityUser>()
                .IsRequired(false);
+        builder.HasOne(u => u.UserProfile)
+            .WithOne(c => c.UserIdentity)
+            .HasForeignKey<UserProfile>()
+            .IsRequired(false);
     }
 }
