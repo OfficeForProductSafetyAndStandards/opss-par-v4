@@ -15,7 +15,7 @@ public interface ICqrsService
     /// <param name="query">The query object</param>
     /// <returns></returns>
     public Task<HttpObjectResponse<TResponse>> GetAsync<TQuery, TResponse>(TQuery query)
-        where TQuery : IQuery<TResponse> where TResponse : class;
+        where TQuery : IQuery<TResponse> where TResponse : class?;
 
     /// <summary>
     /// Used when a command will return a Guid

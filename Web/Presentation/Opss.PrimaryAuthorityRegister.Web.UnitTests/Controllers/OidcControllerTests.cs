@@ -17,21 +17,20 @@ namespace Opss.PrimaryAuthorityRegister.Web.UnitTests.Controllers;
 public class OidcControllerTests
 {
     private readonly OidcController _controller;
-    private readonly Mock<HttpContext> _httpContextMock;
     private readonly Mock<HttpRequest> _httpRequestMock;
     private readonly Mock<ICqrsService> _cqrsServiceMock;
 
     public OidcControllerTests()
     {
-        _httpContextMock = new Mock<HttpContext>();
+        Mock<HttpContext> httpContextMock = new();
         _httpRequestMock = new Mock<HttpRequest>();
         _cqrsServiceMock = new Mock<ICqrsService>();
 
-        _httpContextMock.Setup(ctx => ctx.Request).Returns(_httpRequestMock.Object);
+        httpContextMock.Setup(ctx => ctx.Request).Returns(_httpRequestMock.Object);
 
         _controller = new OidcController(_cqrsServiceMock.Object)
         {
-            ControllerContext = new ControllerContext { HttpContext = _httpContextMock.Object }
+            ControllerContext = new ControllerContext { HttpContext = httpContextMock.Object }
         };
     }
 
@@ -47,7 +46,7 @@ public class OidcControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("oidc-onelogin", result.AuthenticationSchemes[0]);
-        Assert.Equal("/", result.Properties.RedirectUri);
+        Assert.Equal("/", result.Properties!.RedirectUri);
     }
 
     [Fact]
@@ -62,7 +61,7 @@ public class OidcControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("oidc-onelogin", result.AuthenticationSchemes[0]);
-        Assert.Equal("/dashboard", result.Properties.RedirectUri);
+        Assert.Equal("/dashboard", result.Properties!.RedirectUri);
     }
 
     [Fact]
@@ -78,7 +77,7 @@ public class OidcControllerTests
         Assert.NotNull(result);
         Assert.Contains(CookieAuthenticationDefaults.AuthenticationScheme, result.AuthenticationSchemes);
         Assert.Contains("oidc-onelogin", result.AuthenticationSchemes);
-        Assert.Equal("/", result.Properties.RedirectUri);
+        Assert.Equal("/", result.Properties!.RedirectUri);
     }
 
     [Fact]
@@ -94,16 +93,17 @@ public class OidcControllerTests
         Assert.NotNull(result);
         Assert.Contains(CookieAuthenticationDefaults.AuthenticationScheme, result.AuthenticationSchemes);
         Assert.Contains("oidc-onelogin", result.AuthenticationSchemes);
-        Assert.Equal("/home", result.Properties.RedirectUri);
+        Assert.Equal("/home", result.Properties!.RedirectUri);
     }
 
     [Fact]
     public async Task  WhenCallingAfterLogin_AndAgreedTandCs_ThenRedirectsToDashboard()
     {
         // Arrange
+        using var msg =new HttpResponseMessage();
         _cqrsServiceMock
             .Setup(c => c.GetAsync<GetMyProfileQuery, MyProfileDto>(It.IsAny<GetMyProfileQuery>()))
-            .ReturnsAsync(new HttpObjectResponse<MyProfileDto>(new HttpResponseMessage(), new MyProfileDto(true)));
+            .ReturnsAsync(new HttpObjectResponse<MyProfileDto>(msg, new MyProfileDto(true)));
 
         // Act
         var result = await _controller.AfterLogin() as RedirectResult;
@@ -117,9 +117,10 @@ public class OidcControllerTests
     public async Task WhenCallingAfterLogin_AndNotAgreedTandCs_ThenRedirectsToTandCs()
     {
         // Arrange
+        using var msg =new HttpResponseMessage();
         _cqrsServiceMock
             .Setup(c => c.GetAsync<GetMyProfileQuery, MyProfileDto>(It.IsAny<GetMyProfileQuery>()))
-            .ReturnsAsync(new HttpObjectResponse<MyProfileDto>(new HttpResponseMessage(), new MyProfileDto(false)));
+            .ReturnsAsync(new HttpObjectResponse<MyProfileDto>(msg, new MyProfileDto(false)));
 
         // Act
         var result = await _controller.AfterLogin() as RedirectResult;
@@ -133,9 +134,10 @@ public class OidcControllerTests
     public async Task WhenCallingAfterLogin_AndProfileNotFound_ThenRedirectsToTandCs()
     {
         // Arrange
+        using var msg =new HttpResponseMessage();
         _cqrsServiceMock
             .Setup(c => c.GetAsync<GetMyProfileQuery, MyProfileDto>(It.IsAny<GetMyProfileQuery>()))
-            .ThrowsAsync(new HttpResponseException(HttpStatusCode.NotFound, "some error message"));
+            .ReturnsAsync(new HttpObjectResponse<MyProfileDto>(msg, null));
 
         // Act
         var result = await _controller.AfterLogin() as RedirectResult;

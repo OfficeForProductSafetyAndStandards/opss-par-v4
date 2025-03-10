@@ -53,7 +53,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
         }
         
         [Fact]
-        public async Task WhenNoProfile_ThenHttpNotFoundExceptionThrown()
+        public async Task WhenNoProfile_ThenReturnsNull()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -74,13 +74,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
             
             var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
-                handler.Handle(new GetMyProfileQuery(),
-                    CancellationToken.None));
+            // Act
+            var result = await handler.Handle(new GetMyProfileQuery(), CancellationToken.None);
 
-            Assert.Equal("Your profile was not found", exception.Message);
-            Assert.Equal(System.Net.HttpStatusCode.NotFound, exception.Response.StatusCode);
+            // Assert
+            Assert.Null(result);
         }
         
         [Fact]

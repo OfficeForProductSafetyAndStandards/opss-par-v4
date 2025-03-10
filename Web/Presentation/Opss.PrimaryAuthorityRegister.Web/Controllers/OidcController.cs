@@ -53,20 +53,13 @@ public class OidcController : ControllerBase
     [HttpGet("after-login")]
     public async Task<IActionResult> AfterLogin()
     {
-        try
-        {
-            var profile = await _cqrsService.GetAsync<GetMyProfileQuery, MyProfileDto>(new GetMyProfileQuery()).ConfigureAwait(true);
+        var profile = await _cqrsService.GetAsync<GetMyProfileQuery, MyProfileDto?>(new GetMyProfileQuery()).ConfigureAwait(true);
 
-            if (profile.Result?.HasAcceptedTermsAndConditions ?? false)
-            {
-                return Redirect("/authority");
-            }
-            
-            return Redirect("/terms-conditions");
-        }
-        catch (HttpResponseException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
+        if (profile.Result?.HasAcceptedTermsAndConditions ?? false)
         {
-            return Redirect("/terms-conditions");
+            return Redirect("/authority");
         }
+        
+        return Redirect("/terms-conditions");
     }
 }

@@ -8,7 +8,7 @@ using System.Security.Claims;
 namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.Queries
 {
     public class GetMyProfileQueryHandler
-        : IRequestHandler<GetMyProfileQuery, MyProfileDto>
+        : IRequestHandler<GetMyProfileQuery, MyProfileDto?>
     {
         private readonly IGenericRepository<Domain.Entities.UserIdentity> _userIdentityRepository;
         private readonly ClaimsPrincipal? _claimsPrincipal;
@@ -19,7 +19,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.
             _claimsPrincipal = claimsPrincipal;
         }
 
-        public async Task<MyProfileDto> Handle(GetMyProfileQuery request, CancellationToken cancellationToken)
+        public async Task<MyProfileDto?> Handle(GetMyProfileQuery request, CancellationToken cancellationToken)
         {
             if (_claimsPrincipal == null)
                 throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized, "You are not authenticated");
@@ -30,7 +30,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.
 
             var identity = await _userIdentityRepository.GetByIdAsync(userId.Value).ConfigureAwait(false);
             if (identity!.UserProfile == null)
-                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound, "Your profile was not found");
+                return null;
 
             var profileDto = new MyProfileDto(identity!.UserProfile.HasAcceptedTermsAndConditions);
 
