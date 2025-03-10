@@ -10,12 +10,12 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.
     public class GetMyProfileQueryHandler
         : IRequestHandler<GetMyProfileQuery, MyProfileDto>
     {
-        private readonly IGenericRepository<Domain.Entities.UserProfile> _profileRepository;
+        private readonly IGenericRepository<Domain.Entities.UserIdentity> _userIdentityRepository;
         private readonly ClaimsPrincipal? _claimsPrincipal;
 
-        public GetMyProfileQueryHandler(IGenericRepository<Domain.Entities.UserProfile> profileRepository, ClaimsPrincipal? claimsPrincipal)
+        public GetMyProfileQueryHandler(IGenericRepository<Domain.Entities.UserIdentity> userIdentityRepository, ClaimsPrincipal? claimsPrincipal)
         {
-            _profileRepository = profileRepository;
+            _userIdentityRepository = userIdentityRepository;
             _claimsPrincipal = claimsPrincipal;
         }
 
@@ -28,11 +28,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.
             if (userId == null)
                 throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest, "Your userId was not found");
 
-            var profile = await _profileRepository.GetByIdAsync(userId.Value).ConfigureAwait(false);
-            if (profile == null)
+            var identity = await _userIdentityRepository.GetByIdAsync(userId.Value).ConfigureAwait(false);
+            if (identity == null)
                 throw new HttpResponseException(System.Net.HttpStatusCode.NotFound, "Your profile was not found");
 
-            var profileDto = new MyProfileDto(profile.HasAcceptedTermsAndConditions);
+            var profileDto = new MyProfileDto(identity!.UserProfile.HasAcceptedTermsAndConditions);
 
             return profileDto;
         }

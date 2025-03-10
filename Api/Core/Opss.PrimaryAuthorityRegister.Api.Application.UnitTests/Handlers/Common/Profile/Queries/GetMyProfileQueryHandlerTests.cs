@@ -1,21 +1,23 @@
 ﻿using Moq;
 using Opss.PrimaryAuthorityRegister.Api.Application.Handlers.Common.Profile.Queries;
 using Opss.PrimaryAuthorityRegister.Api.Application.Interfaces.Repositories;
+using Opss.PrimaryAuthorityRegister.Api.Domain.Entities;
 using Opss.PrimaryAuthorityRegister.Cqrs.Requests.Common.Profile.Queries;
 using Opss.PrimaryAuthorityRegister.Http.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Common.Profile.Queries
 {
     public class GetMyProfileQueryHandlerTests
     {
-        private readonly Mock<IGenericRepository<Domain.Entities.UserProfile>> _mockProfileRepository;
+        private readonly Mock<IGenericRepository<UserIdentity>> _mockUserIdentityRepository;
         private ClaimsPrincipal? _claimsPrincipal;
 
         public GetMyProfileQueryHandlerTests()
         {
-            _mockProfileRepository = new Mock<IGenericRepository<Domain.Entities.UserProfile>>();
+            _mockUserIdentityRepository = new Mock<IGenericRepository<UserIdentity>>();
         }
 
         [Fact]
@@ -23,7 +25,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
         {
             // Arrange
             _claimsPrincipal = null;
-            var handler = new GetMyProfileQueryHandler(_mockProfileRepository.Object, _claimsPrincipal);
+            var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
@@ -39,7 +41,7 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
         {
             // Arrange
             _claimsPrincipal = new ClaimsPrincipal();
-            var handler = new GetMyProfileQueryHandler(_mockProfileRepository.Object, _claimsPrincipal);
+            var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
@@ -61,11 +63,11 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
                 new (JwtRegisteredClaimNames.Sid, userId.ToString())
             }));
             
-            _mockProfileRepository
+            _mockUserIdentityRepository
                 .Setup(r => r.GetByIdAsync(It.Is<Guid>(guid => guid == userId)))
                 .ReturnsAsync(() => null);
             
-            var handler = new GetMyProfileQueryHandler(_mockProfileRepository.Object, _claimsPrincipal);
+            var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<HttpResponseException>(() =>
@@ -86,14 +88,23 @@ namespace Opss.PrimaryAuthorityRegister.Api.Application.UnitTests.Handlers.Commo
             {
                 new (JwtRegisteredClaimNames.Sid, userId.ToString())
             }));
+            
+            var userIdentity = new UserIdentity("email@address.com")
+            {
+                Id = userId,
+                UserProfile = new UserProfile
+                {
+                    HasAcceptedTermsAndConditions = true, Id = Guid.NewGuid()
+                }
+            };
+            
+            _mockUserIdentityRepository
+                .Setup(r => r.GetByIdAsync(
+                    It.Is<Guid>(guid => guid == userId), 
+                    It.IsAny<Expression<Func<UserIdentity, object>>[]>()))
+                .ReturnsAsync(() => userIdentity);
 
-            var profile = new Domain.Entities.UserProfile{HasAcceptedTermsAndConditions = true, Id = userId};
-
-            _mockProfileRepository
-                .Setup(r => r.GetByIdAsync(It.Is<Guid>(guid => guid == userId)))
-                .ReturnsAsync(() => profile);
-
-            var handler = new GetMyProfileQueryHandler(_mockProfileRepository.Object, _claimsPrincipal);
+            var handler = new GetMyProfileQueryHandler(_mockUserIdentityRepository.Object, _claimsPrincipal);
 
             // Act
             var result = await handler.Handle(new GetMyProfileQuery(), CancellationToken.None);
